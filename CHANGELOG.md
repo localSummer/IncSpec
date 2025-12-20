@@ -5,24 +5,31 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
-## [0.0.8] - 2025-12-20
+## [0.0.8] - 2025-12-21
 
 ### Added
 
+- 新增 `reset` 命令，重置工作流状态并可选归档当前产出
+  - 支持 `--force` 跳过确认提示
+  - 支持 `--archive` 在重置前自动归档
 - 新增快速模式 (5步流程) 支持
   - `incspec analyze <path> --quick` 启动快速模式
   - 跳过步骤 3 (UI依赖采集) 和步骤 4 (增量设计)
   - 适用于 Bug 修复、简单功能、不涉及复杂 UI 依赖的变更
 - 工作流状态新增 `skipped` 状态和 `mode` 字段
 - 更新所有模板文件支持快速模式判断
+- 新增 `docs/skill-best-practices.md` 技能编写最佳实践文档
 
 ### Changed
 
+- `apply` 命令新增预执行确认步骤，执行前需确认变更范围
+- `merge` 命令新增预执行确认步骤，执行前需确认合并内容
 - `status` 命令显示工作流模式标签，跳过的步骤显示 `[-]` 标记
 - `apply` 命令快速模式下使用需求文档 (`structured-requirements.md`) 作为输入
 - `merge` 命令快速模式下重新分析当前代码生成新基线
 - `archive` 命令根据模式返回不同的可归档步骤列表
 - `collect-req` 命令完成后快速模式提示直接进入步骤 5
+- 更新 AGENTS.md 模板，增强 AI 助手工作流指导
 
 ## [0.0.7] - 2025-12-20
 
