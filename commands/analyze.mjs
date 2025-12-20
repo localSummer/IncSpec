@@ -207,9 +207,9 @@ export async function analyzeCommand(ctx) {
   print('');
   print(colorize(`  /incspec/inc-analyze ${sourcePath} --module=${moduleName}`, colors.bold, colors.white));
   print('');
-  print(colorize('或使用 Claude Code 命令:', colors.cyan));
+  print(colorize('或在 Claude Code 中使用 inc-spec-skill 技能:', colors.cyan));
   print('');
-  print(colorize(`  /ai-increment:analyze-codeflow ${sourcePath} ${path.join(projectRoot, INCSPEC_DIR, DIRS.baselines)}`, colors.bold, colors.white));
+  print(colorize(`  请分析 ${sourcePath} 的代码流程，生成基线报告到 ${path.join(projectRoot, INCSPEC_DIR, DIRS.baselines)}`, colors.dim));
   print('');
   printInfo(`完成后运行 'incspec status' 查看进度`);
   print('');

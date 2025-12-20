@@ -5,7 +5,7 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
-## [Unreleased]
+## [0.0.7] - 2025-12-20
 
 ### Added
 
@@ -20,6 +20,10 @@
 
 - `sync --project` 现在使用当前工作目录而非查找 incspec 项目根目录
 - 交互式选择目录时，当前目录选项显示在全局目录之前
+- 修正 CLI 命令输出中的 Claude Code 使用提示
+  - 移除不存在的 `/ai-increment:xxx` 命令格式
+  - 改为引导用户使用 inc-spec-skill 技能并提供自然语言参考格式
+  - 影响文件：`analyze.mjs`、`collect-req.mjs`、`collect-dep.mjs`、`design.mjs`、`apply.mjs`、`merge.mjs`
 
 ### Removed
 
@@ -96,7 +100,8 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
-[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.6...HEAD
+[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.7...HEAD
+[0.0.7]: https://github.com/localSummer/IncSpec/compare/v0.0.6...v0.0.7
 [0.0.6]: https://github.com/localSummer/IncSpec/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/localSummer/IncSpec/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/localSummer/IncSpec/compare/v0.0.3...v0.0.4

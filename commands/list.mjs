@@ -15,6 +15,7 @@ import {
   print,
   printTable,
   printWarning,
+  formatLocalDateTime,
 } from '../lib/terminal.mjs';
 
 /**
@@ -47,7 +48,7 @@ export async function listCommand(ctx) {
     } else {
       specs.forEach(spec => {
         const info = getSpecInfo(spec.path);
-        const mtime = spec.mtime.toISOString().replace('T', ' ').slice(0, 16);
+        const mtime = formatLocalDateTime(spec.mtime);
         const versionStr = info.version ? colorize(`v${info.version}`, colors.cyan) : '';
         
         print(`  ${colorize(spec.name, colors.white)} ${versionStr}`);

@@ -88,10 +88,10 @@ export async function mergeCommand(ctx) {
   print('');
   print(colorize(`  /incspec/inc-merge ${incrementPath}`, colors.bold, colors.white));
   print('');
-  print(colorize('或使用 Claude Code 命令:', colors.cyan));
+  print(colorize('或在 Claude Code 中使用 inc-spec-skill 技能:', colors.cyan));
   print('');
   const outDir = path.join(projectRoot, INCSPEC_DIR, DIRS.baselines);
-  print(colorize(`  /ai-increment:merge-to-baseline ${incrementPath} ${outDir}`, colors.bold, colors.white));
+  print(colorize(`  请将 ${incrementPath} 的增量合并到基线 ${outDir}`, colors.dim));
   print('');
   print(colorize('该命令将:', colors.dim));
   print(colorize('  1. 解析增量设计文件中的时序图和依赖图', colors.dim));

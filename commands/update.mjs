@@ -20,6 +20,7 @@ import {
   printWarning,
   printInfo,
   confirm,
+  formatLocalDateTime,
 } from '../lib/terminal.mjs';
 
 /**
@@ -71,7 +72,7 @@ function updateIncspecWorkflow(projectRoot) {
     return { updated: false, path: targetPath, reason: '保留用户工作流数据' };
   }
 
-  const now = new Date().toISOString().replace('T', ' ').slice(0, 16);
+  const now = formatLocalDateTime(new Date());
   let templateContent = fs.readFileSync(templatePath, 'utf-8');
   templateContent = templateContent.replace(/\{\{last_update\}\}/g, now);
 

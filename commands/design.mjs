@@ -102,13 +102,13 @@ export async function designCommand(ctx) {
   print('');
   print(colorize(`  /incspec/inc-design --feature=${featureName}`, colors.bold, colors.white));
   print('');
-  print(colorize('或使用 Claude Code 命令:', colors.cyan));
+  print(colorize('或在 Claude Code 中使用 inc-spec-skill 技能:', colors.cyan));
   print('');
   const baselinePath = path.join(projectRoot, INCSPEC_DIR, DIRS.baselines, latestBaseline);
   const reqPath = path.join(projectRoot, INCSPEC_DIR, DIRS.requirements, 'structured-requirements.md');
   const depPath = path.join(projectRoot, INCSPEC_DIR, DIRS.requirements, 'ui-dependencies.md');
   const outDir = path.join(projectRoot, INCSPEC_DIR, DIRS.increments);
-  print(colorize(`  /ai-increment:analyze-increment-codeflow ${baselinePath} ${reqPath} ${depPath} ${outDir}`, colors.bold, colors.white));
+  print(colorize(`  请基于基线 ${latestBaseline} 和需求/依赖文件，设计增量方案到 ${outDir}`, colors.dim));
   print('');
   print(colorize('该命令将生成包含 7 大模块的增量设计蓝图:', colors.dim));
   print(colorize('  1. 一句话摘要', colors.dim));
