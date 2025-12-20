@@ -5,6 +5,25 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.0.8] - 2025-12-20
+
+### Added
+
+- 新增快速模式 (3步流程) 支持
+  - `incspec analyze <path> --quick` 启动快速模式
+  - 跳过步骤 3 (UI依赖采集) 和步骤 4 (增量设计)
+  - 适用于 Bug 修复、简单功能、不涉及复杂 UI 依赖的变更
+- 工作流状态新增 `skipped` 状态和 `mode` 字段
+- 更新所有模板文件支持快速模式判断
+
+### Changed
+
+- `status` 命令显示工作流模式标签，跳过的步骤显示 `[-]` 标记
+- `apply` 命令快速模式下使用需求文档 (`structured-requirements.md`) 作为输入
+- `merge` 命令快速模式下重新分析当前代码生成新基线
+- `archive` 命令根据模式返回不同的可归档步骤列表
+- `collect-req` 命令完成后快速模式提示直接进入步骤 5
+
 ## [0.0.7] - 2025-12-20
 
 ### Added
@@ -100,7 +119,8 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
-[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.7...HEAD
+[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.8...HEAD
+[0.0.8]: https://github.com/localSummer/IncSpec/compare/v0.0.7...v0.0.8
 [0.0.7]: https://github.com/localSummer/IncSpec/compare/v0.0.6...v0.0.7
 [0.0.6]: https://github.com/localSummer/IncSpec/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/localSummer/IncSpec/compare/v0.0.4...v0.0.5

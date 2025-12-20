@@ -4,6 +4,7 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 
 ## 快速检查清单
 
+**完整模式 (6步):**
 - 初始化项目: `incspec init` (创建 `incspec/` 目录结构)
 - 检查状态: `incspec status` 或 `incspec st`
 - 按顺序执行6步工作流: analyze → collect-req → collect-dep → design → apply → merge
@@ -12,15 +13,22 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 - 继续前先验证: `incspec validate --strict`
 - 合并后循环回到步骤1开始下一个增量周期
 
+**快速模式 (3步):**
+- 启动快速模式: `incspec analyze <path> --quick`
+- 按顺序执行: analyze → collect-req → apply → merge
+- 跳过步骤 3 (UI依赖采集) 和步骤 4 (增量设计)
+- 适用于 Bug 修复、简单功能、不涉及复杂 UI 依赖的变更
+
 ## 六步工作流
 
 ### 概览
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                      IncSpec 六步增量开发周期                            │
+│                      IncSpec 工作流模式                                  │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
+│   完整模式 (6步):                                                       │
 │   ┌──────────┐    ┌──────────┐    ┌──────────┐                         │
 │   │ 步骤 1   │    │ 步骤 2   │    │ 步骤 3   │                         │
 │   │ 分析     │───▶│ 收集     │───▶│ 收集     │                         │
@@ -36,16 +44,29 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 │        │                                                                │
 │        └──────────────── 循环回到步骤 1 ────────────────────────────▶  │
 │                                                                         │
+│   快速模式 (3步):                                                       │
+│   ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐         │
+│   │ 步骤 1   │    │ 步骤 2   │    │ 步骤 5   │    │ 步骤 6   │         │
+│   │ 分析     │───▶│ 收集     │───▶│ 应用     │───▶│ 合并到   │         │
+│   │ 代码流   │    │ 需求     │    │ 代码     │    │ 基线     │         │
+│   └──────────┘    └──────────┘    └──────────┘    └──────────┘         │
+│   (跳过步骤 3 UI依赖采集 和 步骤 4 增量设计)                            │
+│                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
+**模式选择:**
+- **完整模式**: 复杂 UI 功能、多组件交互、需要详细设计审查
+- **快速模式**: Bug 修复、简单功能、不涉及 UI 依赖变更
+
 ### 步骤 1: 分析代码工作流
 
-**命令**: `incspec analyze <source-path> [--module=name] [--baseline=file]`
+**命令**: `incspec analyze <source-path> [--module=name] [--quick] [--baseline=file]`
 
 **目的**: 生成包含 API 调用时序图和依赖关系图的基线快照。
 
 **选项**:
+- `--quick`: 启动快速模式 (3步流程)
 - `--baseline=<file>`: 使用现有基准报告，自动从 baselines/ 或 archives/ 目录恢复
 
 **输出**: `incspec/baselines/{module}-baseline-v{n}.md`
@@ -218,10 +239,10 @@ incspec list -l                 # 长格式(含时间戳)
 incspec list -a                 # 包含归档
 
 # 6步工作流
-incspec analyze <path> [--module=name] [--baseline=file]  # 步骤1: 基线分析
+incspec analyze <path> [--module=name] [--quick] [--baseline=file]  # 步骤1: 基线分析
 incspec collect-req / cr                  # 步骤2: 需求收集
-incspec collect-dep / cd                  # 步骤3: 依赖收集
-incspec design [--feature=name] / d       # 步骤4: 增量设计
+incspec collect-dep / cd                  # 步骤3: 依赖收集 (快速模式跳过)
+incspec design [--feature=name] / d       # 步骤4: 增量设计 (快速模式跳过)
 incspec apply [path] / ap                 # 步骤5: 代码执行
 incspec merge [path] / m                  # 步骤6: 基线合并
 
