@@ -38,7 +38,7 @@ incspec analyze --baseline=<baseline-file> [--module=<module>] [--workflow=<work
 ```
 
 说明:
-- `<baseline-file>` 文件名，自动搜索 baselines/ 和 archives/ 目录
+- `<baseline-file>` 文件名，自动递归搜索 baselines/ 和 archives/ 目录
 - 若文件在归档目录，自动移动到 baselines/ 目录
 - `<module>` 默认从文件名推断 (xxx-baseline-vN.md -> xxx)
 - `<workflow>` 默认为 analyze-<module>

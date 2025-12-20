@@ -76,7 +76,7 @@ description: 设计优先的前端功能增量编码工作流。适用于实现�
 
 | 步骤 | 开始 | 完成 |
 |------|------|------|
-| 分析 | `incspec analyze <path> --module=<m>` 或 `--baseline=<file>` | `--complete --output=<file>` |
+| 分析 | `incspec analyze <path> --module=<m>` 或 `--baseline=<file>` 或 `--quick` | `--complete --output=<file>` |
 | 需求 | `incspec collect-req` | `--complete` |
 | 依赖 | `incspec collect-dep` | `--complete` |
 | 设计 | `incspec design --feature=<f>` | `--complete --output=<file>` |
