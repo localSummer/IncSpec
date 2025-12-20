@@ -34,12 +34,13 @@ const COMMANDS = {
     description: '显示当前工作流状态',
   },
   analyze: {
-    usage: 'incspec analyze <source-path> [--module=name] [--baseline=file]',
+    usage: 'incspec analyze <source-path> [--module=name] [--quick] [--baseline=file]',
     aliases: ['a'],
     description: '步骤1: 分析代码流程，生成基线快照',
     options: [
       ['-m, --module=<name>', '指定模块名称'],
       ['-w, --workflow=<name>', '指定工作流名称(避免交互提示)'],
+      ['-q, --quick', '启动快速模式(3步流程: 分析->需求->应用->合并)'],
       ['-b, --baseline=<file>', '使用现有基准报告(自动从归档恢复)'],
       ['--complete', '标记步骤完成'],
       ['-o, --output=<file>', '完成时指定输出文件'],

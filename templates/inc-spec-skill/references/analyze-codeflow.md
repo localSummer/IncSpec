@@ -18,6 +18,17 @@ incspec analyze <source-path> --module=<module> --workflow=analyze-<module>
 incspec analyze <source-path> --module=<module> --workflow=analyze-<module> --complete --output=<output-file>
 ```
 
+**启动快速模式工作流** (3步流程):
+
+```bash
+incspec analyze <source-path> --module=<module> --quick
+```
+
+快速模式跳过步骤 3 (UI依赖采集) 和步骤 4 (增量设计)，直接从需求进入代码应用。适用于：
+- Bug 修复
+- 简单功能迭代
+- 不涉及复杂 UI 依赖变更的任务
+
 **使用现有基准报告** (跳过分析):
 
 若已有基准报告文件，可直接使用:

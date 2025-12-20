@@ -12,6 +12,7 @@ import {
   readWorkflow,
   updateStep,
   STATUS,
+  isQuickMode,
 } from '../lib/workflow.mjs';
 import {
   colors,
@@ -76,5 +77,12 @@ export async function collectReqCommand(ctx) {
   if (options.complete) {
     updateStep(projectRoot, STEP_NUMBER, STATUS.COMPLETED, OUTPUT_FILE);
     printSuccess(`步骤 2 已标记为完成: ${OUTPUT_FILE}`);
+
+    // Quick mode hint
+    if (isQuickMode(workflow)) {
+      print('');
+      printInfo('快速模式: 跳过步骤 3、4，直接进入步骤 5');
+      print(colorize("  运行 'incspec apply' 继续", colors.cyan));
+    }
   }
 }

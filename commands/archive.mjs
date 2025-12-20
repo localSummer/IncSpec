@@ -10,7 +10,7 @@ import {
   DIRS,
 } from '../lib/config.mjs';
 import { archiveSpec, getSpecInfo } from '../lib/spec.mjs';
-import { archiveWorkflow, readWorkflow, STATUS } from '../lib/workflow.mjs';
+import { archiveWorkflow, readWorkflow, STATUS, isQuickMode, MODE } from '../lib/workflow.mjs';
 import {
   colors,
   colorize,
@@ -21,7 +21,22 @@ import {
   confirm,
 } from '../lib/terminal.mjs';
 
-const ARCHIVABLE_STEP_INDEXES = [0, 1, 2, 3, 5];
+// Full mode: steps 1, 2, 3, 4, 6 (0-based: 0, 1, 2, 3, 5)
+const FULL_MODE_ARCHIVABLE_INDEXES = [0, 1, 2, 3, 5];
+// Quick mode: steps 1, 2, 6 (0-based: 0, 1, 5)
+const QUICK_MODE_ARCHIVABLE_INDEXES = [0, 1, 5];
+
+/**
+ * Get archivable step indexes based on workflow mode
+ * @param {Object} workflow
+ * @returns {number[]}
+ */
+function getArchivableStepIndexes(workflow) {
+  if (isQuickMode(workflow)) {
+    return QUICK_MODE_ARCHIVABLE_INDEXES;
+  }
+  return FULL_MODE_ARCHIVABLE_INDEXES;
+}
 
 function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -114,8 +129,10 @@ function getArchivableOutputs(workflow) {
     return null;
   }
 
+  const archivableIndexes = getArchivableStepIndexes(workflow);
   const outputs = [];
-  for (const index of ARCHIVABLE_STEP_INDEXES) {
+
+  for (const index of archivableIndexes) {
     const step = workflow.steps[index];
     if (!step || step.status !== STATUS.COMPLETED || !step.output || step.output === '-') {
       return null;

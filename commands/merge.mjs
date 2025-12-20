@@ -12,6 +12,7 @@ import {
   readWorkflow,
   updateStep,
   STATUS,
+  isQuickMode,
 } from '../lib/workflow.mjs';
 import { listSpecs, getNextVersion } from '../lib/spec.mjs';
 import {
@@ -43,24 +44,7 @@ export async function mergeCommand(ctx) {
     return;
   }
 
-  // Get increment file
-  let incrementPath = args[0];
-  if (!incrementPath) {
-    const increments = listSpecs(projectRoot, 'increments');
-    if (increments.length > 0) {
-      const featureName = workflow.currentWorkflow.replace(/^analyze-/, '');
-      const matched = increments.find(spec => spec.name.startsWith(`${featureName}-increment-`));
-      if (matched) {
-        incrementPath = matched.path;
-      } else {
-        incrementPath = increments[0].path;
-        printWarning(`未找到与当前工作流匹配的增量文件，已使用最近文件: ${increments[0].name}`);
-      }
-    } else {
-      printWarning('未找到增量设计文件。请先运行步骤 4 (design)。');
-      return;
-    }
-  }
+  const quickMode = isQuickMode(workflow);
 
   // Calculate output file
   const moduleName = workflow.currentWorkflow.replace(/^analyze-/, '');
@@ -70,12 +54,39 @@ export async function mergeCommand(ctx) {
   const outputFile = outputOverride || defaultOutputFile;
   const outputPath = path.join(INCSPEC_DIR, DIRS.baselines, outputFile);
 
+  // Get increment file (only needed for full mode)
+  let incrementPath = null;
+  if (!quickMode) {
+    incrementPath = args[0];
+    if (!incrementPath) {
+      const increments = listSpecs(projectRoot, 'increments');
+      if (increments.length > 0) {
+        const featureName = workflow.currentWorkflow.replace(/^analyze-/, '');
+        const matched = increments.find(spec => spec.name.startsWith(`${featureName}-increment-`));
+        if (matched) {
+          incrementPath = matched.path;
+        } else {
+          incrementPath = increments[0].path;
+          printWarning(`未找到与当前工作流匹配的增量文件，已使用最近文件: ${increments[0].name}`);
+        }
+      } else {
+        printWarning('未找到增量设计文件。请先运行步骤 4 (design)。');
+        return;
+      }
+    }
+  }
+
   print('');
   print(colorize('步骤 6: 合并到基线', colors.bold, colors.cyan));
+  if (quickMode) {
+    print(colorize('(快速模式 - 重新分析生成新基线)', colors.yellow));
+  }
   print(colorize('─────────────────', colors.dim));
   print('');
   print(colorize(`当前工作流: ${workflow.currentWorkflow}`, colors.dim));
-  print(colorize(`增量设计文件: ${incrementPath}`, colors.dim));
+  if (!quickMode) {
+    print(colorize(`增量设计文件: ${incrementPath}`, colors.dim));
+  }
   print(colorize(`输出基线文件: ${outputPath}`, colors.dim));
   print('');
 
@@ -84,20 +95,40 @@ export async function mergeCommand(ctx) {
 
   print(colorize('使用说明:', colors.bold));
   print('');
-  print(colorize('请在 Cursor 中运行以下命令:', colors.cyan));
-  print('');
-  print(colorize(`  /incspec/inc-merge ${incrementPath}`, colors.bold, colors.white));
-  print('');
-  print(colorize('或在 Claude Code 中使用 inc-spec-skill 技能:', colors.cyan));
-  print('');
-  const outDir = path.join(projectRoot, INCSPEC_DIR, DIRS.baselines);
-  print(colorize(`  请将 ${incrementPath} 的增量合并到基线 ${outDir}`, colors.dim));
-  print('');
-  print(colorize('该命令将:', colors.dim));
-  print(colorize('  1. 解析增量设计文件中的时序图和依赖图', colors.dim));
-  print(colorize('  2. 清理增量标记 (🆕/✏️/❌)', colors.dim));
-  print(colorize('  3. 重新编号为 S1-Sxx, D1-Dxx', colors.dim));
-  print(colorize('  4. 生成新的基线快照', colors.dim));
+
+  if (quickMode) {
+    // Quick mode instructions
+    print(colorize('快速模式下，将重新分析当前代码生成新基线:', colors.cyan));
+    print('');
+    print(colorize('在 Cursor 中:', colors.dim));
+    print(colorize(`  /incspec/inc-merge --output=${outputFile}`, colors.bold, colors.white));
+    print('');
+    print(colorize('在 Claude Code 中:', colors.dim));
+    print(colorize(`  请分析当前代码状态，生成新的基线报告到 ${outputPath}`, colors.dim));
+    print('');
+    print(colorize('该命令将:', colors.dim));
+    print(colorize('  1. 分析当前代码的完整流程', colors.dim));
+    print(colorize('  2. 生成 API 调用时序图', colors.dim));
+    print(colorize('  3. 生成依赖关系图', colors.dim));
+    print(colorize('  4. 保存为新版本基线快照', colors.dim));
+  } else {
+    // Full mode instructions
+    print(colorize('请在 Cursor 中运行以下命令:', colors.cyan));
+    print('');
+    print(colorize(`  /incspec/inc-merge ${incrementPath}`, colors.bold, colors.white));
+    print('');
+    print(colorize('或在 Claude Code 中使用 inc-spec-skill 技能:', colors.cyan));
+    print('');
+    const outDir = path.join(projectRoot, INCSPEC_DIR, DIRS.baselines);
+    print(colorize(`  请将 ${incrementPath} 的增量合并到基线 ${outDir}`, colors.dim));
+    print('');
+    print(colorize('该命令将:', colors.dim));
+    print(colorize('  1. 解析增量设计文件中的时序图和依赖图', colors.dim));
+    print(colorize('  2. 清理增量标记', colors.dim));
+    print(colorize('  3. 重新编号为 S1-Sxx, D1-Dxx', colors.dim));
+    print(colorize('  4. 生成新的基线快照', colors.dim));
+  }
+
   print('');
   print(colorize('新基线将作为下一轮增量开发的起点。', colors.dim));
   print('');
