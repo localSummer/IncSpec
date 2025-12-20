@@ -5,6 +5,14 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.0.10] - 2025-12-21
+
+### Fixed
+
+- 修复归档同名文件命名格式，`-copy1` 改为 `-2` 序号递增格式
+  - 原命名: `structured-requirements-copy1.md`
+  - 新命名: `structured-requirements-2.md`
+
 ## [0.0.9] - 2025-12-21
 
 ### Changed
@@ -134,7 +142,8 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
-[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.9...HEAD
+[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.10...HEAD
+[0.0.10]: https://github.com/localSummer/IncSpec/compare/v0.0.9...v0.0.10
 [0.0.9]: https://github.com/localSummer/IncSpec/compare/v0.0.8...v0.0.9
 [0.0.8]: https://github.com/localSummer/IncSpec/compare/v0.0.7...v0.0.8
 [0.0.7]: https://github.com/localSummer/IncSpec/compare/v0.0.6...v0.0.7

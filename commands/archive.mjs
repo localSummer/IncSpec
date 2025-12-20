@@ -122,7 +122,8 @@ function parseWorkflowTime(value) {
 function isOutputArchived(archivedFiles, outputFile, completedAt) {
   const ext = path.extname(outputFile);
   const base = path.basename(outputFile, ext);
-  const pattern = new RegExp(`^${escapeRegExp(base)}(-copy\\d+)?${escapeRegExp(ext)}$`);
+  // Match: base.ext, base-2.ext, base-3.ext, ...
+  const pattern = new RegExp(`^${escapeRegExp(base)}(-\\d+)?${escapeRegExp(ext)}$`);
   return archivedFiles.some(file => pattern.test(file.name) && file.mtime >= completedAt);
 }
 
