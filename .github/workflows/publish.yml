@@ -1,0 +1,82 @@
+name: Publish to npm
+
+on:
+  # 推送 v* 格式 tag 时自动触发
+  push:
+    tags:
+      - 'v*'
+  # 支持手动触发
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '版本号 (留空则使用 package.json 中的版本)'
+        required: false
+        type: string
+      dry_run:
+        description: '试运行 (不实际发布)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Get version info
+        id: version
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref_type }}" = "tag" ]; then
+            # 从 tag 中提取版本号 (去掉 v 前缀)
+            VERSION="${GITHUB_REF#refs/tags/v}"
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          else
+            VERSION=$(node -p "require('./package.json').version")
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update package version
+        if: github.event.inputs.version != ''
+        run: |
+          npm version ${{ steps.version.outputs.version }} --no-git-tag-version
+
+      - name: Verify package
+        run: |
+          echo "Package: @localsummer/incspec"
+          echo "Version: ${{ steps.version.outputs.version }}"
+          echo ""
+          echo "Files to publish:"
+          npm pack --dry-run
+
+      - name: Publish (dry run)
+        if: github.event.inputs.dry_run == 'true'
+        run: |
+          echo "Dry run mode - skipping actual publish"
+          npm publish --dry-run --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to npm
+        if: github.event.inputs.dry_run != 'true'
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "## Published @localsummer/incspec@${{ steps.version.outputs.version }}" >> $GITHUB_SUMMARY
+          echo "" >> $GITHUB_SUMMARY
+          echo "View on npm: https://www.npmjs.com/package/@localsummer/incspec" >> $GITHUB_SUMMARY
