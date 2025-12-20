@@ -1,0 +1,32 @@
+{
+  "name": "@localsummer/incspec",
+  "version": "1.0.0",
+  "description": "CLI tool for incremental spec-driven development workflow",
+  "bin": {
+    "incspec": "index.mjs"
+  },
+  "main": "index.mjs",
+  "type": "module",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "keywords": [
+    "incspec",
+    "incremental",
+    "spec-driven",
+    "cli",
+    "workflow",
+    "ai"
+  ],
+  "author": "wangxingwen",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "index.mjs",
+    "commands/",
+    "lib/",
+    "templates/"
+  ]
+}
