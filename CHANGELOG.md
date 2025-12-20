@@ -7,6 +7,8 @@
 
 ## [Unreleased]
 
+## [0.0.6] - 2025-12-20
+
 ### Changed
 
 - 统一 Cursor 斜杠命令的 argument-hint 命名风格
@@ -76,7 +78,8 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
-[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.5...HEAD
+[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.6...HEAD
+[0.0.6]: https://github.com/localSummer/IncSpec/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/localSummer/IncSpec/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/localSummer/IncSpec/compare/v0.0.3...v0.0.4
 [0.0.3]: https://github.com/localSummer/IncSpec/compare/v0.0.2...v0.0.3
