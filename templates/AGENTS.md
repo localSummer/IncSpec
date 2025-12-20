@@ -239,7 +239,7 @@ incspec sync --cursor           # 同步 Cursor 斜杠命令
 incspec sync --claude           # 同步 Claude Code Skill
 incspec sync --all              # 同步全部
 incspec sync --global           # 同步到全局目录
-incspec sync --project          # 同步到项目目录
+incspec sync --project          # 同步到当前目录
 
 # 帮助
 incspec help [command]          # 显示帮助

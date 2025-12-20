@@ -125,7 +125,7 @@ const COMMANDS = {
       ['--cursor', '仅同步 Cursor 命令'],
       ['--claude', '仅同步 Claude Code Skill'],
       ['--all', '同步所有目标'],
-      ['--project', '同步到项目目录'],
+      ['--project', '同步到当前目录'],
       ['--global', '同步到全局目录'],
     ],
   },
