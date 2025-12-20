@@ -7,6 +7,14 @@
 
 ## [Unreleased]
 
+### Changed
+
+- 统一 Cursor 斜杠命令的 argument-hint 命名风格
+  - 采用 kebab-case 命名格式（如 `source-path`）
+  - 统一使用英文参数名
+  - 文件类参数使用 `-path` 后缀，目录类参数使用 `-dir` 后缀
+  - 影响文件：`analyze-codeflow.md`、`analyze-increment-codeflow.md`、`merge-to-baseline.md`
+
 ## [0.0.5] - 2024-12-20
 
 ### Added
