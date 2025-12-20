@@ -126,6 +126,9 @@ AI 编程助手在处理复杂前端代码库时常常力不从心，因为 API 
 #### 步骤 1：安装 CLI
 
 ```bash
+# 从 Npm 安装（推荐）
+npm install -g @localsummer/incspec
+
 # 从 GitHub 克隆并安装
 git clone https://github.com/localSummer/IncSpec.git
 cd IncSpec
