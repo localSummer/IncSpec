@@ -1,6 +1,6 @@
 {
   "name": "@localsummer/incspec",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "面向 AI 编程助手的增量规范驱动开发工具",
   "bin": {
     "incspec": "index.mjs"

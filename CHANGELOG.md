@@ -7,6 +7,12 @@
 
 ## [Unreleased]
 
+## [0.0.3] - 2024-12-20
+
+### Fixed
+
+- 修复 GitHub Actions 中 GITHUB_STEP_SUMMARY 环境变量问题，添加条件检查和回退输出
+
 ## [0.0.2] - 2024-12-20
 
 ### Added
@@ -43,6 +49,7 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
-[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.2...HEAD
+[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.3...HEAD
+[0.0.3]: https://github.com/localSummer/IncSpec/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/localSummer/IncSpec/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/localSummer/IncSpec/releases/tag/v0.0.1
