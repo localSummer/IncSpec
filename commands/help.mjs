@@ -118,6 +118,11 @@ const COMMANDS = {
       ['-y, --yes', '跳过确认提示'],
     ],
   },
+  reset: {
+    usage: 'incspec reset',
+    aliases: ['rs'],
+    description: '重置当前工作流，归档已有产出',
+  },
   sync: {
     usage: 'incspec sync [--cursor] [--claude] [--all] [--project|--global]',
     aliases: ['s'],
@@ -184,7 +189,7 @@ function showGeneralHelp() {
   print(colorize('管理命令:', colors.bold));
   print('');
 
-  const mgmtCommands = ['init', 'update', 'status', 'list', 'validate', 'archive', 'sync', 'help'];
+  const mgmtCommands = ['init', 'update', 'status', 'list', 'validate', 'archive', 'reset', 'sync', 'help'];
   mgmtCommands.forEach(cmd => {
     const def = COMMANDS[cmd];
     const aliases = def.aliases ? colorize(` (${def.aliases.join(', ')})`, colors.dim) : '';

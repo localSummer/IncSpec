@@ -17,6 +17,7 @@ import { mergeCommand } from './commands/merge.mjs';
 import { listCommand } from './commands/list.mjs';
 import { validateCommand } from './commands/validate.mjs';
 import { archiveCommand } from './commands/archive.mjs';
+import { resetCommand } from './commands/reset.mjs';
 import { syncCommand } from './commands/sync.mjs';
 import { helpCommand } from './commands/help.mjs';
 import { colors, colorize } from './lib/terminal.mjs';
@@ -201,6 +202,12 @@ async function main() {
       case 'archive':
       case 'ar':
         await archiveCommand(commandContext);
+        break;
+
+      // Reset workflow
+      case 'reset':
+      case 'rs':
+        await resetCommand(commandContext);
         break;
 
       // Sync integrations
