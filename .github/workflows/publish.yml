@@ -77,6 +77,10 @@ jobs:
 
       - name: Summary
         run: |
-          echo "## Published @localsummer/incspec@${{ steps.version.outputs.version }}" >> "$GITHUB_SUMMARY"
-          echo "" >> "$GITHUB_SUMMARY"
-          echo "View on npm: https://www.npmjs.com/package/@localsummer/incspec" >> "$GITHUB_SUMMARY"
+          if [ -n "$GITHUB_STEP_SUMMARY" ]; then
+            echo "## Published @localsummer/incspec@${{ steps.version.outputs.version }}" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "View on npm: https://www.npmjs.com/package/@localsummer/incspec" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "Published @localsummer/incspec@${{ steps.version.outputs.version }}"
+          echo "View on npm: https://www.npmjs.com/package/@localsummer/incspec"
