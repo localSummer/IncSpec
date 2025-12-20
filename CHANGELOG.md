@@ -7,6 +7,14 @@
 
 ## [Unreleased]
 
+## [0.0.4] - 2024-12-20
+
+### Added
+
+- 发布时同时推送到 GitHub Packages
+- 自动创建 GitHub Release，包含从 CHANGELOG 提取的更新说明
+- Release 页面展示安装命令和相关链接
+
 ## [0.0.3] - 2024-12-20
 
 ### Fixed
@@ -49,7 +57,8 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
-[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.3...HEAD
+[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.4...HEAD
+[0.0.4]: https://github.com/localSummer/IncSpec/compare/v0.0.3...v0.0.4
 [0.0.3]: https://github.com/localSummer/IncSpec/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/localSummer/IncSpec/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/localSummer/IncSpec/releases/tag/v0.0.1

@@ -22,13 +22,14 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
+      packages: write
       id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js for npm
         uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -75,12 +76,71 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      # 发布到 GitHub Packages
+      - name: Setup Node.js for GitHub Packages
+        if: github.event.inputs.dry_run != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@localsummer'
+
+      - name: Publish to GitHub Packages
+        if: github.event.inputs.dry_run != 'true'
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 创建 GitHub Release
+      - name: Generate Release Notes
+        if: github.event.inputs.dry_run != 'true' && github.ref_type == 'tag'
+        id: release_notes
+        run: |
+          # 从 CHANGELOG.md 提取当前版本的更新内容
+          VERSION="${{ steps.version.outputs.version }}"
+          NOTES=$(awk "/## \[${VERSION}\]/{flag=1; next} /## \[/{flag=0} flag" CHANGELOG.md)
+          if [ -z "$NOTES" ]; then
+            NOTES="Release v${VERSION}"
+          fi
+          # 使用 delimiter 方式处理多行内容
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        if: github.event.inputs.dry_run != 'true' && github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          body: |
+            ## What's Changed
+
+            ${{ steps.release_notes.outputs.notes }}
+
+            ## Installation
+
+            ```bash
+            npm install -g @localsummer/incspec@${{ steps.version.outputs.version }}
+            ```
+
+            ## Links
+
+            - [npm package](https://www.npmjs.com/package/@localsummer/incspec)
+            - [GitHub Packages](https://github.com/localSummer/IncSpec/pkgs/npm/incspec)
+            - [Full Changelog](https://github.com/localSummer/IncSpec/blob/main/CHANGELOG.md)
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Summary
         run: |
           if [ -n "$GITHUB_STEP_SUMMARY" ]; then
             echo "## Published @localsummer/incspec@${{ steps.version.outputs.version }}" >> "$GITHUB_STEP_SUMMARY"
             echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo "View on npm: https://www.npmjs.com/package/@localsummer/incspec" >> "$GITHUB_STEP_SUMMARY"
+            echo "- [npm](https://www.npmjs.com/package/@localsummer/incspec)" >> "$GITHUB_STEP_SUMMARY"
+            echo "- [GitHub Packages](https://github.com/localSummer/IncSpec/pkgs/npm/incspec)" >> "$GITHUB_STEP_SUMMARY"
+            echo "- [GitHub Release](https://github.com/localSummer/IncSpec/releases/tag/v${{ steps.version.outputs.version }})" >> "$GITHUB_STEP_SUMMARY"
           fi
           echo "Published @localsummer/incspec@${{ steps.version.outputs.version }}"
-          echo "View on npm: https://www.npmjs.com/package/@localsummer/incspec"
