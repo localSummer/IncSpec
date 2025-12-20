@@ -3,7 +3,8 @@
 </p>
 <p align="center">面向 AI 编程助手的增量规范驱动开发工具</p>
 <p align="center">
-  <a href="https://nodejs.org/"><img alt="node version" src="https://img.shields.io/node/v/@anthropic-ai/claude-code?style=flat-square" /></a>
+  <a href="https://github.com/localSummer/IncSpec"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-localSummer%2FIncSpec-blue?style=flat-square&logo=github" /></a>
+  <a href="https://nodejs.org/"><img alt="node version" src="https://img.shields.io/node/v/@localsummer/incspec?style=flat-square" /></a>
   <a href="./LICENSE"><img alt="License: ISC" src="https://img.shields.io/badge/License-ISC-blue.svg?style=flat-square" /></a>
 </p>
 

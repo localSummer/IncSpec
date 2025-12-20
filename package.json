@@ -1,7 +1,7 @@
 {
   "name": "@localsummer/incspec",
   "version": "1.0.0",
-  "description": "CLI tool for incremental spec-driven development workflow",
+  "description": "面向 AI 编程助手的增量规范驱动开发工具",
   "bin": {
     "incspec": "index.mjs"
   },
@@ -18,8 +18,16 @@
     "workflow",
     "ai"
   ],
-  "author": "wangxingwen",
+  "author": "localSummer",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/localSummer/IncSpec.git"
+  },
+  "homepage": "https://github.com/localSummer/IncSpec#readme",
+  "bugs": {
+    "url": "https://github.com/localSummer/IncSpec/issues"
+  },
   "engines": {
     "node": ">=18.0.0"
   },
