@@ -100,12 +100,12 @@ AI 编程助手在处理复杂前端代码库时常常力不从心，因为 API 
 <details>
 <summary><strong>原生斜杠命令</strong>（点击展开）</summary>
 
-运行 `incspec cursor-sync` 后，这些工具可使用内置的 incspec 命令。
+运行 `incspec sync` 后，这些工具可使用内置的 incspec 命令。
 
 | 工具 | 命令 |
 |------|------|
 | **Cursor** | `/incspec/inc-analyze`、`/incspec/inc-collect-req`、`/incspec/inc-collect-dep`、`/incspec/inc-design`、`/incspec/inc-apply`、`/incspec/inc-merge`、`/incspec/inc-archive` |
-| **Claude Code** | 使用 AGENTS.md 工作流指令 |
+| **Claude Code** | 使用 `inc-spec-skill` Skill |
 
 </details>
 
@@ -159,16 +159,20 @@ incspec init
 - 生成包含工作流指令的 `AGENTS.md`
 - 在 `incspec/project.md` 中设置项目配置
 
-#### 步骤 3：同步 Cursor 命令（可选）
+#### 步骤 3：同步 IDE 集成（可选）
 
-如果使用 Cursor IDE：
+同步到 Cursor 或 Claude Code：
 ```bash
-incspec cursor-sync
+incspec sync              # 交互式选择
+incspec sync --cursor     # 仅 Cursor
+incspec sync --claude     # 仅 Claude Code
+incspec sync --all        # 全部
 ```
 
 **设置完成后：**
 - 运行 `incspec status` 验证设置
 - Cursor 用户可直接触发 `/incspec/inc-*` 命令
+- Claude Code 用户可使用 `inc-spec-skill` Skill
 
 ### 创建你的第一个增量
 
@@ -501,7 +505,7 @@ incspec archive -y             # 跳过确认提示
 | `status` | `st` | 状态 |
 | `list` | `ls` | 列表 |
 | `validate` | `v` | 验证 |
-| `cursor-sync` | `cs` | 同步 |
+| `sync` | `s` | 同步 |
 | `update` | `up` | 更新 |
 | `help` | `h` | 帮助 |
 

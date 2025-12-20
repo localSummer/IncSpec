@@ -7,6 +7,24 @@
 
 ## [Unreleased]
 
+### Added
+
+- 新增 `sync` 命令，统一同步 IDE/AI 工具集成
+  - 支持交互式多选 (Cursor, Claude Code)
+  - 支持命令行参数 `--cursor`、`--claude`、`--all`
+  - 支持 `--project` 和 `--global` 指定目标目录
+- 新增 `lib/claude.mjs` 模块，实现 Claude Code Skill 同步
+- 新增 `checkbox()` 多选交互组件
+
+### Changed
+
+- `sync --project` 现在使用当前工作目录而非查找 incspec 项目根目录
+- 交互式选择目录时，当前目录选项显示在全局目录之前
+
+### Removed
+
+- 移除 `cursor-sync` 命令，功能已整合到 `sync` 命令
+
 ## [0.0.6] - 2025-12-20
 
 ### Changed

@@ -44,12 +44,14 @@ index.mjs                 # CLI 入口，参数解析和命令路由
 │   ├── spec.mjs          # 规范文件 CRUD，版本管理，归档
 │   ├── terminal.mjs      # 终端输出，颜色，交互式提示
 │   ├── agents.mjs        # AGENTS.md 文件管理
-│   └── cursor.mjs        # Cursor IDE 命令同步
+│   ├── cursor.mjs        # Cursor IDE 命令同步
+│   └── claude.mjs        # Claude Code Skill 同步
 └── templates/            # Markdown 模板文件
     ├── AGENTS.md
     ├── WORKFLOW.md
     ├── project.md
-    └── cursor-commands/  # Cursor 斜杠命令模板
+    ├── cursor-commands/  # Cursor 斜杠命令模板
+    └── inc-spec-skill/   # Claude Code Skill 模板
 ```
 
 ## Key Patterns
@@ -95,6 +97,6 @@ index.mjs                 # CLI 入口，参数解析和命令路由
 | status | st |
 | list | ls |
 | validate | v |
-| cursor-sync | cs |
+| sync | s |
 | update | up |
 | help | h |

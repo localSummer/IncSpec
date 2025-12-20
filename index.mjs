@@ -17,7 +17,7 @@ import { mergeCommand } from './commands/merge.mjs';
 import { listCommand } from './commands/list.mjs';
 import { validateCommand } from './commands/validate.mjs';
 import { archiveCommand } from './commands/archive.mjs';
-import { cursorSyncCommand } from './commands/cursor-sync.mjs';
+import { syncCommand } from './commands/sync.mjs';
 import { helpCommand } from './commands/help.mjs';
 import { colors, colorize } from './lib/terminal.mjs';
 
@@ -203,10 +203,10 @@ async function main() {
         await archiveCommand(commandContext);
         break;
 
-      // Cursor integration
-      case 'cursor-sync':
-      case 'cs':
-        await cursorSyncCommand(commandContext);
+      // Sync integrations
+      case 'sync':
+      case 's':
+        await syncCommand(commandContext);
         break;
 
       // Help

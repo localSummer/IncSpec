@@ -117,11 +117,14 @@ const COMMANDS = {
       ['-y, --yes', '跳过确认提示'],
     ],
   },
-  'cursor-sync': {
-    usage: 'incspec cursor-sync [--project|--global]',
-    aliases: ['cs'],
-    description: '同步 Cursor slash commands',
+  sync: {
+    usage: 'incspec sync [--cursor] [--claude] [--all] [--project|--global]',
+    aliases: ['s'],
+    description: '同步集成到 IDE/AI 工具 (Cursor, Claude Code)',
     options: [
+      ['--cursor', '仅同步 Cursor 命令'],
+      ['--claude', '仅同步 Claude Code Skill'],
+      ['--all', '同步所有目标'],
       ['--project', '同步到项目目录'],
       ['--global', '同步到全局目录'],
     ],
@@ -158,7 +161,7 @@ export async function helpCommand(ctx = {}) {
  * Show general help
  */
 function showGeneralHelp() {
-  print(colorize('  incspec - 增量规范驱动开发工具', colors.bold, colors.cyan));
+  print(colorize('  IncSpec - 增量规范驱动开发工具', colors.bold, colors.cyan));
   print(colorize('  ────────────────────────────', colors.dim));
   print('');
   print(colorize('用法:', colors.bold));
@@ -167,7 +170,7 @@ function showGeneralHelp() {
 
   print(colorize('工作流命令:', colors.bold));
   print('');
-  
+
   const workflowCommands = ['analyze', 'collect-req', 'collect-dep', 'design', 'apply', 'merge'];
   workflowCommands.forEach((cmd, index) => {
     const def = COMMANDS[cmd];
@@ -180,7 +183,7 @@ function showGeneralHelp() {
   print(colorize('管理命令:', colors.bold));
   print('');
 
-  const mgmtCommands = ['init', 'update', 'status', 'list', 'validate', 'archive', 'cursor-sync', 'help'];
+  const mgmtCommands = ['init', 'update', 'status', 'list', 'validate', 'archive', 'sync', 'help'];
   mgmtCommands.forEach(cmd => {
     const def = COMMANDS[cmd];
     const aliases = def.aliases ? colorize(` (${def.aliases.join(', ')})`, colors.dim) : '';
@@ -198,7 +201,7 @@ function showGeneralHelp() {
   print(colorize('  incspec update                  # 更新模板文件', colors.dim));
   print(colorize('  incspec analyze src/views/Home  # 分析代码流程', colors.dim));
   print(colorize('  incspec status                  # 查看工作流状态', colors.dim));
-  print(colorize('  incspec cursor-sync             # 同步 Cursor 命令', colors.dim));
+  print(colorize('  incspec sync                    # 同步 IDE 集成', colors.dim));
   print('');
   print(colorize(`运行 'incspec help <command>' 查看命令详情。`, colors.dim));
   print('');

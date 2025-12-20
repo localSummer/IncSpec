@@ -234,9 +234,12 @@ incspec archive <file>          # 归档指定文件
 incspec archive <file> --keep   # 复制而非移动
 
 # IDE 集成
-incspec cursor-sync             # 同步 Cursor 斜杠命令
-incspec cursor-sync --project   # 同步到项目目录
-incspec cursor-sync --global    # 同步到全局目录
+incspec sync                    # 交互式选择同步目标
+incspec sync --cursor           # 同步 Cursor 斜杠命令
+incspec sync --claude           # 同步 Claude Code Skill
+incspec sync --all              # 同步全部
+incspec sync --global           # 同步到全局目录
+incspec sync --project          # 同步到项目目录
 
 # 帮助
 incspec help [command]          # 显示帮助
@@ -245,7 +248,7 @@ incspec --version / -v          # 显示版本
 
 ### Cursor 斜杠命令
 
-运行 `incspec cursor-sync` 后,以下命令可用:
+运行 `incspec sync --cursor` 后,以下命令可用:
 
 | 命令 | 步骤 | 描述 |
 |------|------|------|
@@ -585,7 +588,7 @@ incspec status
 incspec status              # 我在哪里?
 incspec list               # 有什么?
 incspec validate --strict  # 是否正确?
-incspec cursor-sync        # 设置IDE命令
+incspec sync               # 设置IDE命令
 ```
 
 ## 与AI助手集成
