@@ -18,6 +18,22 @@ incspec analyze <source_path> --module=<module> --workflow=analyze-<module>
 incspec analyze <source_path> --module=<module> --workflow=analyze-<module> --complete --output=<output-file>
 ```
 
+**使用现有基准报告** (跳过分析):
+
+若已有基准报告文件，可直接使用:
+
+```bash
+incspec analyze --baseline=<baseline-file> [--module=<module>] [--workflow=<workflow>]
+```
+
+说明:
+- `<baseline-file>` 文件名，自动搜索 baselines/ 和 archives/ 目录
+- 若文件在归档目录，自动移动到 baselines/ 目录
+- `<module>` 默认从文件名推断 (xxx-baseline-vN.md -> xxx)
+- `<workflow>` 默认为 analyze-<module>
+
+---
+
 说明:
 - `<module>` 默认为 source_path 最后一级目录名，若用户显式指定模块名则使用该值
 - `<output-file>` 必须与最终写入的文件名一致

@@ -3,6 +3,7 @@
  */
 
 import * as path from 'path';
+import * as fs from 'fs';
 import {
   ensureInitialized,
   INCSPEC_DIR,
@@ -33,6 +34,49 @@ import {
 const STEP_NUMBER = 1;
 
 /**
+ * Search for a file in the archives directory
+ * @param {string} projectRoot - Project root path
+ * @param {string} fileName - File name to search
+ * @returns {string|null} - Full path if found, null otherwise
+ */
+function findInArchives(projectRoot, fileName) {
+  const archivesDir = path.join(projectRoot, INCSPEC_DIR, DIRS.archives);
+  if (!fs.existsSync(archivesDir)) {
+    return null;
+  }
+
+  // Recursive search: archives/ -> YYYY-MM/ -> [module/] -> files
+  const monthDirs = fs.readdirSync(archivesDir, { withFileTypes: true })
+    .filter(d => d.isDirectory())
+    .map(d => d.name)
+    .sort()
+    .reverse(); // Prioritize recent months
+
+  for (const month of monthDirs) {
+    const monthPath = path.join(archivesDir, month);
+
+    // Check files directly in month directory
+    const directPath = path.join(monthPath, fileName);
+    if (fs.existsSync(directPath)) {
+      return directPath;
+    }
+
+    // Check module subdirectories
+    const subDirs = fs.readdirSync(monthPath, { withFileTypes: true })
+      .filter(d => d.isDirectory());
+
+    for (const subDir of subDirs) {
+      const subPath = path.join(monthPath, subDir.name, fileName);
+      if (fs.existsSync(subPath)) {
+        return subPath;
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
  * Execute analyze command
  * @param {Object} ctx - Command context
  */
@@ -41,6 +85,57 @@ export async function analyzeCommand(ctx) {
 
   // Ensure initialized
   const projectRoot = ensureInitialized(cwd);
+
+  // Handle --baseline option: use existing baseline report
+  if (options.baseline) {
+    const baselineFile = typeof options.baseline === 'string' ? options.baseline : '';
+    if (!baselineFile) {
+      printError('请指定基准报告文件名');
+      process.exit(1);
+    }
+
+    const baselinesDir = path.join(projectRoot, INCSPEC_DIR, DIRS.baselines);
+    const baselinePath = path.join(baselinesDir, baselineFile);
+    let fromArchive = false;
+
+    // 1. First check baselines directory
+    if (!fs.existsSync(baselinePath)) {
+      // 2. Search in archives directory
+      const archivePath = findInArchives(projectRoot, baselineFile);
+      if (!archivePath) {
+        printError(`基准文件不存在: ${baselineFile}`);
+        printInfo('已搜索 baselines/ 和 archives/ 目录');
+        process.exit(1);
+      }
+
+      // 3. Move to baselines directory
+      fs.renameSync(archivePath, baselinePath);
+      fromArchive = true;
+      printInfo(`已从归档恢复: ${path.relative(projectRoot, archivePath)}`);
+    }
+
+    // Infer module name from filename (xxx-baseline-vN.md -> xxx)
+    let moduleName = typeof options.module === 'string' ? options.module : '';
+    if (!moduleName) {
+      const match = baselineFile.match(/^(.+)-baseline-v\d+\.md$/);
+      moduleName = match ? match[1] : path.basename(baselineFile, '.md');
+    }
+
+    // Handle workflow state
+    let workflow = readWorkflow(projectRoot);
+    if (!workflow?.currentWorkflow) {
+      const workflowName = typeof options.workflow === 'string' ? options.workflow : `analyze-${moduleName}`;
+      workflow = startWorkflow(projectRoot, workflowName);
+      printSuccess(`已创建新工作流: ${workflowName}`);
+    }
+
+    // Mark step as completed
+    updateStep(projectRoot, STEP_NUMBER, STATUS.COMPLETED, baselineFile);
+    print('');
+    printSuccess(`已使用现有基准报告: ${baselineFile}`);
+    printInfo(`运行 'incspec status' 查看进度`);
+    return;
+  }
 
   // Get source path
   let sourcePath = args[0];

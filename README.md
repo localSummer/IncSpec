@@ -91,6 +91,8 @@ AI 编程助手在处理复杂前端代码库时常常力不从心，因为 API 
               └───────────┘
 ```
 
+> **提示**: 如果已有基准报告，可使用 `incspec analyze --baseline=<file>` 直接跳过分析步骤，快速进入后续工作流。
+
 ## 快速开始
 
 ### 支持的 AI 工具
@@ -190,6 +192,17 @@ AI：我来分析 Home 组件的代码流程。
 $ incspec status                              # 检查当前工作流状态
 $ incspec analyze src/views/Home --complete   # 标记步骤 1 完成
 ```
+
+**使用现有基准报告** (跳过分析):
+
+如果已有基准报告文件，可直接使用，跳过分析步骤：
+```bash
+$ incspec analyze --baseline=home-baseline-v1.md   # 直接使用现有基准报告
+```
+- 自动搜索 `baselines/` 和 `archives/` 目录
+- 若文件在归档目录，自动移动到 `baselines/` 目录
+- 模块名自动从文件名推断 (`xxx-baseline-vN.md` -> `xxx`)
+- 可通过 `--module` 覆盖模块名
 
 #### 2. 收集结构化需求
 
@@ -427,6 +440,7 @@ incspec help <command>    # 显示特定命令帮助
 incspec analyze <source-path> [--module=name]   # 别名：a
 incspec a src/views/Home --module=home
 incspec analyze src/views/Home --complete -o baselines/home-baseline-v1.md
+incspec analyze --baseline=home-baseline-v1.md  # 使用现有基准(自动从归档恢复)
 
 # 步骤 2：收集结构化需求
 incspec collect-req                             # 别名：cr

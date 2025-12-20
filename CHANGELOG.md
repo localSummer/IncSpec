@@ -7,6 +7,17 @@
 
 ## [Unreleased]
 
+## [0.0.5] - 2024-12-20
+
+### Added
+
+- `analyze` 命令新增 `--baseline` 选项，支持使用现有基准报告跳过分析步骤
+- 自动从归档目录恢复基准报告：搜索 `baselines/` 和 `archives/` 目录，找到后自动移动到工作区
+
+### Changed
+
+- 更新帮助文档和模板，说明 `--baseline` 选项的使用方式
+
 ## [0.0.4] - 2024-12-20
 
 ### Added
@@ -57,7 +68,8 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
-[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.4...HEAD
+[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.5...HEAD
+[0.0.5]: https://github.com/localSummer/IncSpec/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/localSummer/IncSpec/compare/v0.0.3...v0.0.4
 [0.0.3]: https://github.com/localSummer/IncSpec/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/localSummer/IncSpec/compare/v0.0.1...v0.0.2

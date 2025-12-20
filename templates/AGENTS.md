@@ -41,9 +41,12 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 
 ### 步骤 1: 分析代码工作流
 
-**命令**: `incspec analyze <source-path> [--module=name]`
+**命令**: `incspec analyze <source-path> [--module=name] [--baseline=file]`
 
 **目的**: 生成包含 API 调用时序图和依赖关系图的基线快照。
+
+**选项**:
+- `--baseline=<file>`: 使用现有基准报告，自动从 baselines/ 或 archives/ 目录恢复
 
 **输出**: `incspec/baselines/{module}-baseline-v{n}.md`
 
@@ -215,7 +218,7 @@ incspec list -l                 # 长格式(含时间戳)
 incspec list -a                 # 包含归档
 
 # 6步工作流
-incspec analyze <path> [--module=name]    # 步骤1: 基线分析
+incspec analyze <path> [--module=name] [--baseline=file]  # 步骤1: 基线分析
 incspec collect-req / cr                  # 步骤2: 需求收集
 incspec collect-dep / cd                  # 步骤3: 依赖收集
 incspec design [--feature=name] / d       # 步骤4: 增量设计
