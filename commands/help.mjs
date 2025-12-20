@@ -111,7 +111,7 @@ const COMMANDS = {
   archive: {
     usage: 'incspec archive [file-path] [--workflow] [-k|--keep] [-y|--yes]',
     aliases: ['ar'],
-    description: '归档规范文件 (默认归档当前工作流产出)',
+    description: '步骤7: 归档工作流产出 (或指定文件)',
     options: [
       ['--workflow', '归档当前工作流全部产出文件'],
       ['-k, --keep', '复制而非移动'],

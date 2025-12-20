@@ -10,7 +10,7 @@ import {
   DIRS,
 } from '../lib/config.mjs';
 import { archiveSpec, getSpecInfo } from '../lib/spec.mjs';
-import { archiveWorkflow, readWorkflow, STATUS, isQuickMode, MODE } from '../lib/workflow.mjs';
+import { archiveWorkflow, readWorkflow, updateStep, STATUS, isQuickMode, MODE } from '../lib/workflow.mjs';
 import {
   colors,
   colorize,
@@ -278,6 +278,9 @@ export async function archiveCommand(ctx) {
         const archivePath = archiveSpec(projectRoot, target.path, !keepOriginal, workflowModule);
         printSuccess(`文件已${keepOriginal ? '复制' : '移动'}到: ${archivePath}`);
       }
+
+      // Mark step 7 as completed
+      updateStep(projectRoot, 7, STATUS.COMPLETED);
 
       const refreshed = readWorkflow(projectRoot);
       if (refreshed?.currentWorkflow && shouldArchiveWorkflow(projectRoot, refreshed)) {

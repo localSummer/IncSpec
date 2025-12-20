@@ -99,7 +99,7 @@
 ### Added
 
 - 初始版本发布
-- 6+1 步增量开发工作流
+- 7 步增量开发工作流
   - `analyze` - 代码流程分析，生成基线快照
   - `collect-req` - 结构化需求收集（5 列表格）
   - `collect-dep` - UI 依赖采集（API、Store、Types、Utils、Components、Hooks）

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-IncSpec 是一个面向 AI 编程助手的增量规范驱动开发 CLI 工具。通过 6+1 步工作流（分析 → 收集需求 → 收集依赖 → 设计 → 应用 → 合并 → 归档），在修改代码前先捕获代码流程基线。
+IncSpec 是一个面向 AI 编程助手的增量规范驱动开发 CLI 工具。通过 7 步工作流（分析 → 收集需求 → 收集依赖 → 设计 → 应用 → 合并 → 归档），在修改代码前先捕获代码流程基线。
 
 ## Development Commands
 
@@ -65,7 +65,7 @@ index.mjs                 # CLI 入口，参数解析和命令路由
 
 ### 工作流状态
 
-`lib/workflow.mjs` 管理 6 步工作流状态:
+`lib/workflow.mjs` 管理工作流状态（STEPS 数组定义步骤 1-6，归档为独立的第 7 步）:
 - `STEPS` 数组定义步骤 id、name、label、command
 - `STATUS` 枚举: PENDING / IN_PROGRESS / COMPLETED
 - `updateStep()` 更新步骤状态并自动推进 currentStep
