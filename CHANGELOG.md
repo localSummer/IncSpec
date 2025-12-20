@@ -5,6 +5,14 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.0.9] - 2025-12-21
+
+### Changed
+
+- 精简 AGENTS.md 工作流指南，减少约 900 行冗余内容
+- 优化快速模式下需求收集完成后的提示信息，明确需要人工确认后再执行 apply
+- 增量工作流文档新增人工审查步骤说明，强调审批门禁的重要性
+
 ## [0.0.8] - 2025-12-21
 
 ### Added
@@ -126,7 +134,8 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
-[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.8...HEAD
+[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.9...HEAD
+[0.0.9]: https://github.com/localSummer/IncSpec/compare/v0.0.8...v0.0.9
 [0.0.8]: https://github.com/localSummer/IncSpec/compare/v0.0.7...v0.0.8
 [0.0.7]: https://github.com/localSummer/IncSpec/compare/v0.0.6...v0.0.7
 [0.0.6]: https://github.com/localSummer/IncSpec/compare/v0.0.5...v0.0.6
