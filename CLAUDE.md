@@ -9,7 +9,9 @@ IncSpec 是一个面向 AI 编程助手的增量规范驱动开发 CLI 工具。
 ## Development Commands
 
 ```bash
-# 安装（开发模式）
+# 从 GitHub 克隆并安装
+git clone https://github.com/localSummer/IncSpec.git
+cd IncSpec
 npm link
 
 # 运行 CLI

@@ -124,8 +124,9 @@ AI 编程助手在处理复杂前端代码库时常常力不从心，因为 API 
 #### 步骤 1：安装 CLI
 
 ```bash
-# 从源码安装（开发模式）
-cd ~/.claude/clis/incspec-cli # 这是我当前的路径，请根据实际路径调整
+# 从 GitHub 克隆并安装
+git clone https://github.com/localSummer/IncSpec.git
+cd IncSpec
 npm link
 ```
 
@@ -520,7 +521,7 @@ incspec archive -y             # 跳过确认提示
 
 1. **拉取最新变更**
    ```bash
-   cd ~/.claude/clis/incspec-cli
+   cd /path/to/IncSpec  # 进入之前克隆的目录
    git pull
    npm link
    ```
