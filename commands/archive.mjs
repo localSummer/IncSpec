@@ -21,9 +21,11 @@ import {
   confirm,
 } from '../lib/terminal.mjs';
 
-// Full mode: steps 1, 2, 3, 4, 6 (0-based: 0, 1, 2, 3, 5)
+// Full mode: archivable steps are 1, 2, 3, 4, 6 (0-based: 0, 1, 2, 3, 5)
+// Note: Step 5 (apply) has no file output, Step 7 (archive) is this command itself
 const FULL_MODE_ARCHIVABLE_INDEXES = [0, 1, 2, 3, 5];
-// Quick mode: steps 1, 2, 6 (0-based: 0, 1, 5)
+// Quick mode: archivable steps are 1, 2, 6 (0-based: 0, 1, 5)
+// Note: Steps 3, 4 are skipped in quick mode
 const QUICK_MODE_ARCHIVABLE_INDEXES = [0, 1, 5];
 
 /**

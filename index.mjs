@@ -156,7 +156,7 @@ async function main() {
         await statusCommand(commandContext);
         break;
 
-      // Workflow commands (Step 1-6)
+      // Workflow commands (Step 1-6, Step 7 archive is separate)
       case 'analyze':
       case 'a':
         await analyzeCommand(commandContext);
