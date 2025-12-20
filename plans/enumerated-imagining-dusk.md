@@ -2,11 +2,11 @@
 
 ## 概述
 
-为 IncSpec CLI 添加"快速模式"（3步流程），允许在简单任务中跳过 UI 依赖采集和增量设计步骤。
+为 IncSpec CLI 添加"快速模式"（5步流程），允许在简单任务中跳过 UI 依赖采集和增量设计步骤。
 
 ### 流程对比
 
-| 步骤 | 完整模式 (6步) | 快速模式 (3步) |
+| 步骤 | 完整模式 (7步) | 快速模式 (5步) |
 |------|---------------|---------------|
 | 1. analyze | 执行 | 执行 |
 | 2. collect-req | 执行 | 执行 |
@@ -151,14 +151,14 @@ export const QUICK_MODE_SKIPPED = [3, 4];
 # 启动快速模式
 $ incspec analyze src/views/Home --quick
 
-  已创建新工作流: analyze-Home (快速模式: 3步)
+  已创建新工作流: analyze-Home (快速模式: 5步)
   快速模式流程: 分析 -> 需求收集 -> 应用代码 -> 合并基线
 
 # 查看状态
 $ incspec status
 
   当前工作流: analyze-Home
-  工作流模式: 快速模式 (3步)
+  工作流模式: 快速模式 (5步)
 
   步骤进度:
     [x] 1. 代码流程分析        -> Home-baseline-v1.md
@@ -291,7 +291,7 @@ incspec merge --complete --output=<output-file>
 ```markdown
 ## 快速开始
 
-**完整模式 (6步):**
+**完整模式 (7步):**
 ```
 1. 分析现有代码    → incspec analyze <path>
 2. 收集需求        → incspec collect-req
@@ -302,7 +302,7 @@ incspec merge --complete --output=<output-file>
 7. 归档工作流      → incspec archive --yes
 ```
 
-**快速模式 (3步):**
+**快速模式 (5步):**
 ```
 1. 分析现有代码    → incspec analyze <path> --quick
 2. 收集需求        → incspec collect-req
@@ -313,7 +313,7 @@ incspec merge --complete --output=<output-file>
 
 ## 工作流概览
 
-### 完整模式 (6步)
+### 完整模式 (7步)
 适用于复杂功能开发，需要完整的 UI 依赖分析和增量设计。
 
 | 步骤 | 目的 | 产出 |
@@ -325,7 +325,7 @@ incspec merge --complete --output=<output-file>
 | 5. 代码应用 | 按蓝图创建/修改文件 | 更新后的代码库 |
 | 6. 基线合并 | 将增量转换为干净基线 | 新基线 |
 
-### 快速模式 (3步)
+### 快速模式 (5步)
 适用于简单功能或不涉及复杂 UI 依赖的变更。
 
 | 步骤 | 目的 | 产出 |
@@ -354,15 +354,15 @@ incspec merge --complete --output=<output-file>
 ```markdown
 ## 快速检查清单
 
-**完整模式 (6步):**
+**完整模式 (7步):**
 - 按顺序执行: analyze → collect-req → collect-dep → design → apply → merge
 
-**快速模式 (3步):**
+**快速模式 (5步):**
 - 启动: `incspec analyze <path> --quick`
 - 按顺序执行: analyze → collect-req → apply → merge
 - 跳过步骤 3 (UI依赖) 和步骤 4 (增量设计)
 
-## 六步工作流
+## 七步工作流
 
 ### 概览
 
@@ -371,7 +371,7 @@ incspec merge --complete --output=<output-file>
 │                      IncSpec 工作流模式                                  │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│   完整模式 (6步):                                                       │
+│   完整模式 (7步):                                                       │
 │   ┌──────────┐    ┌──────────┐    ┌──────────┐                         │
 │   │ 步骤 1   │    │ 步骤 2   │    │ 步骤 3   │                         │
 │   │ 分析     │───▶│ 收集     │───▶│ 收集     │                         │
@@ -385,7 +385,7 @@ incspec merge --complete --output=<output-file>
 │   │ 基线     │    │ 代码     │    │ 增量     │                         │
 │   └──────────┘    └──────────┘    └──────────┘                         │
 │                                                                         │
-│   快速模式 (3步):                                                       │
+│   快速模式 (5步):                                                       │
 │   ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐         │
 │   │ 步骤 1   │    │ 步骤 2   │    │ 步骤 5   │    │ 步骤 6   │         │
 │   │ 分析     │───▶│ 收集     │───▶│ 应用     │───▶│ 合并到   │         │
@@ -401,7 +401,7 @@ incspec merge --complete --output=<output-file>
 **命令**: `incspec analyze <source-path> [--module=name] [--quick] [--baseline=file]`
 
 **选项**:
-- `--quick`: 启动快速模式 (3步流程)
+- `--quick`: 启动快速模式 (5步流程)
 - `--baseline=<file>`: 使用现有基准报告
 ```
 

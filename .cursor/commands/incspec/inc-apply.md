@@ -12,7 +12,7 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 incspec status
 ```
 
-### 完整模式 (6步)
+### 完整模式 (7步)
 
 开始执行前，先用 Bash 执行:
 
@@ -30,7 +30,7 @@ incspec apply <increment-report-path> [--source-dir=<source-code-dir>] --complet
 - 若未提供 `source-code-dir`，省略 `--source-dir`
 - 若提示没有活跃工作流，请先完成步骤 1-4
 
-### 快速模式 (3步)
+### 快速模式 (5步)
 
 快速模式下，输入文件为需求文档（而非增量设计文件）：
 

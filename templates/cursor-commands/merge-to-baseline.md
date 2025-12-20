@@ -12,7 +12,7 @@ allowed-tools: Read, Write, Bash
 incspec status
 ```
 
-### 完整模式 (6步)
+### 完整模式 (7步)
 
 开始执行前，先用 Bash 执行:
 
@@ -30,7 +30,7 @@ incspec merge <increment-report-path> --complete --output=<output-file>
 - `<output-file>` 必须与最终写入的文件名一致
 - 若提示没有活跃工作流，请先完成步骤 1-5
 
-### 快速模式 (3步)
+### 快速模式 (5步)
 
 快速模式下，不依赖增量设计报告，直接重新分析当前代码生成新基线：
 

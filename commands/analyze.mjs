@@ -128,7 +128,7 @@ export async function analyzeCommand(ctx) {
     if (!workflow?.currentWorkflow) {
       const workflowName = typeof options.workflow === 'string' ? options.workflow : `analyze-${moduleName}`;
       workflow = startWorkflow(projectRoot, workflowName, { mode: isQuick ? MODE.QUICK : MODE.FULL });
-      const modeLabel = isQuick ? '(快速模式: 3步)' : '';
+      const modeLabel = isQuick ? '(快速模式: 5步)' : '';
       printSuccess(`已创建新工作流: ${workflowName} ${modeLabel}`);
     }
 
@@ -164,7 +164,7 @@ export async function analyzeCommand(ctx) {
       workflowName = await prompt(`请输入工作流名称 ${modeHint}`, `analyze-${moduleName}`);
     }
     workflow = startWorkflow(projectRoot, workflowName, { mode: isQuick ? MODE.QUICK : MODE.FULL });
-    const modeLabel = isQuick ? '(快速模式: 3步)' : '';
+    const modeLabel = isQuick ? '(快速模式: 5步)' : '';
     printSuccess(`已创建新工作流: ${workflowName} ${modeLabel}`);
   } else if (isWorkflowIncomplete(workflow)) {
     // Current workflow is incomplete, ask for confirmation
@@ -173,9 +173,9 @@ export async function analyzeCommand(ctx) {
     printWarning(`当前工作流 "${workflow.currentWorkflow}" 未完成 (${progress.completed}/${progress.total})`);
     print(colorize(`  最后完成步骤: ${progress.lastCompletedStep || '无'}`, colors.dim));
     print('');
-    
+
     const shouldArchive = await confirm('是否归档当前工作流并开始新工作流?');
-    
+
     if (!shouldArchive) {
       printInfo('已取消。继续当前工作流。');
       print('');
@@ -186,7 +186,7 @@ export async function analyzeCommand(ctx) {
         workflowName = await prompt(`请输入新工作流名称 ${modeHint}`, `analyze-${moduleName}`);
       }
       workflow = startWorkflow(projectRoot, workflowName, { mode: isQuick ? MODE.QUICK : MODE.FULL });
-      const modeLabel = isQuick ? '(快速模式: 3步)' : '';
+      const modeLabel = isQuick ? '(快速模式: 5步)' : '';
       printSuccess(`已归档旧工作流，创建新工作流: ${workflowName} ${modeLabel}`);
     }
   }

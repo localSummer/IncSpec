@@ -53,7 +53,7 @@ export async function statusCommand(ctx) {
   // Current workflow
   if (workflow?.currentWorkflow) {
     const quickMode = isQuickMode(workflow);
-    const modeLabel = quickMode ? '快速模式 (3步)' : '完整模式 (6步)';
+    const modeLabel = quickMode ? '快速模式 (5步)' : '完整模式 (7步)';
 
     print(colorize(`当前工作流: `, colors.bold) + colorize(workflow.currentWorkflow, colors.cyan));
     print(colorize(`工作流模式: ${modeLabel}`, colors.dim));
@@ -130,8 +130,8 @@ export async function statusCommand(ctx) {
 
     const recentHistory = workflow.history.slice(0, 5);
     recentHistory.forEach(item => {
-      const statusIcon = item.status === 'completed' 
-        ? colorize('✓', colors.green) 
+      const statusIcon = item.status === 'completed'
+        ? colorize('✓', colors.green)
         : colorize('○', colors.dim);
       print(`  ${statusIcon} ${item.name} (${item.startTime || '-'})`);
     });

@@ -18,7 +18,7 @@ incspec analyze <source-path> --module=<module> --workflow=analyze-<module>
 incspec analyze <source-path> --module=<module> --workflow=analyze-<module> --complete --output=<output-file>
 ```
 
-**启动快速模式工作流** (3步流程):
+**启动快速模式工作流** (5步流程):
 
 ```bash
 incspec analyze <source-path> --module=<module> --quick

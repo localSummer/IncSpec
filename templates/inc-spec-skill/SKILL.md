@@ -16,7 +16,7 @@ description: 设计优先的前端功能增量编码工作流。适用于实现�
 
 ## 快速开始
 
-**完整模式 (6步):**
+**完整模式 (7步):**
 ```
 1. 分析现有代码    → incspec analyze <path>
 2. 收集需求        → incspec collect-req
@@ -27,7 +27,7 @@ description: 设计优先的前端功能增量编码工作流。适用于实现�
 7. 归档工作流      → incspec archive --yes
 ```
 
-**快速模式 (3步):**
+**快速模式 (5步):**
 ```
 1. 分析现有代码    → incspec analyze <path> --quick
 2. 收集需求        → incspec collect-req
@@ -38,9 +38,22 @@ description: 设计优先的前端功能增量编码工作流。适用于实现�
 
 首次使用前初始化: `incspec init`
 
+## 执行规则
+
+当用户请求满足以下条件时，**直接开始执行**，无需搜索确认:
+- 明确指定了模式（完整/快速）
+- 提供了目标路径或基线文件
+- 意图清晰无歧义
+
+**默认行为**:
+- 未指定模式时，默认使用完整模式
+- 提供 `--baseline=<file>` 时，跳过步骤1的代码分析，直接使用已有基线
+- 提供 `--quick` 时，启用快速模式流程
+- 选项可自由组合，Agent 应根据用户意图推断最优组合
+
 ## 工作流概览
 
-### 完整模式 (6步)
+### 完整模式 (7步)
 
 适用于复杂功能开发，需要完整的 UI 依赖分析和增量设计。
 
@@ -54,7 +67,7 @@ description: 设计优先的前端功能增量编码工作流。适用于实现�
 | 6. 基线合并 | 将增量转换为干净基线 | 新基线 |
 | 7. 归档 | 归档工作流产出到 `archives/YYYY-MM/` | 干净的工作区 |
 
-### 快速模式 (3步)
+### 快速模式 (5步)
 
 适用于简单功能或不涉及复杂 UI 依赖的变更。
 
@@ -76,7 +89,7 @@ description: 设计优先的前端功能增量编码工作流。适用于实现�
 
 | 步骤 | 开始 | 完成 |
 |------|------|------|
-| 分析 | `incspec analyze <path> --module=<m>` 或 `--baseline=<file>` 或 `--quick` | `--complete --output=<file>` |
+| 分析 | `incspec analyze <path> --module=<m>` 或 `--baseline=<file>` | `--complete --output=<file>` |
 | 需求 | `incspec collect-req` | `--complete` |
 | 依赖 | `incspec collect-dep` | `--complete` |
 | 设计 | `incspec design --feature=<f>` | `--complete --output=<file>` |
@@ -98,8 +111,8 @@ description: 设计优先的前端功能增量编码工作流。适用于实现�
 **命令:** `incspec analyze <path> [--module=<m>] [--quick] [--baseline=<file>]`
 
 **选项:**
-- `--quick`: 启动快速模式 (3步流程)
-- `--baseline=<file>`: 使用现有基准报告
+- `--quick`: 启用快速模式 (5步流程)
+- `--baseline=<file>`: 复用已有基线，跳过代码分析
 
 **输入:** 源代码目录路径 (如 `src/pages/dashboard`) 或现有基线文件 (`--baseline=<file>`)
 
