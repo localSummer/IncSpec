@@ -7,7 +7,18 @@
 
 ## [Unreleased]
 
-## [1.0.0] - 2024-12-20
+## [0.0.2] - 2024-12-20
+
+### Added
+
+- 添加 GitHub Actions 自动发布工作流
+- 支持 npm provenance 签名，增强供应链安全
+
+### Fixed
+
+- 修复 GitHub Actions 中 GITHUB_SUMMARY 变量引用问题
+
+## [0.0.1] - 2024-12-20
 
 ### Added
 
@@ -32,5 +43,6 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
-[Unreleased]: https://github.com/localSummer/IncSpec/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/localSummer/IncSpec/releases/tag/v1.0.0
+[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.2...HEAD
+[0.0.2]: https://github.com/localSummer/IncSpec/compare/v0.0.1...v0.0.2
+[0.0.1]: https://github.com/localSummer/IncSpec/releases/tag/v0.0.1
