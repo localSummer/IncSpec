@@ -7,11 +7,11 @@
   <a href="./LICENSE"><img alt="License: ISC" src="https://img.shields.io/badge/License-ISC-blue.svg?style=flat-square" /></a>
 </p>
 
-# incspec
+# IncSpec
 
-incspec 通过**增量规范驱动开发**让人类与 AI 编程助手保持一致 - 这是一个 6+1 步工作流（6 步开发 + 归档），在修改代码前先捕获代码流程基线。**无需 API 密钥。**
+IncSpec 通过**增量规范驱动开发**让人类与 AI 编程助手保持一致 - 这是一个 6+1 步工作流（6 步开发 + 归档），在修改代码前先捕获代码流程基线。**无需 API 密钥。**
 
-## 为什么选择 incspec?
+## 为什么选择 IncSpec?
 
 AI 编程助手在处理复杂前端代码库时常常力不从心，因为 API 调用、状态管理和组件依赖深度交织。incspec 添加了一个结构化分析工作流，在提出变更前先捕获当前状态，让你获得可预测、可审查的输出。
 
@@ -24,7 +24,7 @@ AI 编程助手在处理复杂前端代码库时常常力不从心，因为 API 
 - **历史可追溯**：归档按年月和模块组织，便于回顾历史决策。
 - 兼容你已有的 AI 工具：Cursor、Claude Code 及任何 AGENTS.md 兼容助手。
 
-## incspec 对比一览
+## IncSpec 对比一览
 
 - **前端专注**：专为 API 数据流程分析和组件依赖设计。
 - **6+1 步循环**：分析 → 收集需求 → 收集依赖 → 设计 → 应用 → 合并 → 归档。
@@ -133,7 +133,7 @@ npm link
 incspec --version
 ```
 
-#### 步骤 2：在项目中初始化 incspec
+#### 步骤 2：在项目中初始化 IncSpec
 
 进入项目目录：
 ```bash
@@ -486,7 +486,7 @@ incspec archive -y             # 跳过确认提示
 
 </details>
 
-## incspec 对比
+## IncSpec 对比
 
 ### vs. OpenSpec
 
@@ -515,7 +515,7 @@ incspec archive -y             # 跳过确认提示
 
 运行 `incspec update` 将模板和代理指令刷新到最新版本。
 
-## 更新 incspec
+## 更新 IncSpec
 
 1. **拉取最新变更**
    ```bash
