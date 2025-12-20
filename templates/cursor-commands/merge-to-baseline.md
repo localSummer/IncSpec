@@ -1,6 +1,6 @@
 ---
 description: 将增量需求报告融合为新的代码流基线快照
-argument-hint: <increment-report-path> [baseline-output-path]
+argument-hint: <increment-report-path> [baseline-output-dir]
 allowed-tools: Read, Write, Bash
 ---
 
@@ -38,7 +38,7 @@ incspec merge <increment-report-path> --complete --output=<output-file>
 # 输入参数
 
 1. **increment-report-path** (必填): 增量需求融合快照报告的完整路径（如 increment-codeflow-v2.md）
-2. **baseline-output-path** (可选): 新基线报告的输出路径，默认为 `<原文件名>-baseline.md`
+2. **baseline-output-dir** (可选): 新基线报告的输出路径，默认为 `<原文件名>-baseline.md`
 
 # 执行流程
 
@@ -202,7 +202,7 @@ D3_DEL (删除) -> 已移除
 - 新基线总节点: N 个
 
 📁 输出文件:
-  ✓ <baseline-output-path>
+  ✓ <baseline-output-dir>
 
 🔄 下一步操作:
 1. 检查新基线报告的完整性
@@ -268,7 +268,7 @@ D3_DEL (删除) -> 已移除
 
 ## 输出目录
 
-- **baseline-output-path**: 默认为 `incspec/baselines`
+- **baseline-output-dir**: 默认为 `incspec/baselines`
 - 如目录不存在,需主动创建
 
 ## 文件命名

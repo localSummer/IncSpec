@@ -1,6 +1,6 @@
 ---
 description: 基于现状、需求和依赖,生成增量需求的设计蓝图(时序、依赖、文件变更),指导代码生成
-argument-hint: [旧需求快照] [结构化需求] [UI依赖报告] [report-output-dir]
+argument-hint: [baseline-snapshot-path] [structured-requirements-path] [ui-dependencies-path] [report-output-dir]
 allowed-tools: Glob, Grep, Read, Write, Bash
 ---
 
@@ -31,9 +31,9 @@ incspec design --feature=<feature> --complete --output=<output-file>
 
 接收以下三份材料(由用户提供或从指定文件读取):
 
-1. **旧需求快照**(来自 `analyze-codeflow`): 包含 S1~Sxx 时序编号、Dxx 依赖节点、Rxx 关系总结
-2. **结构化需求描述**(来自 `structured-requirements-collection`): 包含新增/修改功能、触发条件、核心状态、数据流向的 5 列表格
-3. **UI依赖采集报告**(来自 `ui-dependency-collection`): 包含依赖类型、来源路径、变更类型的依赖详情表
+1. **baseline-snapshot-path** (来自 `analyze-codeflow`): 包含 S1~Sxx 时序编号、Dxx 依赖节点、Rxx 关系总结
+2. **structured-requirements-path** (来自 `structured-requirements-collection`): 包含新增/修改功能、触发条件、核心状态、数据流向的 5 列表格
+3. **ui-dependencies-path** (来自 `ui-dependency-collection`): 包含依赖类型、来源路径、变更类型的依赖详情表
 
 # 执行流程
 

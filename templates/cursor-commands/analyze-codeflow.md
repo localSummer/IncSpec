@@ -1,6 +1,6 @@
 ---
 description: 分析代码工作流，生成带编号的API调用时序图、依赖关系图和依赖总结
-argument-hint: <source_path> [target_path]
+argument-hint: <source-path> [target-dir]
 allowed-tools: Glob, Grep, Read, Write, Bash
 ---
 
@@ -9,13 +9,13 @@ allowed-tools: Glob, Grep, Read, Write, Bash
 在开始分析前，先用 Bash 执行:
 
 ```bash
-incspec analyze <source_path> --module=<module> --workflow=analyze-<module>
+incspec analyze <source-path> --module=<module> --workflow=analyze-<module>
 ```
 
 完成报告写入后，再用 Bash 执行:
 
 ```bash
-incspec analyze <source_path> --module=<module> --workflow=analyze-<module> --complete --output=<output-file>
+incspec analyze <source-path> --module=<module> --workflow=analyze-<module> --complete --output=<output-file>
 ```
 
 **使用现有基准报告** (跳过分析):
@@ -35,7 +35,7 @@ incspec analyze --baseline=<baseline-file> [--module=<module>] [--workflow=<work
 ---
 
 说明:
-- `<module>` 默认为 source_path 最后一级目录名，若用户显式指定模块名则使用该值
+- `<module>` 默认为 source-path 最后一级目录名，若用户显式指定模块名则使用该值
 - `<output-file>` 必须与最终写入的文件名一致
 - 若 incspec 提示未初始化，请先运行 `incspec init`
 
@@ -45,19 +45,19 @@ incspec analyze --baseline=<baseline-file> [--module=<module>] [--workflow=<work
 
 你需要完成以下任务：
 
-1. **代码分析**：检查 source_path 目录下的所有组件和Store文件，识别初始化阶段的API调用
+1. **代码分析**：检查 source-path 目录下的所有组件和Store文件，识别初始化阶段的API调用
 2. **时序图绘制**：构建带编号的API调用时序图，展示调用顺序
 3. **依赖图绘制**：构建带编号的API依赖关系图，展示依赖关系
 4. **依赖总结**：生成带编号的依赖关系文字总结
-5. **Markdown输出**：将分析结果输出到 target_path 目录
+5. **Markdown输出**：将分析结果输出到 target-dir 目录
 
 **重要提示**：默认情况下，只输出上述核心分析内容。只有在用户明确要求提供"潜在问题与优化建议"时，才在文档末尾添加该部分内容。
 
 ## 输出配置
 
-- **target_path**: 报告输出目录，默认 `incspec/baselines`
+- **target-dir**: 报告输出目录，默认 `incspec/baselines`
 - **文件命名**: `{module}-baseline-v{n}.md`
-  - `{module}`: 模块名称，从 source_path 的最后一级目录名推断，或由用户指定
+  - `{module}`: 模块名称，从 source-path 的最后一级目录名推断，或由用户指定
   - `{n}`: 版本号，扫描目标目录中同名前缀的文件，取最大版本号+1，若无则为 1
 - **示例**: 分析 `src/views/resume` 目录，输出 `incspec/baselines/resume-baseline-v1.md`
 
@@ -85,7 +85,7 @@ incspec analyze --baseline=<baseline-file> [--module=<module>] [--workflow=<work
 
 ### 第一步：代码扫描
 
-- 使用 Glob 工具扫描 source_path 目录下的所有文件
+- 使用 Glob 工具扫描 source-path 目录下的所有文件
 - 关注文件类型：
   - 组件文件（.jsx, .tsx, .js, .ts）
   - Store文件（Zustand, MobX等）
@@ -132,7 +132,7 @@ incspec analyze --baseline=<baseline-file> [--module=<module>] [--workflow=<work
 # [模块名称] API工作流分析
 
 **分析时间**: [自动生成的时间戳]
-**分析范围**: [source_path的相对路径或绝对路径]
+**分析范围**: [source-path的相对路径或绝对路径]
 
 ## 概述
 
@@ -287,8 +287,8 @@ graph TD
 
 ## 工作流程
 
-1. **确认路径**：验证 source_path 和 target_path 的有效性
-2. **生成元信息**：记录分析时间（使用当前时间戳）和分析范围（source_path）
+1. **确认路径**：验证 source-path 和 target-dir 的有效性
+2. **生成元信息**：记录分析时间（使用当前时间戳）和分析范围（source-path）
 3. **扫描目录**：使用 Glob 工具获取所有相关文件
 4. **分析文件**：使用 Read 工具逐个分析文件中的API调用
 5. **构建模型**：在内存中构建完整的API调用关系模型
@@ -296,7 +296,7 @@ graph TD
 7. **生成图表**：使用Mermaid语法创建带编号的可视化图表
 8. **编写文档**：按照规范格式生成Markdown文档（包含元信息和三个核心部分）
 9. **可选增强**：仅当用户明确要求时，在文档末尾添加"潜在问题与优化建议"部分
-10. **保存输出**：使用 Write 工具保存到 target_path
+10. **保存输出**：使用 Write 工具保存到 target-dir
 
 ## 质量标准
 
