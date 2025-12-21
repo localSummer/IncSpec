@@ -114,12 +114,12 @@ async function syncCursor(ctx) {
       {
         name: `当前目录 (${cwd}/.cursor/commands/incspec/)`,
         value: 'project',
-        description: '仅对当前目录生效',
+        description: colorize('仅对当前目录生效', colors.blue),
       },
       {
         name: '全局目录 (~/.cursor/commands/incspec/)',
         value: 'global',
-        description: '对所有项目生效',
+        description: colorize('对所有项目生效', colors.blue),
       },
     ];
 
@@ -182,12 +182,12 @@ async function syncClaude(ctx) {
       {
         name: `当前目录 (${cwd}/.claude/skills/inc-spec-skill/)`,
         value: 'project',
-        description: '仅对当前目录生效',
+        description: colorize('仅对当前目录生效', colors.blue),
       },
       {
         name: '全局目录 (~/.claude/skills/inc-spec-skill/)',
         value: 'global',
-        description: '对所有项目生效（推荐）',
+        description: colorize('对所有项目生效（推荐）', colors.blue),
       },
     ];
 

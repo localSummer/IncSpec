@@ -121,7 +121,7 @@ export async function initCommand(ctx) {
   print('');
   print(colorize('下一步:', colors.bold));
   print(colorize(`  1. 运行 'incspec status' 查看工作流状态`, colors.dim));
-  print(colorize(`  2. 运行 'incspec cursor-sync' 同步 Cursor 命令`, colors.dim));
+  print(colorize(`  2. 运行 'incspec sync' 同步 Cursor 命令`, colors.dim));
   print(colorize(`  3. 使用 /incspec/inc-analyze 开始第一个工作流`, colors.dim));
   print('');
 }
