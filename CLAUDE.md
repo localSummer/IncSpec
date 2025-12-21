@@ -50,7 +50,7 @@ index.mjs                 # CLI 入口，参数解析和命令路由
     ├── AGENTS.md
     ├── WORKFLOW.md
     ├── project.md
-    ├── cursor-commands/  # Cursor 斜杠命令模板
+    ├── commands/         # IDE 命令模板（Cursor/Claude 通用）
     └── inc-spec-skill/   # Claude Code Skill 模板
 ```
 
