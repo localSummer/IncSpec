@@ -5,6 +5,20 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.1.3] - 2025-12-21
+
+### Fixed
+
+- 修复 inc-spec-skill 和 AGENTS.md 中快速模式文档的清晰度问题
+  - **inc-spec-skill/SKILL.md**:
+    - 快速模式步骤列表添加跳过步骤说明 `[跳过 3: 依赖收集]` 和 `[跳过 4: 增量设计]`
+    - 执行规则章节澄清"立即启动工作流"与"人工确认点"的关系，避免歧义
+    - CLI 集成表格新增"模式"列，明确标注每个步骤适用的模式（完整/快速/仅完整）
+  - **AGENTS.md**:
+    - 快速模式流程图添加跳过标记 `─(跳过3,4)─`，清晰展示流程跳转
+    - 快速检查清单重构为带编号的列表格式，与流程图编号保持一致
+    - 步骤7验证说明简化，明确归档操作自带验证机制，避免重复验证的困惑
+
 ## [0.1.2] - 2025-12-21
 
 ### Changed
@@ -185,6 +199,7 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
+[0.1.3]: https://github.com/localSummer/IncSpec/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/localSummer/IncSpec/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/localSummer/IncSpec/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/localSummer/IncSpec/compare/v0.0.10...v0.1.0
