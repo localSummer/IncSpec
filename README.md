@@ -444,6 +444,18 @@ incspec/
 3. **保留新基线** - 归档时新基线会被复制（而非移动）到归档目录，同时保留在 `baselines/` 作为下一轮起点。
 4. **定期清理** - 对于过期的归档，可手动删除或移至外部存储。
 
+## 回退与重置
+
+```bash
+incspec reset              # 全量重置，归档所有产出
+incspec reset --to=3       # 回退到步骤 3，保留 1-3，重置 4-7
+incspec reset -t 3         # 短选项形式
+```
+
+**回退行为:** 保留目标步骤及之前状态，重置后续步骤为 pending，被重置步骤的产出自动归档。
+
+**限制:** 目标步骤必须已完成（1-6），快速模式下不能回退到被跳过的步骤（3、4）。
+
 ## 目录结构
 
 ```
@@ -543,6 +555,10 @@ incspec archive --workflow     # 同上，显式指定
 incspec archive <file>         # 归档指定文件
 incspec archive <file> --keep  # 复制而非移动
 incspec archive -y             # 跳过确认提示
+
+incspec reset                  # 重置当前工作流（别名：rs）
+incspec reset --to=3           # 回退到步骤 3，保留步骤 1-3 的状态
+incspec reset -t 3             # 同上，短选项形式
 ```
 
 </details>
@@ -564,6 +580,7 @@ incspec archive -y             # 跳过确认提示
 | `validate` | `v` | 验证 |
 | `sync` | `s` | 同步 |
 | `update` | `up` | 更新 |
+| `reset` | `rs` | 重置/回退 |
 | `help` | `h` | 帮助 |
 
 </details>

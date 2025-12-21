@@ -5,6 +5,19 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.1.0] - 2025-12-21
+
+### Added
+
+- `reset` 命令新增 `--to` 选项，支持回退到指定步骤
+  - `incspec reset --to=3` 或 `incspec reset -t 3`
+  - 保留目标步骤及之前的状态，重置后续步骤为 pending
+  - 被重置步骤的产出文件自动归档到 `archives/`
+  - 回退后 currentStep 自动设为目标步骤的下一步
+- `lib/workflow.mjs` 新增 `resetToStep()` 函数
+- 文档更新：README.md 新增"回退与重置"章节
+- 文档更新：AGENTS.md 新增回退使用场景说明
+
 ## [0.0.10] - 2025-12-21
 
 ### Fixed
@@ -142,7 +155,7 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
-[Unreleased]: https://github.com/localSummer/IncSpec/compare/v0.0.10...HEAD
+[0.1.0]: https://github.com/localSummer/IncSpec/compare/v0.0.10...v0.1.0
 [0.0.10]: https://github.com/localSummer/IncSpec/compare/v0.0.9...v0.0.10
 [0.0.9]: https://github.com/localSummer/IncSpec/compare/v0.0.8...v0.0.9
 [0.0.8]: https://github.com/localSummer/IncSpec/compare/v0.0.7...v0.0.8

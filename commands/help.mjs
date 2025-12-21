@@ -119,9 +119,12 @@ const COMMANDS = {
     ],
   },
   reset: {
-    usage: 'incspec reset',
+    usage: 'incspec reset [--to=<step>]',
     aliases: ['rs'],
-    description: '重置当前工作流，归档已有产出',
+    description: '重置当前工作流，归档已有产出（支持部分回退）',
+    options: [
+      ['-t, --to=<step>', '回退到指定步骤（1-6），保留该步骤及之前的状态'],
+    ],
   },
   sync: {
     usage: 'incspec sync [--cursor] [--claude] [--all] [--project|--global]',

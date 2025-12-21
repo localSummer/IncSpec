@@ -34,13 +34,14 @@ function parseArgs(args) {
     options: {},
   };
 
-  const valueOptions = new Set(['module', 'feature', 'source-dir', 'output', 'workflow']);
+  const valueOptions = new Set(['module', 'feature', 'source-dir', 'output', 'workflow', 'to']);
   const shortValueMap = new Map([
     ['m', 'module'],
     ['f', 'feature'],
     ['s', 'source-dir'],
     ['o', 'output'],
     ['w', 'workflow'],
+    ['t', 'to'],
   ]);
   let i = 0;
 

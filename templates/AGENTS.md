@@ -141,7 +141,7 @@ incspec archive [--yes] [--keep]    # 步骤7
 # 验证与同步
 incspec validate / v [--strict]     # 验证完整性
 incspec sync [--cursor|--claude|--all] [--global|--project]  # IDE集成
-incspec reset [--archive|--clean]   # 重置工作流状态
+incspec reset [--to=<step>]         # 重置工作流（可选回退到指定步骤 1-6）
 ```
 
 ## 文件格式示例
