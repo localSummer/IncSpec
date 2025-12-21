@@ -141,7 +141,8 @@ incspec archive [--yes] [--keep]    # 步骤7
 # 验证与同步
 incspec validate / v [--strict]     # 验证完整性
 incspec sync [--cursor|--claude|--all] [--global|--project]  # IDE集成
-incspec reset [--to=<step>]         # 重置工作流（可选回退到指定步骤 1-6）
+incspec reset                       # 完全重置工作流（归档所有产出）
+incspec reset --to=<step>           # 部分回退到指定步骤（保留1-N，重置N+1至7）
 ```
 
 ## 文件格式示例
@@ -210,6 +211,10 @@ baseline: home-baseline-v1
 | No baseline found | 先完成步骤 1 (analyze) |
 | Previous step not completed | 运行 `incspec status` 检查进度 |
 | Validation failed | 检查文件格式和编号序列 |
-| 工作流卡住 | 运行 `incspec reset` 重置状态 |
+| 工作流卡住或状态异常 | `incspec reset` 完全重置，或 `incspec reset --to=N` 回退到步骤N |
+
+**工作流重置**:
+- 完全重置: `incspec reset` - 归档所有产出，回到初始状态
+- 部分回退: `incspec reset --to=N` - 保留步骤1-N，重置N+1至7（示例：`--to=3` 保留1-3，重置4-7）
 
 记住: **基线是真相，增量是提案**。通过工作流周期保持它们同步。
