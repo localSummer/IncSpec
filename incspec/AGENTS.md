@@ -19,7 +19,7 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 - 检查状态: `incspec status`
 - 编号引用: `[S1]` 时序步骤, `[D1]` 依赖, `[C1]` 变更
 - 增量标记: `[N1]` 新增, `[S1-Modified]` 修改, `[S1-Deleted]` 删除
-- 继续前验证: `incspec validate --strict`
+- 验证时机: 步骤 1/4/6 完成后、归档前执行 `incspec validate`，出错时加 `--strict` 用于 CI
 
 ## 七步工作流
 
@@ -37,6 +37,8 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 **输出**: `incspec/baselines/{module}-baseline-v{n}.md`
 
 **交付物**: Mermaid 时序图 (`[S1]`-`[Sn]`)、依赖图 (`[D1]`-`[Dn]`)、依赖摘要 (`[R1.x]`-`[R3.x]`)
+
+**验证**: 完成后执行 `incspec validate` 检查基线格式（必含时序图和依赖图）
 
 ### 步骤 2: 收集结构化需求
 
@@ -75,6 +77,8 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 6. 潜在风险与副作用
 7. 建议的测试用例 (至少6个)
 
+**验证**: 完成后执行 `incspec validate` 检查增量格式（必含5个模块章节）
+
 ### 步骤 5: 应用代码变更
 
 **命令**: `incspec apply [increment-path]` (别名: `ap`)
@@ -93,11 +97,15 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 
 **处理**: 移除增量标记 → 合并新节点 → 重新编号为干净序列 → 输出新基线 v{n+1}
 
+**验证**: 完成后执行 `incspec validate` 检查新基线完整性
+
 ### 步骤 7: 归档工作流产出
 
 **命令**: `incspec archive [--yes] [<file>] [--keep]`
 
 **目的**: 将已完成的工作流产出归档到 `incspec/archives/YYYY-MM/{module}/`
+
+**验证**: 归档前执行 `incspec validate` 确保项目健康，归档后再次验证确保文件移动正确
 
 ## 目录结构
 
