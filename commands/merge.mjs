@@ -2,6 +2,7 @@
  * merge command - Step 6: Merge to baseline
  */
 
+import * as fs from 'fs';
 import * as path from 'path';
 import {
   ensureInitialized,
@@ -13,6 +14,7 @@ import {
   updateStep,
   STATUS,
   isQuickMode,
+  getMissingPrereqs,
 } from '../lib/workflow.mjs';
 import { listSpecs, getNextVersion } from '../lib/spec.mjs';
 import {
@@ -25,6 +27,20 @@ import {
 } from '../lib/terminal.mjs';
 
 const STEP_NUMBER = 6;
+
+function resolveIncrementPath(projectRoot, candidate) {
+  if (!candidate || typeof candidate !== 'string') {
+    return null;
+  }
+
+  const possiblePaths = [
+    candidate,
+    path.join(projectRoot, candidate),
+    path.join(projectRoot, INCSPEC_DIR, DIRS.increments, candidate),
+  ];
+
+  return possiblePaths.find(p => fs.existsSync(p)) || null;
+}
 
 /**
  * Execute merge command
@@ -45,6 +61,12 @@ export async function mergeCommand(ctx) {
   }
 
   const quickMode = isQuickMode(workflow);
+  const missingSteps = getMissingPrereqs(workflow, STEP_NUMBER);
+  if (missingSteps && missingSteps.length > 0 && !options.force) {
+    printWarning(`请先完成步骤 ${missingSteps.join(', ')} 后再继续。`);
+    printInfo('如需强制执行，请添加 --force。');
+    return;
+  }
 
   // Calculate output file
   const moduleName = workflow.currentWorkflow.replace(/^analyze-/, '');
@@ -73,6 +95,13 @@ export async function mergeCommand(ctx) {
         printWarning('未找到增量设计文件。请先运行步骤 4 (design)。');
         return;
       }
+    } else {
+      const resolved = resolveIncrementPath(projectRoot, incrementPath);
+      if (!resolved) {
+        printWarning(`增量设计文件不存在: ${incrementPath}`);
+        return;
+      }
+      incrementPath = resolved;
     }
   }
 

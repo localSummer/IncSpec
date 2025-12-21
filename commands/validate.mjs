@@ -98,15 +98,25 @@ export async function validateCommand(ctx) {
           if (!body.includes('## 1.') && !body.includes('# ')) {
             warnings.push(`${spec.name}: 可能缺少标准章节结构`);
           }
-          if (!body.includes('sequenceDiagram') && !body.includes('graph ')) {
-            warnings.push(`${spec.name}: 未检测到 Mermaid 图表`);
+          const hasSequenceDiagram = /sequenceDiagram/.test(body);
+          const hasGraph = /\bgraph\s+/.test(body);
+          if (!hasSequenceDiagram) {
+            warnings.push(`${spec.name}: 未检测到 Mermaid sequenceDiagram`);
+          }
+          if (!hasGraph) {
+            warnings.push(`${spec.name}: 未检测到 Mermaid graph`);
           }
         }
 
         // Check for required sections in increments
         if (type === 'increments') {
-          const requiredSections = ['模块1', '模块2', '模块3', '模块4', '模块5'];
-          const missingSections = requiredSections.filter(s => !body.includes(s));
+          const requiredSections = Array.from({ length: 7 }, (_, i) => {
+            const num = i + 1;
+            return new RegExp(`^##\\s*(?:模块\\s*)?${num}(?:[.:：\\s]|$)`, 'm');
+          });
+          const missingSections = requiredSections
+            .map((pattern, index) => (pattern.test(body) ? null : index + 1))
+            .filter(Boolean);
           if (missingSections.length > 0) {
             warnings.push(`${spec.name}: 可能缺少模块 ${missingSections.join(', ')}`);
           }

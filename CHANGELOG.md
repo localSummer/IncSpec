@@ -5,6 +5,60 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.2.0] - 2025-12-21
+
+### Added
+
+- 新增 `--force` 选项到步骤 2-6 命令，支持跳过前置步骤检查
+  - 适用命令：`collect-req`、`collect-dep`、`design`、`apply`、`merge`
+  - 使用场景：需要跳过工作流顺序执行时（如调试、修复特定步骤）
+- 新增前置步骤检查机制
+  - 步骤 2-6 执行前自动检查前置步骤是否完成
+  - 前置步骤未完成时提示并阻止执行
+  - 提供 `--force` 选项作为逃生舱口
+- 新增工作流辅助函数（`lib/workflow.mjs`）
+  - `isStepAllowed()` - 检查步骤是否在当前模式下允许执行
+  - `getPrerequisiteSteps()` - 获取指定步骤的前置步骤列表
+  - `getMissingPrereqs()` - 获取缺失的前置步骤
+
+### Changed
+
+- `help` 命令支持别名查询，`incspec help cr` 可正确显示 `collect-req` 帮助信息
+- `validate` 命令改进检测逻辑
+  - 分开检测 Mermaid sequenceDiagram 和 graph 类型
+  - 增量文件模块匹配更灵活，支持 `## 模块1` 和 `## 1.` 等格式
+- `list` 命令优化 archives 处理逻辑，避免重复处理
+- `terminal.mjs` 改进非 TTY 环境支持
+  - `select()` 和 `checkbox()` 在非 TTY 环境使用默认值并提示
+  - 避免在 CI 或管道环境中卡住
+- `spec.mjs` 版本匹配模式更严格
+  - baselines 只匹配 `*-baseline-v*.md` 格式
+  - increments 只匹配 `*-increment-v*.md` 格式
+  - 避免误匹配非标准命名文件
+- `workflow.mjs` 优化读取逻辑
+  - 移除 `readWorkflow()` 自动写回机制
+  - 减少不必要的文件写入操作
+- `apply` 和 `merge` 命令改进增量文件路径解析
+  - 新增 `resolveIncrementPath()` 辅助函数
+  - 支持相对路径、绝对路径和 incspec 相对路径三种格式
+
+### Removed
+
+- 移除 Cursor 命令中的 `inc-archive.md` 自动生成
+  - 归档功能通过 CLI 直接使用 `incspec archive`
+  - 简化命令模板，减少冗余
+
+### Documentation
+
+- 更新 `templates/AGENTS.md`
+  - 所有步骤命令添加 `[--force]` 选项说明
+  - CLI 命令部分添加 `--force` 使用示例和注释
+  - 故障排除章节新增"前置步骤检查"说明段落
+  - 更新 "Previous step not completed" 错误的解决方案
+- 更新 `templates/inc-spec-skill/SKILL.md`
+  - CLI 集成部分新增"前置步骤检查"说明
+  - 常见陷阱表格新增"前置步骤未完成"条目
+
 ## [0.1.3] - 2025-12-21
 
 ### Fixed
@@ -199,6 +253,7 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
+[0.2.0]: https://github.com/localSummer/IncSpec/compare/v0.1.3...v0.2.0
 [0.1.3]: https://github.com/localSummer/IncSpec/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/localSummer/IncSpec/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/localSummer/IncSpec/compare/v0.1.0...v0.1.1

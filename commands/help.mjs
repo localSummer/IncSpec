@@ -52,6 +52,7 @@ const COMMANDS = {
     description: '步骤2: 收集结构化需求',
     options: [
       ['--complete', '标记步骤完成'],
+      ['--force', '忽略前置步骤检查'],
     ],
   },
   'collect-dep': {
@@ -60,6 +61,7 @@ const COMMANDS = {
     description: '步骤3: 采集 UI 依赖',
     options: [
       ['--complete', '标记步骤完成'],
+      ['--force', '忽略前置步骤检查'],
     ],
   },
   design: {
@@ -70,6 +72,7 @@ const COMMANDS = {
       ['-f, --feature=<name>', '指定功能名称'],
       ['--complete', '标记步骤完成'],
       ['-o, --output=<file>', '完成时指定输出文件'],
+      ['--force', '忽略前置步骤检查'],
     ],
   },
   apply: {
@@ -79,6 +82,7 @@ const COMMANDS = {
     options: [
       ['-s, --source-dir=<path>', '指定源代码目录'],
       ['--complete', '标记步骤完成'],
+      ['--force', '忽略前置步骤检查'],
     ],
   },
   merge: {
@@ -88,6 +92,7 @@ const COMMANDS = {
     options: [
       ['--complete', '标记步骤完成'],
       ['-o, --output=<file>', '完成时指定输出文件'],
+      ['--force', '忽略前置步骤检查'],
     ],
   },
   list: {
@@ -145,18 +150,26 @@ const COMMANDS = {
   },
 };
 
+const ALIAS_MAP = Object.entries(COMMANDS).reduce((map, [name, def]) => {
+  (def.aliases || []).forEach((alias) => {
+    map[alias] = name;
+  });
+  return map;
+}, {});
+
 /**
  * Execute help command
  * @param {Object} ctx - Command context
  */
 export async function helpCommand(ctx = {}) {
   const { command } = ctx;
+  const resolvedCommand = command && !COMMANDS[command] ? ALIAS_MAP[command] : command;
 
   print('');
 
-  if (command && COMMANDS[command]) {
+  if (resolvedCommand && COMMANDS[resolvedCommand]) {
     // Show specific command help
-    showCommandHelp(command);
+    showCommandHelp(resolvedCommand);
   } else if (command) {
     print(colorize(`未知命令: ${command}`, colors.red));
     print('');

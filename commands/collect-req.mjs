@@ -13,6 +13,7 @@ import {
   updateStep,
   STATUS,
   isQuickMode,
+  getMissingPrereqs,
 } from '../lib/workflow.mjs';
 import {
   colors,
@@ -41,6 +42,13 @@ export async function collectReqCommand(ctx) {
 
   if (!workflow?.currentWorkflow) {
     printWarning('没有活跃的工作流。请先运行 incspec analyze 开始新工作流。');
+    return;
+  }
+
+  const missingSteps = getMissingPrereqs(workflow, STEP_NUMBER);
+  if (missingSteps && missingSteps.length > 0 && !options.force) {
+    printWarning(`请先完成步骤 ${missingSteps.join(', ')} 后再继续。`);
+    printInfo('如需强制执行，请添加 --force。');
     return;
   }
 

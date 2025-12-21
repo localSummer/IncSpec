@@ -12,6 +12,8 @@ import {
   readWorkflow,
   updateStep,
   STATUS,
+  isStepAllowed,
+  getMissingPrereqs,
 } from '../lib/workflow.mjs';
 import {
   colors,
@@ -40,6 +42,18 @@ export async function collectDepCommand(ctx) {
 
   if (!workflow?.currentWorkflow) {
     printWarning('没有活跃的工作流。请先运行 incspec analyze 开始新工作流。');
+    return;
+  }
+
+  if (!isStepAllowed(STEP_NUMBER, workflow.mode)) {
+    printWarning('当前工作流为快速模式，步骤 3 已跳过。');
+    return;
+  }
+
+  const missingSteps = getMissingPrereqs(workflow, STEP_NUMBER);
+  if (missingSteps && missingSteps.length > 0 && !options.force) {
+    printWarning(`请先完成步骤 ${missingSteps.join(', ')} 后再继续。`);
+    printInfo('如需强制执行，请添加 --force。');
     return;
   }
 

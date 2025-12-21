@@ -48,7 +48,7 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 
 ### 步骤 2: 收集结构化需求
 
-**命令**: `incspec collect-req` (别名: `cr`)
+**命令**: `incspec collect-req [--force]` (别名: `cr`)
 
 **目的**: 交互式需求收集,转换为 5 列格式。
 
@@ -58,7 +58,7 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 
 ### 步骤 3: 收集 UI 依赖
 
-**命令**: `incspec collect-dep` (别名: `cd`)
+**命令**: `incspec collect-dep [--force]` (别名: `cd`)
 
 **目的**: 映射新增/修改 UI 组件的所有上下文依赖。
 
@@ -68,7 +68,7 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 
 ### 步骤 4: 设计增量
 
-**命令**: `incspec design [--feature=name]` (别名: `d`)
+**命令**: `incspec design [--feature=name] [--force]` (别名: `d`)
 
 **目的**: 创建全面的增量设计蓝图。
 
@@ -87,7 +87,7 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 
 ### 步骤 5: 应用代码变更
 
-**命令**: `incspec apply [increment-path]` (别名: `ap`)
+**命令**: `incspec apply [increment-path] [--force]` (别名: `ap`)
 
 **目的**: 根据增量蓝图执行代码生成和修改。
 
@@ -97,7 +97,7 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 
 ### 步骤 6: 合并到基线
 
-**命令**: `incspec merge [increment-path]` (别名: `m`)
+**命令**: `incspec merge [increment-path] [--force]` (别名: `m`)
 
 **目的**: 将增量整合到新的基线快照中。
 
@@ -145,11 +145,11 @@ incspec list / ls [-l] [-a]         # 列出规格文件
 
 # 7步工作流
 incspec analyze <path> [--quick] [--module=name] [--baseline=file]  # 步骤1
-incspec collect-req / cr            # 步骤2
-incspec collect-dep / cd            # 步骤3 (快速模式跳过)
-incspec design / d [--feature=name] # 步骤4 (快速模式跳过)
-incspec apply / ap [path]           # 步骤5
-incspec merge / m [path]            # 步骤6
+incspec collect-req / cr [--force]  # 步骤2 (--force 跳过前置检查)
+incspec collect-dep / cd [--force]  # 步骤3 (快速模式跳过)
+incspec design / d [--feature=name] [--force]  # 步骤4 (快速模式跳过)
+incspec apply / ap [path] [--force] # 步骤5
+incspec merge / m [path] [--force]  # 步骤6
 incspec archive [--yes] [--keep]    # 步骤7
 
 # 验证与同步
@@ -223,9 +223,14 @@ baseline: home-baseline-v1
 |------|----------|
 | Workflow not initialized | 运行 `incspec init` |
 | No baseline found | 先完成步骤 1 (analyze) |
-| Previous step not completed | 运行 `incspec status` 检查进度 |
+| Previous step not completed | 运行 `incspec status` 检查进度，或添加 `--force` 跳过前置检查 |
 | Validation failed | 检查文件格式和编号序列 |
 | 工作流卡住或状态异常 | `incspec reset` 完全重置，或 `incspec reset --to=N` 回退到步骤N |
+
+**前置步骤检查**:
+- 步骤 2-6 执行前会自动检查前置步骤是否完成
+- 若前置步骤未完成，命令会提示并阻止执行
+- 添加 `--force` 可跳过此检查，强制执行当前步骤
 
 **工作流重置**:
 - 完全重置: `incspec reset` - 归档所有产出，回到初始状态

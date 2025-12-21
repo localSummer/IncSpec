@@ -39,6 +39,9 @@ export async function listCommand(ctx) {
   const types = type ? [type] : ['baselines', 'requirements', 'increments'];
 
   for (const t of types) {
+    if (t === 'archives') {
+      continue;
+    }
     const specs = listSpecs(projectRoot, t);
 
     print(colorize(`${DIRS[t] || t}/`, colors.bold, colors.yellow));
@@ -62,7 +65,8 @@ export async function listCommand(ctx) {
   }
 
   // Show archives if requested
-  if (type === 'archives' || options.all || options.a) {
+  const shouldShowArchives = type === 'archives' || options.all || options.a;
+  if (shouldShowArchives) {
     const archivePath = path.join(projectRoot, INCSPEC_DIR, DIRS.archives);
     print(colorize(`${DIRS.archives}/`, colors.bold, colors.yellow));
     
