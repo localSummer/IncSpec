@@ -103,7 +103,7 @@ incspec collect-req --complete
 
 若当前工作流为快速模式 (通过 `incspec status` 确认)，完成需求收集后输出:
 
-> "✅ 结构化需求已收齐。快速模式下，直接运行 `incspec apply` 进入代码应用阶段。"
+> "✅ 结构化需求已收齐。等待用户确认，确认后直接运行 `incspec apply` 进入代码应用阶段。"
 
 # 示例交互
 
