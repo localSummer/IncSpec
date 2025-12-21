@@ -5,7 +5,6 @@
 <p align="center">
   <a href="https://github.com/localSummer/IncSpec"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-localSummer%2FIncSpec-blue?style=flat-square&logo=github" /></a>
   <a href="https://www.npmjs.com/package/@localsummer/incspec"><img alt="npm" src="https://img.shields.io/npm/v/@localsummer/incspec?style=flat-square&logo=npm" /></a>
-  <a href="https://www.npmjs.com/package/@localsummer/incspec"><img alt="npm downloads" src="https://img.shields.io/npm/dm/@localsummer/incspec?style=flat-square" /></a>
   <a href="https://nodejs.org/"><img alt="node version" src="https://img.shields.io/node/v/@localsummer/incspec?style=flat-square" /></a>
   <a href="./LICENSE"><img alt="License: ISC" src="https://img.shields.io/badge/License-ISC-blue.svg?style=flat-square" /></a>
 </p>
