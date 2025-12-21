@@ -5,6 +5,22 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.1.1] - 2025-12-21
+
+### Changed
+
+- 重命名 `templates/cursor-commands/` 为 `templates/commands/`
+  - 更准确反映目录用途（IDE 命令模板，Cursor/Claude 通用）
+  - 更新 CLAUDE.md 文档中的路径引用
+- `sync` 命令描述文案使用灰色显示（`colors.gray`）
+  - 提升 UI 层次感，更易区分主要选项和辅助说明
+
+### Removed
+
+- 移除 `lib/cursor.mjs` 中的向后兼容逻辑
+  - 移除 `LEGACY_TEMPLATES_DIR` 常量定义
+  - 简化 `getSourcePath()` 函数，统一使用 `templates/commands/` 目录
+
 ## [0.1.0] - 2025-12-21
 
 ### Added
@@ -155,6 +171,7 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
+[0.1.1]: https://github.com/localSummer/IncSpec/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/localSummer/IncSpec/compare/v0.0.10...v0.1.0
 [0.0.10]: https://github.com/localSummer/IncSpec/compare/v0.0.9...v0.0.10
 [0.0.9]: https://github.com/localSummer/IncSpec/compare/v0.0.8...v0.0.9
