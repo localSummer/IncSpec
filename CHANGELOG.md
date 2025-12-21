@@ -5,6 +5,20 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.1.2] - 2025-12-21
+
+### Changed
+
+- 优化 validate 命令执行时机，参考 OpenSpec 最佳实践
+  - 明确验证时机：步骤 1/4/6 完成后、归档前执行
+  - 新增 `--strict` 选项说明，用于 CI 集成（有错误时退出码为1）
+  - 更新 `templates/AGENTS.md` 和 `templates/inc-spec-skill/SKILL.md`
+  - 各步骤新增验证节点说明：
+    - 步骤1 (analyze): 检查基线格式（必含时序图和依赖图）
+    - 步骤4 (design): 检查增量格式（必含5个模块章节）
+    - 步骤6 (merge): 检查新基线完整性
+    - 步骤7 (archive): 归档前后各验证一次
+
 ## [0.1.1] - 2025-12-21
 
 ### Changed
@@ -171,6 +185,7 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
+[0.1.2]: https://github.com/localSummer/IncSpec/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/localSummer/IncSpec/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/localSummer/IncSpec/compare/v0.0.10...v0.1.0
 [0.0.10]: https://github.com/localSummer/IncSpec/compare/v0.0.9...v0.0.10

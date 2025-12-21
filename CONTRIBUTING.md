@@ -63,6 +63,19 @@
 - 遵循项目现有的代码风格
 - 保持函数简洁，单一职责
 
+### 模板文件更新规范
+
+当更新 `templates/` 目录下的模板文件时，请注意：
+
+- **AGENTS.md**: AI 助手操作手册，会在 `incspec init` 时复制到项目的 `incspec/AGENTS.md`
+- **inc-spec-skill/SKILL.md**: Claude Code Skill 主文档，通过 `incspec sync --claude` 同步到 `.claude/` 目录
+- **commands/*.md**: IDE 命令模板（Cursor/Claude 通用），通过 `incspec sync` 同步到各 IDE 配置目录
+
+**关键原则**:
+- 参考业界最佳实践（如 OpenSpec）保持模板质量
+- validate 命令的执行时机：步骤 1/4/6 完成后、归档前执行
+- 模板更新后需同步测试 `incspec sync` 命令
+
 ### 提交信息规范
 
 使用语义化提交信息：
