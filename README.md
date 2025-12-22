@@ -1,4 +1,4 @@
-<p align="center">
+<H1 align="center">
   <strong>IncSpec</strong>
 </p>
 <p align="center">面向 AI 编程助手的增量规范驱动开发工具</p>
@@ -7,7 +7,7 @@
   <a href="https://www.npmjs.com/package/@localsummer/incspec"><img alt="npm" src="https://img.shields.io/npm/v/@localsummer/incspec?style=flat-square&logo=npm" /></a>
   <a href="https://nodejs.org/"><img alt="node version" src="https://img.shields.io/node/v/@localsummer/incspec?style=flat-square" /></a>
   <a href="./LICENSE"><img alt="License: ISC" src="https://img.shields.io/badge/License-ISC-blue.svg?style=flat-square" /></a>
-</p>
+</H1>
 
 # IncSpec
 
