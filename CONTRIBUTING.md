@@ -75,6 +75,7 @@
 - 参考业界最佳实践（如 OpenSpec）保持模板质量
 - validate 命令的执行时机：步骤 1/4/6 完成后、归档前执行
 - 模板更新后需同步测试 `incspec sync` 命令
+- **保持模板与代码一致**: `templates/WORKFLOW.md` 中的步骤表格必须与 `lib/workflow.mjs` 中的 `STEPS` 数组保持一致（包含完整的 7 个步骤）
 
 ### 提交信息规范
 
@@ -116,6 +117,20 @@ index.mjs           # CLI 入口
 1. 在 `commands/` 目录创建命令文件
 2. 在 `index.mjs` 中注册命令
 3. 更新 README.md 命令文档
+
+## 版本发布记录
+
+### v0.2.1 (2025-12-22)
+- **fix**: 修复 `templates/WORKFLOW.md` 模板缺少第 7 步"归档"的问题
+  - 问题：init 初始化时生成的 WORKFLOW.md 只包含 6 个步骤
+  - 根因：模板文件硬编码了 6 个步骤，与 `lib/workflow.mjs` 中 STEPS 数组（7个步骤）不一致
+  - 影响：初始化后的步骤进度表格缺少 "7. archive-workflow" 行
+  - 修复：在模板文件中补充第 7 步归档的表格行
+
+### v0.2.0
+- 添加快速模式支持
+- 优化工作流状态管理
+- 完善 validate 命令
 
 ## 问题反馈
 

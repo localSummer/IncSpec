@@ -16,6 +16,7 @@
 | 4. design-increment | pending | - | - |
 | 5. apply-code | pending | - | - |
 | 6. merge-baseline | pending | - | - |
+| 7. archive-workflow | pending | - | - |
 
 ## 工作流历史
 
