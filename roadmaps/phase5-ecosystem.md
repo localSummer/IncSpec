@@ -693,14 +693,14 @@ export class ClaudeAdapter {
   version = '1.0.0';
   
   isSupported() {
-    return fs.existsSync('.claude/skills');
+    return fs.existsSync('.claude/commands');
   }
   
   async sync(commands) {
-    // 将命令转换为 Claude Skill
+    // 将命令同步到 Claude Code
     for (const cmd of commands) {
-      const skill = this.convertToSkill(cmd);
-      await this.writeSkill(skill);
+      const commandFile = this.convertToCommand(cmd);
+      await this.writeCommand(commandFile);
     }
   }
   

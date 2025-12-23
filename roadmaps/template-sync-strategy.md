@@ -78,15 +78,7 @@ templates/
   - 添加 dashboard/graph/watch 的常见问题
 
 #### 2. （已废弃）更新 SKILL.md
-注意：Claude Code 现在使用 AGENTS.md，与 Cursor 一致。所有更新只需在 AGENTS.md 中完成。
-  - 添加 wizard 启动方式
-  - 添加工作流可视化说明
-- [ ] 更新"CLI集成"章节
-  - 添加 dashboard/graph/watch 命令
-  - 同步参数自动推断说明
-- [ ] 更新"最佳实践"章节
-  - 添加使用 wizard 的最佳场景
-  - 添加可视化监控的建议
+注意：Claude Code 现在使用命令方式，与 Cursor 一致。所有更新只需在 AGENTS.md 中完成。
 
 ### 可选任务（补充文档）
 
@@ -96,8 +88,8 @@ templates/
 - [ ] commands/inc-graph.md
 - [ ] commands/inc-watch.md
 
-#### 4. 新增 Claude Skill 参考文档
-- [ ] references/inc-wizard.md
+#### 4. 新增 Claude 命令参考文档
+- [ ] commands/inc-wizard.md（Cursor/Claude 通用）
 - [ ] references/inc-dashboard.md
 - [ ] references/inc-graph.md
 - [ ] references/inc-watch.md
@@ -159,7 +151,7 @@ templates/
 - [ ] 添加测试生成最佳实践
 
 #### 2. （已废弃）更新 SKILL.md
-注意：Claude Code 现在使用 AGENTS.md，与 Cursor 一致。
+注意：Claude Code 现在使用命令方式，与 Cursor 一致。所有更新只需在 AGENTS.md 中完成。
 
 **快速开始章节**:
 - [ ] 更新步骤5说明，包含质量检查
@@ -236,8 +228,7 @@ templates/
 - [ ] 添加历史记录命令
 
 #### 2. （已废弃）更新 SKILL.md
-注意：Claude Code 现在使用 AGENTS.md，与 Cursor 一致。
-- [ ] 工作流锁定和共享
+注意：Claude Code 现在使用命令方式，与 Cursor 一致。所有更新只需在 AGENTS.md 中完成。
 - [ ] 代码评审集成
 - [ ] 团队状态监控
 
@@ -335,7 +326,7 @@ incspec status --json       # 输出 JSON 格式状态
 - `watch` - 实时监控工作流
 
 #### 2. （已废弃）更新 SKILL.md
-注意：Claude Code 现在使用 AGENTS.md，与 Cursor 一致。
+注意：Claude Code 现在使用命令方式，与 Cursor 一致。所有更新只需在 AGENTS.md 中完成。
 
 **新增章节**:
 ```markdown
@@ -387,7 +378,8 @@ incspec watch        # 实时监控
 - `commands/wizard.md` - 交互式向导详细指令
 - `commands/dashboard.md` - 仪表盘使用说明
 
-#### 4. 新增 Claude Skill 参考文档（如需要）
+#### 4. 新增 Claude 命令参考文档（如需要）
+- [ ] commands/inc-xxx.md（Cursor/Claude 通用）
 
 在 `references/` 中添加对应文档：
 - `references/wizard.md`
@@ -447,7 +439,7 @@ incspec watch        # 实时监控
 - [ ] 改进错误处理指导
 
 #### 2. （已废弃）更新 SKILL.md
-注意：Claude Code 现在使用 AGENTS.md，与 Cursor 一致。
+注意：Claude Code 现在使用命令方式，与 Cursor 一致。所有更新只需在 AGENTS.md 中完成。
 
 **新增"插件扩展"章节**:
 - [ ] 插件系统使用
@@ -524,7 +516,7 @@ incspec sync --cursor --claude
 - [ ] ⭐ **AGENTS.md 更新**（核心，必须）
 - [ ] ⭐ **AGENTS.md 更新**（核心，必须 - Cursor/Claude Code 通用）
 - [ ] 命令模板（可选，如需详细说明）
-- [ ] Claude Skill 参考文档（可选，如需详细说明）
+- [ ] Claude 命令参考文档（可选，如需详细说明）
 - [ ] 模板测试验证
 - [ ] 文档更新
 
@@ -589,49 +581,8 @@ incspec update     # 自动更新本地模板
 - 使用清晰的命令示例
 
 #### （已废弃）SKILL.md 结构
-注意：Claude Code 现在使用 AGENTS.md，不再需要单独的 SKILL.md 文件。
-以下内容仅作历史参考：
-
-```markdown
----
-name: incspec-command
-description: 斜杠命令描述（已废弃）
----
-
-# AI增量编码
-
-## 目录
-## 快速开始
-- 完整模式和快速模式的命令序列
-
-## 执行规则
-- 何时启动工作流
-- 默认行为说明
-
-## 工作流概览
-- 完整模式和快速模式对比表格
-- 模式选择建议
-
-## CLI集成
-- 步骤与命令对应表格
-- 管理命令说明
-
-## 步骤详情
-### 步骤N: <步骤名称>
-- 命令、输入、输出
-- 详细说明（或引用 references/*.md）
-
-## 最佳实践
-## 常见陷阱
-## 参考资源
-## 使用示例
-```
-
-**更新原则**：
-- "CLI集成"表格必须与 AGENTS.md 一致
-- "步骤详情"可简要说明或引用 references/*.md
-- 保持与 AGENTS.md 的术语一致性
-- 示例必须可执行
+注意：Claude Code 现在使用命令方式，与 Cursor 一致，不再需要单独的 SKILL.md 文件。
+AGENTS.md 作为所有 AI 工具的统一入口，所有更新只需在 AGENTS.md 中完成。
 
 ### 2. 补充文档规范（可选）
 
@@ -665,11 +616,8 @@ description: 斜杠命令描述（已废弃）
 - 相关文档链接
 ```
 
-#### Claude Skill 参考 (references/*.md)
-结构与 Cursor 命令模板类似，但更侧重于：
-- AI 执行的具体步骤
-- 预期的 AI 输出格式
-- AI 应该遵循的规则
+#### Claude 命令参考 (commands/*.md)
+与 Cursor 命令模板完全一致，存放在 `templates/commands/` 目录中，供 Cursor 和 Claude Code 共同使用。
 
 ### 3. 提示词优化
 - 使用清晰、具体的指令
@@ -697,7 +645,7 @@ description: 斜杠命令描述（已废弃）
 
 ### 2) 命令覆盖一致性（MUST）
 对每个 CLI 命令（含别名）：
-- 必须在核心入口文件中可被发现（至少在 AGENTS 或 SKILL 其中之一出现该命令的用途或主路径引用）
+- 必须在核心入口文件 AGENTS.md 中可被发现（出现该命令的用途或主路径引用）
 - 若该命令是"面向 AI 工具的主要触发入口"（例如新增 workflow 步骤命令、强推荐命令）：
   - 必须在 `templates/commands/` 中提供详细说明
   - 若不补充，必须在 PR/Release Notes 解释原因（例如"无需补充说明/仅内部命令"）
@@ -738,23 +686,20 @@ describe('Template Validation', () => {
   it('CLI 命令在核心入口中可被发现（覆盖一致性）', () => {
     const cliCommands = getCliCommands();
     const agents = readAgents();
-    const skill = readSkill();
 
     for (const cmd of cliCommands) {
-      expect(agents.includes(cmd) || skill.includes(cmd)).toBe(true);
+      expect(agents.includes(cmd)).toBe(true);
     }
   });
 
   it('关键命令具备补充模板（如需要）', () => {
     const criticalCommands = getCriticalCommands(); // 例如新增/推荐/工作流关键入口
-    const cursorTemplates = getCursorTemplates();
-    const skillRefs = getSkillReferences();
+    const commandTemplates = getCommandTemplates();
 
     for (const cmd of criticalCommands) {
-      // 允许至少一端存在（推荐两端都存在）
-      const hasCursor = cursorTemplates.includes(`inc-${cmd}.md`);
-      const hasSkill = skillRefs.includes(`${cmd}.md`);
-      expect(hasCursor || hasSkill).toBe(true);
+      // 检查 commands/ 目录中是否存在对应模板
+      const hasTemplate = commandTemplates.includes(`inc-${cmd}.md`);
+      expect(hasTemplate).toBe(true);
     }
   });
 
@@ -773,7 +718,7 @@ describe('Template Validation', () => {
 
 ### 2. 手动测试
 - 使用 Cursor 测试斜杠命令
-- 使用 Claude Code 测试 Skill
+- 使用 Claude Code 测试斜杠命令
 - 验证输出与 CLI 一致（尤其是示例命令与关键参数）
 - 检查错误处理与降级路径（交互命令/TUI 退回纯文本）
 
@@ -787,7 +732,7 @@ describe('Template Validation', () => {
 - 维护“关键命令清单”（critical commands）判定标准
 
 ### 贡献者职责
-- 新功能必须包含模板（至少更新核心入口：AGENTS + SKILL）
+- 新功能必须包含模板（至少更新核心入口：AGENTS.md）
 - 遵循模板规范
 - 测试模板可用性
 - 更新相关文档
@@ -801,8 +746,8 @@ A: 以下情况必须更新模板：
 3. 更改输出格式
 4. 修改默认行为/工作流语义（含 QUICK/FULL、步骤推进规则等）
 
-### Q: 为什么强调“核心入口可发现性”？
-A: 对 AI 工具来说，AGENTS/SKILL 是主要入口。即使补充模板（commands/references）缺失，只要核心入口可发现且描述准确，仍能避免大部分误用；反之会导致 AI 触发错误命令或使用错误参数。
+### Q: 为什么强调"核心入口可发现性"？
+A: 对 AI 工具来说，AGENTS.md 是主要入口。即使补充模板（commands/）缺失，只要核心入口可发现且描述准确，仍能避免大部分误用；反之会导致 AI 触发错误命令或使用错误参数。
 
 ### Q: 如何定义“关键命令”（critical commands）？
 A: 满足任一条件即可视为关键命令：

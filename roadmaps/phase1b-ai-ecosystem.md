@@ -68,7 +68,7 @@ export interface AIAdapter {
   version?: string;
   
   /** 工具类型 */
-  type: 'slash-command' | 'agents-md' | 'skill' | 'workflow';
+  type: 'slash-command' | 'agents-md' | 'command' | 'workflow';
   
   /** 配置目录路径 */
   configDir: string;

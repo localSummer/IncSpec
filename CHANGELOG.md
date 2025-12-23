@@ -5,6 +5,29 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.2.3] - 2025-12-23
+
+### Documentation
+
+- **清理 Skill 遗留术语**
+  - 将所有文档中的 "Skill"、"技能" 术语统一改为 "命令"、"斜杠命令"
+  - 更新 `lib/ide-sync.mjs` 注释：从 "skill" 改为 "commands"
+  - 更新 `roadmaps/template-sync-strategy.md`：
+    - 所有 "SKILL.md" 相关章节标记为已废弃
+    - 将 "Claude Skill 参考文档" 改为 "Claude 命令参考文档"
+    - 更新命令覆盖一致性规则：简化为只需在 AGENTS.md 中可被发现
+    - 更新测试策略：移除 `readSkill()` 相关代码
+    - 将补充文档从 `getCursorTemplates()` 和 `getSkillReferences()` 合并为统一的 `getCommandTemplates()`
+  - 更新 `roadmaps/phase5-ecosystem.md`：
+    - `ClaudeAdapter` 检查目录从 `.claude/skills` 改为 `.claude/commands`
+    - 方法名从 `convertToSkill()` 和 `writeSkill()` 改为 `convertToCommand()` 和 `writeCommand()`
+  - 更新 `roadmaps/phase1b-ai-ecosystem.md`：AIAdapter 接口的 `type` 枚举值从 `'skill'` 改为 `'command'`
+  - 更新 CHANGELOG.md 历史记录中的术语表述
+- **统一架构说明**
+  - 明确 AGENTS.md 是唯一核心入口，SKILL.md 已完全废弃
+  - 强调 Cursor 和 Claude Code 使用完全相同的命令方式
+  - 所有 AI 工具通过 `templates/commands/` 共享命令模板
+
 ## [0.2.2] - 2025-12-23
 
 ### Changed
@@ -291,6 +314,7 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
+[0.2.3]: https://github.com/localSummer/IncSpec/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/localSummer/IncSpec/compare/v0.2.1...v0.2.2
 [0.2.0]: https://github.com/localSummer/IncSpec/compare/v0.1.3...v0.2.0
 [0.1.3]: https://github.com/localSummer/IncSpec/compare/v0.1.2...v0.1.3
