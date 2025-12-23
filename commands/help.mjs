@@ -137,7 +137,7 @@ const COMMANDS = {
     description: '同步集成到 IDE/AI 工具 (Cursor, Claude Code)',
     options: [
       ['--cursor', '仅同步 Cursor 命令'],
-      ['--claude', '仅同步 Claude Code Skill'],
+      ['--claude', '仅同步 Claude Code 命令'],
       ['--all', '同步所有目标'],
       ['--project', '同步到当前目录'],
       ['--global', '同步到全局目录'],
