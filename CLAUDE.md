@@ -9,7 +9,7 @@ IncSpec 是一个面向 AI 编程助手的增量规范驱动开发 CLI 工具。
 ## Requirements
 
 - Node.js >= 18.0.0
-- 无第三方依赖
+- 允许少量引入外部依赖（如 UI 交互库），但核心逻辑仍应保持轻量
 - 纯 ES Modules
 
 ## Development Commands
@@ -203,6 +203,7 @@ incspec reset -t 3         # 短选项形式
 4. **增量设计** - 7 模块蓝图指导实现（概述、API、Store、Types、Components、新文件、迁移）
 5. **无缝迭代** - 每轮产出新基线，作为下一轮起点
 6. **历史可追溯** - 归档按年月和模块组织
+7. **规范生成而非执行** - 专注于生成测试/Lint规范供 AI 参考，而非直接运行测试或代码检查
 
 ## Common Workflows
 
