@@ -33,7 +33,7 @@ AI 编程助手在处理复杂前端代码库时常常力不从心，因为 API 
 - **依赖追踪**：6 维度分析 UI 依赖（API、Store、Types 等）。
 - **增量设计**：7 模块蓝图指导实现。
 - **无缝迭代**：将完成的工作合并为新基线，开启下一轮循环。
-- **历史可追溯**：归档按年月和模块组织，便于回顾历史决策。
+- **历史可追溯**：归档按年月和工作流名称组织，便于回顾历史决策。
 - 兼容你已有的 AI 工具：Cursor、Claude Code 及任何 AGENTS.md 兼容助手。
 
 ## IncSpec 对比一览
@@ -360,8 +360,8 @@ $ incspec archive -y    # 归档所有工作流产出，跳过确认
 ### 为什么需要归档?
 
 - **保持工作区整洁**：避免多轮迭代的文件混杂在一起。
-- **历史可追溯**：按年月和模块组织，便于回顾历史决策。
-- **迭代边界清晰**：每轮归档后，`baselines/`、`requirements/`、`increments/` 目录重新开始。
+- **历史可追溯**：按年月和工作流名称组织，便于回顾历史决策。
+- **迭代边界清晰**：每轮归档后，当前工作流产出从 `baselines/`、`requirements/`、`increments/` 移出，便于下一轮重新生成。
 
 ### 归档时机
 
@@ -375,7 +375,8 @@ $ incspec archive -y    # 归档所有工作流产出，跳过确认
 
 ```bash
 # 归档整个工作流（推荐）
-incspec archive --workflow      # 交互式确认
+incspec archive                 # 交互式确认（默认归档当前工作流）
+incspec archive --workflow      # 显式指定归档当前工作流
 incspec archive -y              # 跳过确认，直接归档
 
 # 归档指定文件
@@ -391,25 +392,24 @@ incspec list archives           # 仅列出归档文件
 
 ### 归档后的目录结构
 
-归档命令按年月和模块自动组织文件：
+归档命令按年月和工作流名称组织文件（文件直接放在工作流目录下）：
 
 ```
 incspec/
 ├── archives/
 │   └── 2024-12/                      # 按年月组织
-│       └── home-search-filter/       # 按工作流模块分组
-│           ├── baselines/
-│           │   ├── home-baseline-v1.md   # 初始基线
-│           │   └── home-baseline-v2.md   # 合并后的新基线
-│           ├── requirements/
-│           │   ├── structured-requirements.md
-│           │   └── ui-dependencies.md
-│           └── increments/
-│               └── search-filter-increment-v1.md
-├── baselines/                        # 归档后已清空，准备下一轮
-├── requirements/                     # 归档后已清空
-└── increments/                       # 归档后已清空
+│       └── home-search-filter/       # 工作流名称
+│           ├── home-baseline-v1.md
+│           ├── structured-requirements.md
+│           ├── ui-dependencies.md
+│           ├── search-filter-increment-v1.md
+│           └── home-baseline-v2.md
+├── baselines/                        # 当前工作流产出默认已移动
+├── requirements/                     # 当前工作流产出默认已移动
+└── increments/                       # 当前工作流产出默认已移动
 ```
+
+说明：若单文件归档且没有当前工作流，文件会直接进入 `archives/YYYY-MM/`。
 
 ### 归档工作流示意
 
@@ -435,23 +435,22 @@ incspec/
 ┌────────────────────────────────────────────┐
 │ 归档完成                                   │
 │                                            │
-│  ┌─────────────┐      ┌─────────────┐      │
-│  │ archives/   │      │ baselines/  │      │
-│  │ 2024-12/    │      │ (已清空)    │      │
-│  │ module/     │      │             │      │
-│  │  ├─baselines│      │ 准备下一轮  │      │
-│  │  ├─requirements    │ 迭代        │      │
-│  │  └─increments      └─────────────┘      │
-│  └─────────────┘                           │
+│  ┌─────────────┐      ┌─────────────────┐  │
+│  │ archives/   │      │ baselines/      │  │
+│  │ 2024-12/    │      │ requirements/   │  │
+│  │ workflow/   │      │ increments/     │  │
+│  │  ├─*.md     │      │ (当前工作流产出 │  │
+│  │  └─*.md     │      │ 已移动)         │  │
+│  └─────────────┘      └─────────────────┘  │
 └────────────────────────────────────────────┘
 ```
 
 ### 归档最佳实践
 
 1. **及时归档** - 完成一轮迭代后立即归档，避免文件堆积。
-2. **使用 --workflow** - 优先归档整个工作流，确保完整性。
-3. **保留新基线** - 归档时新基线会被复制（而非移动）到归档目录，同时保留在 `baselines/` 作为下一轮起点。
-4. **定期清理** - 对于过期的归档，可手动删除或移至外部存储。
+2. **优先归档整个工作流** - 直接执行 `incspec archive` 或 `--workflow`，确保产出完整。
+3. **明确移动/保留策略** - 默认移动到归档目录，需保留原文件时使用 `--keep`。
+4. **保持工作流命名清晰** - 归档目录按工作流名称分组，命名清晰更易追溯。
 
 ## 回退与重置
 
@@ -488,7 +487,7 @@ your-project/
 │   │   └── feature-increment-v1.md
 │   └── archives/                # 历史归档
 │       └── 2024-12/             # 按年月组织
-│           └── {module}/        # 按工作流模块分组
+│           └── {workflow}/      # 按工作流名称分组
 └── .cursor/
     └── commands/
         └── incspec/             # Cursor 命令

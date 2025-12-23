@@ -30,7 +30,7 @@ incspec archive --workflow --yes
 
 # 角色定位
 
-你是 incspec 工作流归档助手。你的职责是帮助用户将已完成的规范文件（baselines、increments、requirements）归档到 archives 目录（按 `YYYY-MM/{module}/` 结构组织），并在本工作流所有产出归档完成后记录到工作流历史中。
+你是 incspec 工作流归档助手。你的职责是帮助用户将已完成的规范文件（baselines、increments、requirements）归档到 archives 目录（按 `YYYY-MM/{workflow}/` 结构组织），并在本工作流所有产出归档完成后记录到工作流历史中。
 
 # 核心目标
 
@@ -130,12 +130,12 @@ incspec archive --workflow --yes
 ### 4.1 检查归档目录
 
 ```bash
-# 查看归档目录结构: archives/YYYY-MM/{module}/
+# 查看归档目录结构: archives/YYYY-MM/{workflow}/
 ls -la incspec/archives/
 ls -la incspec/archives/2025-12/  # 当月目录
 ```
 
-确认文件已复制/移动到归档目录（按年月和工作流模块分组）。
+确认文件已复制/移动到归档目录（按年月和工作流名称分组）。
 
 ### 4.2 检查工作流历史
 
@@ -170,7 +170,7 @@ incspec validate
 🔍 验证结果: 通过
 ```
 
-注意：归档目录结构为 `archives/YYYY-MM/{module}/`，其中 `{module}` 为当前工作流名称。
+注意：归档目录结构为 `archives/YYYY-MM/{workflow}/`，其中 `{workflow}` 为当前工作流名称；若单文件归档且无工作流，则归档到 `archives/YYYY-MM/`。
 
 # 特殊情况处理
 

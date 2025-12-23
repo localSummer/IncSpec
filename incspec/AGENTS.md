@@ -109,7 +109,7 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 
 **命令**: `incspec archive [--yes] [<file>] [--keep]`
 
-**目的**: 将已完成的工作流产出归档到 `incspec/archives/YYYY-MM/{module}/`
+**目的**: 将已完成的工作流产出归档到 `incspec/archives/YYYY-MM/{workflow}/`
 
 **验证**: 归档前执行 `incspec validate` 确保项目健康。归档操作本身会验证文件移动正确性。
 
@@ -123,7 +123,7 @@ incspec/
 ├── baselines/              # 基线快照 (版本控制)
 ├── requirements/           # 需求与依赖
 ├── increments/             # 增量设计 (版本控制)
-└── archives/               # 历史归档 (按月/模块)
+└── archives/               # 历史归档 (按月/工作流)
 ```
 
 ## 编号系统

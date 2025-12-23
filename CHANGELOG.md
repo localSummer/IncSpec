@@ -5,6 +5,15 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.2.5] - 2025-12-23
+
+### Documentation
+
+- 归档目录结构说明对齐 CLI 实际行为
+  - 统一使用 `archives/YYYY-MM/{workflow}/` 描述工作流归档目录
+  - 补充单文件且无工作流时归档到 `archives/YYYY-MM/` 的说明
+  - 更新 README 与模板文档中的归档示例与最佳实践
+
 ## [0.2.4] - 2025-12-23
 
 ### Fixed
@@ -322,6 +331,7 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
+[0.2.5]: https://github.com/localSummer/IncSpec/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/localSummer/IncSpec/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/localSummer/IncSpec/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/localSummer/IncSpec/compare/v0.2.1...v0.2.2
