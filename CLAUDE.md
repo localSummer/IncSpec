@@ -21,7 +21,7 @@ cd IncSpec
 npm link
 
 # 运行 CLI
-node index.mjs [command]
+node src/index.mjs [command]
 incspec [command]        # npm link 后可用
 
 # 验证安装
@@ -37,7 +37,8 @@ incspec update -y        # 跳过确认
 ## Architecture
 
 ```
-index.mjs                 # CLI 入口，参数解析和命令路由
+src/
+├── index.mjs             # CLI 入口，参数解析和命令路由
 ├── commands/             # 命令实现（每个命令一个文件）
 │   ├── init.mjs          # 初始化项目
 │   ├── analyze.mjs       # 步骤1: 代码流程分析

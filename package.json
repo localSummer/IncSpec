@@ -1,14 +1,14 @@
 {
   "name": "@localsummer/incspec",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "面向 AI 编程助手的增量规范驱动开发工具",
   "bin": {
-    "incspec": "index.mjs"
+    "incspec": "src/index.mjs"
   },
-  "main": "index.mjs",
+  "main": "src/index.mjs",
   "type": "module",
   "scripts": {
-    "start": "node index.mjs"
+    "start": "node src/index.mjs"
   },
   "keywords": [
     "incspec",
@@ -32,9 +32,6 @@
     "node": ">=18.0.0"
   },
   "files": [
-    "index.mjs",
-    "commands/",
-    "lib/",
-    "templates/"
+    "src/"
   ]
 }

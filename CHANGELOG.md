@@ -5,6 +5,14 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.2.4] - 2025-12-23
+
+### Fixed
+
+- 修复 `incspec --version` 显示 `unknown` 的问题
+  - 修正 `src/index.mjs` 中 package.json 的引用路径：从 `./package.json` 改为 `../package.json`
+  - 版本号现在正确显示项目版本
+
 ## [0.2.3] - 2025-12-23
 
 ### Documentation
@@ -314,6 +322,7 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
+[0.2.4]: https://github.com/localSummer/IncSpec/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/localSummer/IncSpec/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/localSummer/IncSpec/compare/v0.2.1...v0.2.2
 [0.2.0]: https://github.com/localSummer/IncSpec/compare/v0.1.3...v0.2.0

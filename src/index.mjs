@@ -121,7 +121,7 @@ async function main() {
     const { createRequire } = await import('module');
     const require = createRequire(import.meta.url);
     try {
-      const pkg = require('./package.json');
+      const pkg = require('../package.json');
       console.log(pkg.version);
     } catch {
       console.log('unknown');

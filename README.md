@@ -470,6 +470,11 @@ incspec reset -t 3         # 短选项形式
 ```
 your-project/
 ├── AGENTS.md                    # AI 代理指令（包含 incspec 指令块）
+├── src/                         # IncSpec 源代码
+│   ├── index.mjs                # CLI 入口
+│   ├── commands/                # 命令实现
+│   ├── lib/                     # 核心库
+│   └── templates/               # Markdown 模板文件
 ├── incspec/
 │   ├── project.md               # 项目配置
 │   ├── WORKFLOW.md              # 当前工作流状态
