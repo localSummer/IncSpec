@@ -40,6 +40,21 @@ export async function collectDepCommand(ctx) {
   // Get workflow state
   const workflow = readWorkflow(projectRoot);
 
+  // Handle --complete flag as independent mode (skip all checks)
+  if (options.complete) {
+    if (!workflow?.currentWorkflow) {
+      printWarning('没有活跃的工作流，无法标记完成。');
+      return;
+    }
+    if (!isStepAllowed(STEP_NUMBER, workflow.mode)) {
+      printWarning('当前工作流为快速模式，步骤 3 已跳过，无需标记完成。');
+      return;
+    }
+    updateStep(projectRoot, STEP_NUMBER, STATUS.COMPLETED, OUTPUT_FILE);
+    printSuccess(`步骤 ${STEP_NUMBER} 已标记为完成: ${OUTPUT_FILE}`);
+    return;
+  }
+
   if (!workflow?.currentWorkflow) {
     printWarning('没有活跃的工作流。请先运行 incspec analyze 开始新工作流。');
     return;
@@ -91,9 +106,8 @@ export async function collectDepCommand(ctx) {
   printInfo(`完成后运行 'incspec status' 查看进度`);
   print('');
 
-  // Handle --complete flag
-  if (options.complete) {
-    updateStep(projectRoot, STEP_NUMBER, STATUS.COMPLETED, OUTPUT_FILE);
-    printSuccess(`步骤 3 已标记为完成: ${OUTPUT_FILE}`);
-  }
+  // Provide command to mark as complete
+  print(colorize('完成依赖采集后，运行以下命令标记完成:', colors.dim));
+  print(colorize(`  incspec collect-dep --complete`, colors.dim));
+  print('');
 }

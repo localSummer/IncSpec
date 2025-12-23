@@ -3,8 +3,8 @@ name: IncSpec
 version: 1.0.0
 tech_stack:
   - nodejs
-source_dir: /
-created_at: 2025-12-20
+source_dir: src
+created_at: 2025-12-23
 ---
 
 # Project Overview

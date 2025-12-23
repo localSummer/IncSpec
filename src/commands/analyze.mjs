@@ -87,6 +87,23 @@ export async function analyzeCommand(ctx) {
   // Ensure initialized
   const projectRoot = ensureInitialized(cwd);
 
+  // Handle --complete flag as independent mode (skip all interactive flows)
+  if (options.complete) {
+    const workflow = readWorkflow(projectRoot);
+    if (!workflow?.currentWorkflow) {
+      printError('没有活跃的工作流，无法标记完成。');
+      process.exit(1);
+    }
+    const output = typeof options.output === 'string' ? options.output : null;
+    if (!output) {
+      printError('请通过 --output 指定输出文件名。');
+      process.exit(1);
+    }
+    updateStep(projectRoot, STEP_NUMBER, STATUS.COMPLETED, output);
+    printSuccess(`步骤 ${STEP_NUMBER} 已标记为完成: ${output}`);
+    return;
+  }
+
   // Handle --baseline option: use existing baseline report
   if (options.baseline) {
     const baselineFile = typeof options.baseline === 'string' ? options.baseline : '';
@@ -234,11 +251,4 @@ export async function analyzeCommand(ctx) {
   print(colorize('完成分析后，运行以下命令标记完成:', colors.dim));
   print(colorize(`  incspec analyze --complete --output=${outputFile}`, colors.dim));
   print('');
-
-  // Handle --complete flag
-  if (options.complete) {
-    const output = typeof options.output === 'string' ? options.output : outputFile;
-    updateStep(projectRoot, STEP_NUMBER, STATUS.COMPLETED, output);
-    printSuccess(`步骤 1 已标记为完成: ${output}`);
-  }
 }
