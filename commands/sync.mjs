@@ -3,13 +3,10 @@
  */
 
 import {
-  syncToProject as syncCursorToProject,
-  syncToGlobal as syncCursorToGlobal,
-} from '../lib/cursor.mjs';
-import {
-  syncToProjectClaude,
-  syncToGlobalClaude,
-} from '../lib/claude.mjs';
+  syncToProject,
+  syncToGlobal,
+  getIDEConfig,
+} from '../lib/ide-sync.mjs';
 import {
   colors,
   colorize,
@@ -110,14 +107,15 @@ async function syncCursor(ctx) {
   } else if (options.global) {
     syncTarget = 'global';
   } else {
+    const config = getIDEConfig('cursor');
     const choices = [
       {
-        name: `当前目录 (${cwd}/.cursor/commands/incspec/)`,
+        name: `当前目录 (${cwd}/${config.projectDir}/)`,
         value: 'project',
         description: colorize('仅对当前目录生效', colors.blue),
       },
       {
-        name: '全局目录 (~/.cursor/commands/incspec/)',
+        name: `全局目录 (${config.globalDir}/)`,
         value: 'global',
         description: colorize('对所有项目生效', colors.blue),
       },
@@ -131,12 +129,14 @@ async function syncCursor(ctx) {
 
   // Execute sync
   if (syncTarget === 'project') {
-    const count = syncCursorToProject(cwd);
-    printSuccess(`Cursor: 已同步 ${count} 个命令到 .cursor/commands/incspec/`);
+    const count = syncToProject('cursor', cwd);
+    const config = getIDEConfig('cursor');
+    printSuccess(`Cursor: 已同步 ${count} 个命令到 ${config.projectDir}/`);
     printCursorCommands();
   } else if (syncTarget === 'global') {
-    const count = syncCursorToGlobal();
-    printSuccess(`Cursor: 已同步 ${count} 个命令到 ~/.cursor/commands/incspec/`);
+    const count = syncToGlobal('cursor');
+    const config = getIDEConfig('cursor');
+    printSuccess(`Cursor: 已同步 ${count} 个命令到 ${config.globalDir}/`);
     printCursorCommands();
   }
 }
@@ -161,13 +161,13 @@ function printCursorCommands() {
 }
 
 /**
- * Sync Claude Code skill
+ * Sync Claude Code commands
  * @param {Object} ctx
  */
 async function syncClaude(ctx) {
   const { cwd, options } = ctx;
 
-  print(colorize('=== Claude Code Skill 同步 ===', colors.bold));
+  print(colorize('=== Claude Code 命令同步 ===', colors.bold));
   print('');
 
   // Determine sync target
@@ -178,14 +178,15 @@ async function syncClaude(ctx) {
   } else if (options.global) {
     syncTarget = 'global';
   } else {
+    const config = getIDEConfig('claude');
     const choices = [
       {
-        name: `当前目录 (${cwd}/.claude/skills/inc-spec-skill/)`,
+        name: `当前目录 (${cwd}/${config.projectDir}/)`,
         value: 'project',
         description: colorize('仅对当前目录生效', colors.blue),
       },
       {
-        name: '全局目录 (~/.claude/skills/inc-spec-skill/)',
+        name: `全局目录 (${config.globalDir}/)`,
         value: 'global',
         description: colorize('对所有项目生效（推荐）', colors.blue),
       },
@@ -199,12 +200,33 @@ async function syncClaude(ctx) {
 
   // Execute sync
   if (syncTarget === 'project') {
-    const { count } = syncToProjectClaude(cwd);
-    printSuccess(`Claude Code: 已同步 ${count} 个文件到 .claude/skills/inc-spec-skill/`);
-    print(colorize('  包含: SKILL.md + references/', colors.dim));
+    const count = syncToProject('claude', cwd);
+    const config = getIDEConfig('claude');
+    printSuccess(`Claude Code: 已同步 ${count} 个命令到 ${config.projectDir}/`);
+    printClaudeCommands();
   } else if (syncTarget === 'global') {
-    const { count } = syncToGlobalClaude();
-    printSuccess(`Claude Code: 已同步 ${count} 个文件到 ~/.claude/skills/inc-spec-skill/`);
-    print(colorize('  包含: SKILL.md + references/', colors.dim));
+    const count = syncToGlobal('claude');
+    const config = getIDEConfig('claude');
+    printSuccess(`Claude Code: 已同步 ${count} 个命令到 ${config.globalDir}/`);
+    printClaudeCommands();
   }
+}
+
+/**
+ * Print Claude commands list
+ */
+function printClaudeCommands() {
+  print('');
+  print(colorize('已创建的命令:', colors.bold));
+  print(colorize('  /incspec/inc-analyze      步骤1: 分析代码流程', colors.dim));
+  print(colorize('  /incspec/inc-collect-req  步骤2: 收集结构化需求', colors.dim));
+  print(colorize('  /incspec/inc-collect-dep  步骤3: UI依赖采集', colors.dim));
+  print(colorize('  /incspec/inc-design       步骤4: 增量设计', colors.dim));
+  print(colorize('  /incspec/inc-apply        步骤5: 应用代码变更', colors.dim));
+  print(colorize('  /incspec/inc-merge        步骤6: 合并到基线', colors.dim));
+  print(colorize('  /incspec/inc-archive      归档规范文件', colors.dim));
+  print(colorize('  /incspec/inc-status       查看工作流状态', colors.dim));
+  print(colorize('  /incspec/inc-help         显示帮助', colors.dim));
+  print('');
+  printInfo('请重启 Claude Code 以加载新命令。');
 }

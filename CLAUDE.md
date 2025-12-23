@@ -57,14 +57,12 @@ index.mjs                 # CLI 入口，参数解析和命令路由
 │   ├── spec.mjs          # 规范文件 CRUD，版本管理，归档
 │   ├── terminal.mjs      # 终端输出，颜色，交互式提示
 │   ├── agents.mjs        # AGENTS.md 文件管理
-│   ├── cursor.mjs        # Cursor IDE 命令同步
-│   └── claude.mjs        # Claude Code Skill 同步
+│   └── ide-sync.mjs      # 统一 IDE 集成（Cursor/Claude Code）
 └── templates/            # Markdown 模板文件
     ├── AGENTS.md
     ├── WORKFLOW.md
     ├── project.md
-    ├── commands/         # IDE 命令模板（Cursor/Claude 通用）
-    └── inc-spec-skill/   # Claude Code Skill 模板
+    └── commands/         # IDE 命令模板（Cursor/Claude 通用）
 ```
 
 ## Key Patterns
@@ -187,10 +185,13 @@ incspec reset -t 3         # 短选项形式
 - `/incspec/inc-apply`
 - `/incspec/inc-merge`
 - `/incspec/inc-archive`
+- `/incspec/inc-status`
+- `/incspec/inc-help`
 
 ### Claude Code
-运行 `incspec sync --claude` 后，在 `.claude/skills/inc-spec-skill/` 生成 Skill:
-- 使用 `inc-spec-skill` Skill 触发工作流
+运行 `incspec sync --claude` 后，在 `.claude/commands/incspec/` 生成斜杠命令:
+- 命令列表与 Cursor 完全相同
+- 两个 IDE 使用统一的命令方式，生成相同的文件内容
 
 ### AGENTS.md
 项目根目录的 `AGENTS.md` 包含 incspec 工作流指令块，所有 AGENTS.md 兼容工具自动识别。

@@ -32,7 +32,7 @@ IncSpec CLI 与 AI 编程助手（Cursor、Claude Code、GitHub Copilot 等）�
 
 **为什么重要？**
 - IncSpec 的核心价值在于 AI 工具能够理解和执行工作流
-- 用户通过 AI 工具（如 Cursor 斜杠命令、Claude Skill）触发 CLI 功能
+- 用户通过 AI 工具（如 Cursor 斜杠命令、Claude 斜杠命令）触发 CLI 功能
 - 如果模板不同步，AI 工具将无法使用新功能
 
 **详细指南**：请务必阅读 [模板同步策略文档](./template-sync-strategy.md)

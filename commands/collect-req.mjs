@@ -71,9 +71,9 @@ export async function collectReqCommand(ctx) {
   print('');
   print(colorize(`  /incspec/inc-collect-req`, colors.bold, colors.white));
   print('');
-  print(colorize('或在 Claude Code 中使用 inc-spec-skill 技能:', colors.cyan));
+  print(colorize('或在 Claude Code 中使用斜杠命令:', colors.cyan));
   print('');
-  print(colorize(`  请收集需求，生成结构化需求表格到 ${path.join(projectRoot, INCSPEC_DIR, DIRS.requirements)}`, colors.dim));
+  print(colorize(`  /incspec/inc-collect-req`, colors.bold, colors.white));
   print('');
   print(colorize('该命令将交互式收集需求，生成 5 列结构化表格:', colors.dim));
   print(colorize('  | 新增/修改功能 | 涉及UI组件 | 触发条件 | 影响的核心状态 | 预期数据流向 |', colors.dim));

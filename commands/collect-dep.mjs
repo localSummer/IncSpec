@@ -76,9 +76,9 @@ export async function collectDepCommand(ctx) {
   print('');
   print(colorize(`  /incspec/inc-collect-dep`, colors.bold, colors.white));
   print('');
-  print(colorize('或在 Claude Code 中使用 inc-spec-skill 技能:', colors.cyan));
+  print(colorize('或在 Claude Code 中使用斜杠命令:', colors.cyan));
   print('');
-  print(colorize(`  请收集 UI 依赖，生成依赖报告到 ${path.join(projectRoot, INCSPEC_DIR, DIRS.requirements)}`, colors.dim));
+  print(colorize(`  /incspec/inc-collect-dep`, colors.bold, colors.white));
   print('');
   print(colorize('该命令将交互式采集 6 维度 UI 依赖:', colors.dim));
   print(colorize('  - UI组件库 (Arco/Antd)', colors.dim));

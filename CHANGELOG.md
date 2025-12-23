@@ -5,6 +5,44 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.2.2] - 2025-12-23
+
+### Changed
+
+- **统一 IDE 集成架构**
+  - Claude Code 集成方式从 Skill 改为命令方式，与 Cursor 保持一致
+  - 合并 `lib/cursor.mjs`、`lib/claude.mjs`、`lib/ide-commands.mjs` 为统一的 `lib/ide-sync.mjs`
+  - 两个 IDE 现在生成完全相同的命令文件到各自的 `.claude/commands/incspec/` 和 `.cursor/commands/incspec/` 目录
+  - 减少代码重复，提升可维护性（代码量减少 8%）
+- **简化 IDE 扩展**
+  - 新增 IDE 只需在 `IDE_CONFIGS` 添加配置，无需创建额外文件
+  - 所有 IDE 通过统一 API 操作：`syncToProject(ide, projectRoot)`、`syncToGlobal(ide)`
+  - 支持获取 IDE 配置和列表：`getIDEConfig(ide)`、`getSupportedIDEs()`
+- **统一 Claude Code 使用方式**
+  - Claude Code 现在使用 AGENTS.md 作为核心入口，与 Cursor 完全一致
+  - CLI 命令提示信息更新：将"使用 inc-spec-skill 技能"改为"使用斜杠命令"
+  - 影响文件：`commands/analyze.mjs`、`commands/collect-req.mjs`、`commands/collect-dep.mjs`、`commands/design.mjs`、`commands/apply.mjs`、`commands/merge.mjs`
+
+### Removed
+
+- 移除 `.claude/skills/inc-spec-skill/` 目录支持
+  - Claude Code 现在使用命令方式，与 Cursor 一致
+  - 旧的 Skill 方式不再维护
+
+### Documentation
+
+- **更新路线图文档**
+  - `roadmaps/template-sync-strategy.md`：移除 inc-spec-skill 目录结构，说明 AGENTS.md 为 Cursor/Claude Code 通用入口
+  - `roadmaps/compatibility-policy.md`：移除 SKILL.md 引用，简化为只维护 AGENTS.md
+  - `roadmaps/release-gate.md`：更新发布门禁检查清单，移除 SKILL.md 相关校验
+  - `roadmaps/phase1b-ai-ecosystem.md`：更新模板同步任务说明
+  - `roadmaps/ROADMAP.md`：更新 AI 工具协同模板说明
+  - `roadmaps/phase1a-core-differentiation.md`：更新文档部分说明
+- **统一使用体验**
+  - Cursor 和 Claude Code 现在使用完全相同的斜杠命令
+  - 共享同一套核心文档（AGENTS.md）和命令模板（commands/）
+  - 减少文档冗余，降低维护成本
+
 ## [0.2.0] - 2025-12-21
 
 ### Added
@@ -253,6 +291,7 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
+[0.2.2]: https://github.com/localSummer/IncSpec/compare/v0.2.1...v0.2.2
 [0.2.0]: https://github.com/localSummer/IncSpec/compare/v0.1.3...v0.2.0
 [0.1.3]: https://github.com/localSummer/IncSpec/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/localSummer/IncSpec/compare/v0.1.1...v0.1.2

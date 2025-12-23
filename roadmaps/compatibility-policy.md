@@ -61,8 +61,7 @@
 ### 2.4 `templates/` 与 AI 工具协同入口
 包含但不限于：
 - `templates/AGENTS.md`
-- `templates/inc-spec-skill/SKILL.md`
-- `templates/commands/*`、`templates/inc-spec-skill/references/*`（按需）
+- `templates/commands/*`（按需）
 
 **政策**：
 - CLI 功能变更必须同步更新模板（不可选）。

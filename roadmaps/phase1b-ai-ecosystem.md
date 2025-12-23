@@ -1153,9 +1153,9 @@ incspec sync --agents --force
    - 更新为使用 BaseAdapter 生成
    - 确保与 CLI 参数一致
 
-3. **templates/inc-spec-skill/**
-   - 更新 SKILL.md 包含新功能
-   - 添加 AI 工具列表
+3. **templates/commands/**
+   - 更新斜杠命令模板包含新功能
+   - 确保 Cursor/Claude Code 通用
 
 ---
 

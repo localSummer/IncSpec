@@ -104,7 +104,7 @@ incspec archive -y                   # 步骤 7: 归档产出
   - 任何会影响脚本或工具解析的变更必须视为兼容性风险，需按弃用流程推进
 
 - **AI 工具协同模板**
-  - `templates/` 的核心入口文件（例如 `AGENTS.md`、Claude Skill 入口 `SKILL.md`）必须与 CLI 同步发布
+  - `templates/AGENTS.md` 核心入口文件（Cursor/Claude Code 通用）必须与 CLI 同步发布
   - 若 CLI 新增/调整命令或参数，必须同步更新模板并通过校验
 
 ### 2) 弃用（Deprecation）与迁移策略

@@ -68,8 +68,10 @@
 当更新 `templates/` 目录下的模板文件时，请注意：
 
 - **AGENTS.md**: AI 助手操作手册，会在 `incspec init` 时复制到项目的 `incspec/AGENTS.md`
-- **inc-spec-skill/SKILL.md**: Claude Code Skill 主文档，通过 `incspec sync --claude` 同步到 `.claude/` 目录
 - **commands/*.md**: IDE 命令模板（Cursor/Claude 通用），通过 `incspec sync` 同步到各 IDE 配置目录
+  - Cursor: 同步到 `.cursor/commands/incspec/`
+  - Claude Code: 同步到 `.claude/commands/incspec/`
+  - 两个 IDE 生成完全相同的命令文件
 
 **关键原则**:
 - 参考业界最佳实践（如 OpenSpec）保持模板质量

@@ -160,7 +160,7 @@ AI 编程助手在处理复杂前端代码库时常常力不从心，因为 API 
 | 工具 | 命令 |
 |------|------|
 | **Cursor** | `/incspec/inc-analyze`、`/incspec/inc-collect-req`、`/incspec/inc-collect-dep`、`/incspec/inc-design`、`/incspec/inc-apply`、`/incspec/inc-merge`、`/incspec/inc-archive` |
-| **Claude Code** | 使用 `inc-spec-skill` Skill |
+| **Claude Code** | 同 Cursor，使用相同的 `/incspec/inc-*` 命令 |
 
 </details>
 
@@ -226,8 +226,8 @@ incspec sync --all        # 全部
 
 **设置完成后：**
 - 运行 `incspec status` 验证设置
-- Cursor 用户可直接触发 `/incspec/inc-*` 命令
-- Claude Code 用户可使用 `inc-spec-skill` Skill
+- Cursor 和 Claude Code 用户都可直接使用 `/incspec/inc-*` 命令
+- 命令生成到 `.cursor/commands/incspec/` 或 `.claude/commands/incspec/` 目录
 
 ### 创建你的第一个增量
 

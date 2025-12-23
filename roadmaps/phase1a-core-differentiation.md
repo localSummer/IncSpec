@@ -131,7 +131,7 @@ export async function analyzeCommand(ctx) {
 - [ ] 极简模式只包含 3 个步骤
 - [ ] 步骤跳过逻辑正确
 - [ ] 工作流状态记录模式信息
-- [ ] 模板同步更新（AGENTS.md, SKILL.md）
+- [ ] 模板同步更新（AGENTS.md - Cursor/Claude Code 通用）
 
 ---
 
@@ -955,7 +955,7 @@ export class RiskAssessor {
    - 新增 `incspec diff` 命令文档
    - 新增 `incspec upgrade` 命令文档
 
-2. **SKILL.md**
+2. **AGENTS.md**（Claude Code 现在使用 AGENTS.md，与 Cursor 一致）
    - 更新工作流模式说明（MINIMAL/QUICK/FULL）
    - 新增差异分析使用指南
    - 新增破坏性变更处理最佳实践

@@ -159,9 +159,9 @@ export async function applyCommand(ctx) {
     print('');
     print(colorize(`  /incspec/inc-apply ${inputPath}`, colors.bold, colors.white));
     print('');
-    print(colorize('或在 Claude Code 中使用 inc-spec-skill 技能:', colors.cyan));
+    print(colorize('或在 Claude Code 中使用斜杠命令:', colors.cyan));
     print('');
-    print(colorize(`  请按照 ${inputPath} 的增量设计，应用代码变更到 ${path.join(projectRoot, sourceDir)}`, colors.dim));
+    print(colorize(`  /incspec/inc-apply ${inputPath}`, colors.bold, colors.white));
     print('');
     print(colorize('该命令将:', colors.dim));
     print(colorize('  1. 解析增量设计文件中的变更计划', colors.dim));

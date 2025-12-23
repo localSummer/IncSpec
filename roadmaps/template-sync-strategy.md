@@ -10,29 +10,21 @@ IncSpec 是一个 CLI 工具，但它与 AI 编程助手（Cursor、Claude Code 
 
 ```
 templates/
-├── AGENTS.md                      # ⭐ Cursor 核心入口 - 完整使用指南
+├── AGENTS.md                      # ⭐ 完整使用指南 - 供所有 AGENTS.md 兼容工具使用
 ├── INCSPEC_BLOCK.md               # AGENTS.md 中的 IncSpec 指令块（可选）
 ├── WORKFLOW.md                    # 工作流状态模板
 ├── project.md                     # 项目配置模板
-├── commands/                      # Cursor 斜杠命令（补充）
-│   ├── analyze-codeflow.md
-│   ├── structured-requirements-collection.md
-│   └── ...（7个步骤的详细指令）
-└── inc-spec-skill/
-    ├── SKILL.md                   # ⭐ Claude Code 核心入口 - 完整使用指南
-    └── references/                # 详细指令文档（补充）
-        ├── analyze-codeflow.md
-        ├── structured-requirements-collection.md
-        └── ...（7个步骤的详细指令）
+└── commands/                      # 斜杠命令模板（Cursor/Claude Code 通用）
+    ├── analyze-codeflow.md
+    ├── structured-requirements-collection.md
+    └── ...（7个步骤的详细指令）
 ```
 
 **核心入口文件（必须更新）**：
-- `AGENTS.md`: Cursor 和所有 AGENTS.md 兼容工具的统一入口
-- `SKILL.md`: Claude Code 的统一入口
+- `AGENTS.md`: 所有 AI 工具的统一入口（Cursor、Claude Code 等）
 
 **补充文件（按需更新）**：
-- `commands/*.md`: Cursor 斜杠命令的详细说明
-- `references/*.md`: Claude Skill 的详细参考文档
+- `commands/*.md`: 斜杠命令的详细说明（Cursor/Claude Code 通用）
 
 ## 同步原则
 
@@ -59,12 +51,12 @@ templates/
 
 | CLI 功能 | 核心更新 | 补充更新 |
 |---------|---------|---------|
-| `incspec wizard` | AGENTS.md + SKILL.md | - |
-| `incspec dashboard` | AGENTS.md + SKILL.md | commands/inc-dashboard.md, references/inc-dashboard.md |
-| `incspec graph` | AGENTS.md + SKILL.md | commands/inc-graph.md, references/inc-graph.md |
-| `incspec watch` | AGENTS.md + SKILL.md | commands/inc-watch.md, references/inc-watch.md |
-| 智能参数推断 | AGENTS.md + SKILL.md（更新所有命令说明） | - |
-| 上下文感知提示 | AGENTS.md + SKILL.md（增强状态说明） | - |
+| `incspec wizard` | AGENTS.md | - |
+| `incspec dashboard` | AGENTS.md | commands/inc-dashboard.md |
+| `incspec graph` | AGENTS.md | commands/inc-graph.md |
+| `incspec watch` | AGENTS.md | commands/inc-watch.md |
+| 智能参数推断 | AGENTS.md（更新所有命令说明） | - |
+| 上下文感知提示 | AGENTS.md（增强状态说明） | - |
 
 **具体任务**:
 ```markdown
@@ -85,8 +77,8 @@ templates/
 - [ ] 更新"故障排除"章节
   - 添加 dashboard/graph/watch 的常见问题
 
-#### 2. 更新 SKILL.md
-- [ ] 更新"快速开始"章节
+#### 2. （已废弃）更新 SKILL.md
+注意：Claude Code 现在使用 AGENTS.md，与 Cursor 一致。所有更新只需在 AGENTS.md 中完成。
   - 添加 wizard 启动方式
   - 添加工作流可视化说明
 - [ ] 更新"CLI集成"章节
@@ -110,7 +102,7 @@ templates/
 - [ ] references/inc-graph.md
 - [ ] references/inc-watch.md
 
-**注意**: 补充文档是可选的。Cursor 和 Claude Code 会首先读取 AGENTS.md 和 SKILL.md，补充文档仅在需要更详细说明时创建。
+**注意**: 补充文档是可选的。Cursor 和 Claude Code 都使用 AGENTS.md 作为核心入口，补充文档（commands/）仅在需要更详细说明时创建。
 ```
 
 ---
@@ -121,13 +113,13 @@ templates/
 
 | CLI 功能 | 核心更新 | 影响章节 |
 |---------|---------|---------|
-| `incspec diff` | AGENTS.md + SKILL.md | CLI命令、步骤5(应用) |
-| `incspec test generate/run/coverage` | AGENTS.md + SKILL.md | CLI命令、步骤5(应用)、最佳实践 |
-| `incspec lint` | AGENTS.md + SKILL.md | CLI命令、步骤5(应用) |
-| `incspec complexity` | AGENTS.md + SKILL.md | CLI命令、步骤5(应用) |
-| `incspec quality-gate` | AGENTS.md + SKILL.md | CLI命令、步骤5(应用) |
-| `incspec check-conflicts` | AGENTS.md + SKILL.md | CLI命令、步骤5(应用) |
-| 步骤5集成质量检查 | AGENTS.md + SKILL.md | 步骤5详情、工作流概览 |
+| `incspec diff` | AGENTS.md | CLI命令、步骤5(应用) |
+| `incspec test generate/run/coverage` | AGENTS.md | CLI命令、步骤5(应用)、最佳实践 |
+| `incspec lint` | AGENTS.md | CLI命令、步骤5(应用) |
+| `incspec complexity` | AGENTS.md | CLI命令、步骤5(应用) |
+| `incspec quality-gate` | AGENTS.md | CLI命令、步骤5(应用) |
+| `incspec check-conflicts` | AGENTS.md | CLI命令、步骤5(应用) |
+| 步骤5集成质量检查 | AGENTS.md | 步骤5详情、工作流概览 |
 
 **具体任务**:
 ```markdown
@@ -166,7 +158,8 @@ templates/
 - [ ] 添加"代码质量保障"小节
 - [ ] 添加测试生成最佳实践
 
-#### 2. 更新 SKILL.md
+#### 2. （已废弃）更新 SKILL.md
+注意：Claude Code 现在使用 AGENTS.md，与 Cursor 一致。
 
 **快速开始章节**:
 - [ ] 更新步骤5说明，包含质量检查
@@ -200,13 +193,13 @@ templates/
 
 | CLI 功能 | 核心更新 | 影响章节 |
 |---------|---------|---------|
-| `incspec history` | AGENTS.md + SKILL.md | CLI命令 |
-| `incspec lock/unlock` | AGENTS.md + SKILL.md | CLI命令、团队协作 |
-| `incspec publish/pull` | AGENTS.md + SKILL.md | CLI命令、团队协作 |
-| `incspec team-status` | AGENTS.md + SKILL.md | CLI命令、团队协作 |
-| `incspec create-mr/review` | AGENTS.md + SKILL.md | CLI命令、团队协作 |
-| 工作流智能推荐 | AGENTS.md + SKILL.md | 步骤1、快速检查清单 |
-| 步骤跳过建议 | AGENTS.md + SKILL.md | 所有步骤、最佳实践 |
+| `incspec history` | AGENTS.md | CLI命令 |
+| `incspec lock/unlock` | AGENTS.md | CLI命令、团队协作 |
+| `incspec publish/pull` | AGENTS.md | CLI命令、团队协作 |
+| `incspec team-status` | AGENTS.md | CLI命令、团队协作 |
+| `incspec create-mr/review` | AGENTS.md | CLI命令、团队协作 |
+| 工作流智能推荐 | AGENTS.md | 步骤1、快速检查清单 |
+| 步骤跳过建议 | AGENTS.md | 所有步骤、最佳实践 |
 
 **具体任务**:
 ```markdown
@@ -242,9 +235,8 @@ templates/
 - [ ] 添加协作命令组
 - [ ] 添加历史记录命令
 
-#### 2. 更新 SKILL.md
-
-**新增"团队协作"章节**:
+#### 2. （已废弃）更新 SKILL.md
+注意：Claude Code 现在使用 AGENTS.md，与 Cursor 一致。
 - [ ] 工作流锁定和共享
 - [ ] 代码评审集成
 - [ ] 团队状态监控
@@ -278,12 +270,12 @@ templates/
 
 | CLI 功能 | 核心更新 | 影响章节 |
 |---------|---------|---------|
-| `incspec wizard` | AGENTS.md + SKILL.md | 快速开始、CLI命令 |
-| `incspec history` | AGENTS.md + SKILL.md | CLI命令 |
-| `incspec dashboard` | AGENTS.md + SKILL.md | CLI命令 |
-| `incspec watch` | AGENTS.md + SKILL.md | CLI命令 |
-| CI/CD 集成 | AGENTS.md + SKILL.md | 与AI助手集成、新增 CI/CD 章节 |
-| 团队协作 | AGENTS.md + SKILL.md | 新增团队协作章节 |
+| `incspec wizard` | AGENTS.md | 快速开始、CLI命令 |
+| `incspec history` | AGENTS.md | CLI命令 |
+| `incspec dashboard` | AGENTS.md | CLI命令 |
+| `incspec watch` | AGENTS.md | CLI命令 |
+| CI/CD 集成 | AGENTS.md | 与AI助手集成、新增 CI/CD 章节 |
+| 团队协作 | AGENTS.md | 新增团队协作章节 |
 
 **具体任务**:
 ```markdown
@@ -342,7 +334,8 @@ incspec status --json       # 输出 JSON 格式状态
 - `dashboard` / `dash` - 显示工作流仪表盘
 - `watch` - 实时监控工作流
 
-#### 2. 更新 SKILL.md
+#### 2. （已废弃）更新 SKILL.md
+注意：Claude Code 现在使用 AGENTS.md，与 Cursor 一致。
 
 **新增章节**:
 ```markdown
@@ -409,12 +402,12 @@ incspec watch        # 实时监控
 
 | CLI 功能 | 核心更新 | 影响章节 |
 |---------|---------|---------|
-| `incspec plugin *` | AGENTS.md + SKILL.md | CLI命令、新增插件章节 |
-| `incspec monitor` | AGENTS.md + SKILL.md | CLI命令 |
-| `incspec logs` | AGENTS.md + SKILL.md | CLI命令、故障排除 |
-| `incspec doctor` | AGENTS.md + SKILL.md | CLI命令、故障排除 |
-| 插件系统 | AGENTS.md + SKILL.md | 新增插件章节 |
-| AI 适配优化 | AGENTS.md + SKILL.md | 全局优化提示词 |
+| `incspec plugin *` | AGENTS.md | CLI命令、新增插件章节 |
+| `incspec monitor` | AGENTS.md | CLI命令 |
+| `incspec logs` | AGENTS.md | CLI命令、故障排除 |
+| `incspec doctor` | AGENTS.md | CLI命令、故障排除 |
+| 插件系统 | AGENTS.md | 新增插件章节 |
+| AI 适配优化 | AGENTS.md | 全局优化提示词 |
 
 **具体任务**:
 ```markdown
@@ -453,7 +446,8 @@ incspec watch        # 实时监控
 - [ ] 增强上下文说明
 - [ ] 改进错误处理指导
 
-#### 2. 更新 SKILL.md
+#### 2. （已废弃）更新 SKILL.md
+注意：Claude Code 现在使用 AGENTS.md，与 Cursor 一致。
 
 **新增"插件扩展"章节**:
 - [ ] 插件系统使用
@@ -477,7 +471,7 @@ incspec watch        # 实时监控
 #### 3. 创建模板开发指南
 - [ ] 新建 templates/CONTRIBUTING.md
 - [ ] 定义 AGENTS.md 更新规范
-- [ ] 定义 SKILL.md 更新规范
+- [ ] 定义 AGENTS.md 更新规范
 - [ ] 提供模板测试方法
 - [ ] 版本管理指南
 
@@ -506,8 +500,6 @@ vim templates/AGENTS.md
 # - 在"CLI 命令"章节添加 dashboard 命令说明
 # - 更新相关工作流步骤说明
 # - 添加使用示例
-
-vim templates/inc-spec-skill/SKILL.md
 # - 在"CLI集成"表格添加 dashboard 命令
 # - 更新相关步骤说明
 # - 同步 AGENTS.md 的更新
@@ -516,11 +508,7 @@ vim templates/inc-spec-skill/SKILL.md
 # 仅在需要更详细说明时创建
 mkdir -p templates/commands
 touch templates/commands/inc-dashboard.md
-# 编写详细的 Cursor 命令说明
-
-mkdir -p templates/inc-spec-skill/references  
-touch templates/inc-spec-skill/references/inc-dashboard.md
-# 编写详细的 Claude Skill 参考
+# 编写详细的斜杠命令说明（Cursor/Claude Code 通用）
 
 # 4. 测试模板
 incspec sync --cursor --claude
@@ -534,14 +522,14 @@ incspec sync --cursor --claude
 - [ ] CLI 功能实现
 - [ ] 单元测试
 - [ ] ⭐ **AGENTS.md 更新**（核心，必须）
-- [ ] ⭐ **SKILL.md 更新**（核心，必须）
-- [ ] Cursor 命令模板（可选，如需详细说明）
+- [ ] ⭐ **AGENTS.md 更新**（核心，必须 - Cursor/Claude Code 通用）
+- [ ] 命令模板（可选，如需详细说明）
 - [ ] Claude Skill 参考文档（可选，如需详细说明）
 - [ ] 模板测试验证
 - [ ] 文档更新
 
 **审查重点**：
-- AGENTS.md 和 SKILL.md 的更新是否一致
+- AGENTS.md 的更新是否完整（包含 Cursor/Claude Code 所需的所有说明）
 - 命令说明是否清晰易懂
 - 是否包含必要的示例
 - 是否更新了相关的工作流步骤
@@ -600,11 +588,14 @@ incspec update     # 自动更新本地模板
 - 在"故障排除"添加新的常见问题
 - 使用清晰的命令示例
 
-#### SKILL.md 结构
+#### （已废弃）SKILL.md 结构
+注意：Claude Code 现在使用 AGENTS.md，不再需要单独的 SKILL.md 文件。
+以下内容仅作历史参考：
+
 ```markdown
 ---
-name: inc-spec-skill
-description: 技能描述
+name: incspec-command
+description: 斜杠命令描述（已废弃）
 ---
 
 # AI增量编码
@@ -698,20 +689,20 @@ description: 技能描述
 > 适用范围：当 CLI 新增/变更命令、参数、输出、工作流语义时，必须满足至少以下一致性规则。
 
 ### 1) 核心入口一致性（MUST）
-- `templates/AGENTS.md` 与 `templates/inc-spec-skill/SKILL.md` 必须：
+- `templates/AGENTS.md` 必须：
   - 包含完整的工作流概览与推荐主路径（至少覆盖新手可走通的主流程）
-  - 给出“关键命令入口”与使用方式（至少包含核心工作流命令与新增命令的可发现性说明）
+  - 给出"关键命令入口"与使用方式（至少包含核心工作流命令与新增命令的可发现性说明）
   - 对 CLI 的关键新行为/重要参数变更给出明确说明（含示例）
-- 当 CLI 变更影响用户行为（新增/弃用/默认行为变化）时，两份入口文件必须同步更新。
+- 当 CLI 变更影响用户行为（新增/弃用/默认行为变化）时，该文件必须同步更新。
 
 ### 2) 命令覆盖一致性（MUST）
 对每个 CLI 命令（含别名）：
 - 必须在核心入口文件中可被发现（至少在 AGENTS 或 SKILL 其中之一出现该命令的用途或主路径引用）
-- 若该命令是“面向 AI 工具的主要触发入口”（例如新增 workflow 步骤命令、强推荐命令）：
-  - 必须在 `templates/commands/` 与 `templates/inc-spec-skill/references/` 中至少补充一端（推荐两端都补）
-  - 若不补充，必须在 PR/Release Notes 解释原因（例如“无需补充说明/仅内部命令”）
+- 若该命令是"面向 AI 工具的主要触发入口"（例如新增 workflow 步骤命令、强推荐命令）：
+  - 必须在 `templates/commands/` 中提供详细说明
+  - 若不补充，必须在 PR/Release Notes 解释原因（例如"无需补充说明/仅内部命令"）
 
-> 说明：补充模板并非每个命令都必须创建，但“关键命令”必须具备足够说明以避免 AI 误用。
+> 说明：补充模板并非每个命令都必须创建，但"关键命令"必须具备足够说明以避免 AI 误用。
 
 ### 3) 参数一致性（MUST）
 - 模板中出现的命令参数必须与 CLI 一致：
@@ -741,7 +732,7 @@ description: 技能描述
 // tests/templates/template-validator.test.mjs
 describe('Template Validation', () => {
   it('核心入口文件存在且可读取', () => {
-    // 验证 templates/AGENTS.md 与 templates/inc-spec-skill/SKILL.md 存在
+    // 验证 templates/AGENTS.md 存在
   });
 
   it('CLI 命令在核心入口中可被发现（覆盖一致性）', () => {

@@ -19,7 +19,7 @@ Release Gate 的作用是：把“做完功能”升级为“可发布的功能�
 - CLI：命令、别名、参数、默认值、输出
 - 工作流：7 步状态机（含 QUICK/FULL）
 - 文件系统与规范：`incspec/` 目录结构、spec 命名/归档规则
-- 模板：`templates/AGENTS.md`、`templates/inc-spec-skill/SKILL.md` 及补充指令模板
+- 模板：`templates/AGENTS.md` 及补充指令模板
 - 文档：README、迁移说明、路线图与阶段文档（如产生影响）
 
 ### 0.3 Gate 级别
@@ -44,10 +44,8 @@ Release Gate 的作用是：把“做完功能”升级为“可发布的功能�
 ### 1.2 MUST：模板同步可用
 - [ ] CLI 变更涉及命令/参数/行为时：
   - [ ] `templates/AGENTS.md` 更新
-  - [ ] `templates/inc-spec-skill/SKILL.md` 更新
 - [ ] 如新增命令需要更细说明（可选但常见）：
-  - [ ] `templates/commands/*` 增补
-  - [ ] `templates/inc-spec-skill/references/*` 增补
+  - [ ] `templates/commands/*` 增补（Cursor/Claude Code 通用）
 
 ### 1.3 SHOULD：依赖引入与降级策略
 如本次版本引入或升级第三方依赖：
@@ -69,14 +67,13 @@ Release Gate 的作用是：把“做完功能”升级为“可发布的功能�
 
 **A. 核心入口一致性（MUST）**
 - [ ] `templates/AGENTS.md` 存在且可读取
-- [ ] `templates/inc-spec-skill/SKILL.md` 存在且可读取
-- [ ] 若本次发版涉及 CLI 新增/变更命令、参数、默认行为或工作流语义：两份入口文件必须同步更新并反映变化（含至少 1 个示例或明确说明）
+- [ ] 若本次发版涉及 CLI 新增/变更命令、参数、默认行为或工作流语义：该文件必须同步更新并反映变化（含至少 1 个示例或明确说明）
 
 **B. 命令覆盖一致性（MUST）**
-- [ ] 每个 CLI 命令至少在 AGENTS 或 SKILL 中“可被发现”（可通过文本检索/索引/命令清单对照实现）
-- [ ] 对“关键命令”（新增命令、工作流关键入口、CI/自动化调用命令、交互/降级复杂命令）：
-  - [ ] `templates/commands/` 与 `templates/inc-spec-skill/references/` 至少一端具备补充说明（推荐两端都具备）
-  - [ ] 若未补充，必须在 Release Notes 说明原因与风险（例如“内部命令/不推荐给 AI 直接触发”）
+- [ ] 每个 CLI 命令至少在 AGENTS.md 中"可被发现"（可通过文本检索/索引/命令清单对照实现）
+- [ ] 对"关键命令"（新增命令、工作流关键入口、CI/自动化调用命令、交互/降级复杂命令）：
+  - [ ] `templates/commands/` 具备补充说明（Cursor/Claude Code 通用）
+  - [ ] 若未补充，必须在 Release Notes 说明原因与风险（例如"内部命令/不推荐给 AI 直接触发"）
 
 **C. 参数一致性（MUST）**
 - [ ] 模板中出现的参数名（长/短选项）与 CLI 一致
