@@ -352,6 +352,7 @@ function isValidUpgrade(from, to) {
 - [ ] 支持从 quick 升级到 full
 - [ ] `--list` 显示需要补充的步骤
 - [ ] 升级后工作流状态正确更新
+- [ ] 升级后对 WORKFLOW.md 中状态正确反映
 
 ---
 
