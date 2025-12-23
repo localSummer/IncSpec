@@ -31,19 +31,26 @@ description: 设计优先的前端功能增量编码工作流。适用于实现�
 ```
 1. 分析现有代码    → incspec analyze <path> --quick
 2. 收集需求        → incspec collect-req
-3. 应用代码变更    → incspec apply (基于需求文档)
-4. 合并到基线      → incspec merge (重新分析生成)
-5. 归档工作流      → incspec archive --yes
+   [跳过 3: 依赖收集 - 简单变更无需此步]
+   [跳过 4: 增量设计 - 直接基于需求实现]
+5. 应用代码变更    → incspec apply (基于需求文档)
+6. 合并到基线      → incspec merge (重新分析生成)
+7. 归档工作流      → incspec archive --yes
 ```
 
 首次使用前初始化: `incspec init`
 
 ## 执行规则
 
-当用户请求满足以下条件时，**直接开始执行**，无需搜索确认:
+当用户请求满足以下条件时，**立即启动工作流**，无需额外搜索或确认启动意图:
 - 明确指定了模式（完整/快速）
 - 提供了目标路径或基线文件
 - 意图清晰无歧义
+
+**重要说明**:
+- "立即启动工作流"指无需确认是否开始执行，但**不跳过**工作流中定义的人工确认点
+- 步骤2(需求收集)和步骤4(增量设计)仍然**必须**等待用户确认后才能继续
+- 步骤7(归档)建议向用户确认归档范围
 
 **默认行为**:
 - 未指定模式时，默认使用完整模式
@@ -87,15 +94,17 @@ description: 设计优先的前端功能增量编码工作流。适用于实现�
 
 每个步骤与 `incspec` CLI同步以跟踪工作流状态:
 
-| 步骤 | 开始 | 完成 |
-|------|------|------|
-| 分析 | `incspec analyze <path> --module=<m>` 或 `--baseline=<file>` | `--complete --output=<file>` |
-| 需求 | `incspec collect-req` | `--complete` |
-| 依赖 | `incspec collect-dep` | `--complete` |
-| 设计 | `incspec design --feature=<f>` | `--complete --output=<file>` |
-| 应用 | `incspec apply <report>` | `--complete` |
-| 合并 | `incspec merge <report>` | `--complete --output=<file>` |
-| 归档 | `incspec archive --yes` | - |
+| 步骤 | 模式 | 开始 | 完成 |
+|------|------|------|------|
+| 分析 | 完整/快速 | `incspec analyze <path> --module=<m>` 或 `--baseline=<file>` | `--complete --output=<file>` |
+| 需求 | 完整/快速 | `incspec collect-req` | `--complete` |
+| 依赖 | 仅完整 | `incspec collect-dep` | `--complete` |
+| 设计 | 仅完整 | `incspec design --feature=<f>` | `--complete --output=<file>` |
+| 应用 | 完整/快速 | `incspec apply <report>` | `--complete` |
+| 合并 | 完整/快速 | `incspec merge <report>` | `--complete --output=<file>` |
+| 归档 | 完整/快速 | `incspec archive --yes` | - |
+
+**前置步骤检查**: 步骤 2-6 执行前会自动检查前置步骤是否完成。若前置步骤未完成，命令会提示并阻止执行。添加 `--force` 可跳过此检查。
 
 管理命令:
 - `incspec status` - 查看工作流状态
@@ -266,6 +275,7 @@ incspec archive <file> --keep      # 复制而非移动
 | 跳过基线合并 | 对当前系统状态产生混淆 | 每次增量后必须执行步骤6 |
 | 忽略归档 | 工作区杂乱，历史丢失 | 工作流完成后立即执行步骤7 |
 | 工作流状态不一致 | CLI命令执行失败 | 使用 `incspec status` 检查状态，必要时使用 `incspec reset` 修复 |
+| 前置步骤未完成 | 命令被阻止执行 | 按顺序完成前置步骤，或添加 `--force` 强制执行 |
 
 ## 参考资源
 
@@ -281,7 +291,7 @@ incspec archive <file> --keep      # 复制而非移动
 
 ## 使用示例
 
-**任务:** 为产品仪表板添加筛选功能
+**完整任务模式:** 为产品仪表板添加筛选功能
 
 ```
 步骤1: 分析产品仪表板代码流程
