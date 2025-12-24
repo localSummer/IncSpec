@@ -46,7 +46,7 @@ function collectArchivedFiles(projectRoot) {
   }
 
   const files = [];
-  
+
   // Helper to collect .md files from a directory
   const collectMdFiles = (dir) => {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -57,7 +57,7 @@ function collectArchivedFiles(projectRoot) {
       }
     });
   };
-  
+
   // Traverse: archives/ -> YYYY-MM/ -> [module/] -> files
   const topEntries = fs.readdirSync(archiveRoot, { withFileTypes: true });
   topEntries.forEach(entry => {
@@ -122,6 +122,11 @@ function getArchivableOutputs(workflow) {
     const step = workflow.steps[index];
     if (!step || step.status !== STATUS.COMPLETED || !step.output || step.output === '-') {
       return null;
+    }
+
+    // 步骤5 (apply) 的输出是"代码已应用"占位符，不是文件，跳过
+    if (index === 4 && step.output === '代码已应用') {
+      continue;
     }
 
     const completedAt = parseWorkflowTime(step.completedAt);

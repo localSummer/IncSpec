@@ -7,6 +7,13 @@
 
 ## [Unreleased]
 
+## [0.3.1] - 2025-12-24
+
+### Fixed
+
+- 修复 `archive` 命令在步骤 5 输出为"代码已应用"占位符时误报文件未找到的问题
+  - 步骤 5 (apply) 的输出是占位符而非实际文件，归档逻辑应跳过此检查
+
 ## [0.3.0] - 2025-12-24
 
 ### Added
@@ -361,6 +368,7 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
+[0.3.1]: https://github.com/localSummer/IncSpec/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/localSummer/IncSpec/compare/v0.2.6...v0.3.0
 [0.2.5]: https://github.com/localSummer/IncSpec/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/localSummer/IncSpec/compare/v0.2.3...v0.2.4
