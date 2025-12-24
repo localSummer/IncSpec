@@ -11,7 +11,7 @@
 
 # IncSpec
 
-![IncSpec 全局介绍](./assets/incspec.png)
+![IncSpec 全局介绍](./assets/incspec.jpeg)
 
 IncSpec 通过**增量规范驱动开发**让人类与 AI 编程助手保持一致 - 这是一个 7 步工作流，在修改代码前先捕获代码流程基线。**无需 API 密钥。**
 
