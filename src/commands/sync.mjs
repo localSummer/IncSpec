@@ -61,8 +61,8 @@ export async function syncCommand(ctx) {
     targets = await checkbox({
       message: '选择要同步的目标:',
       choices: [
-        { ...SYNC_TARGETS.cursor, checked: true },
-        { ...SYNC_TARGETS.claude, checked: false },
+        { ...SYNC_TARGETS.cursor },
+        { ...SYNC_TARGETS.claude },
       ],
     });
 
