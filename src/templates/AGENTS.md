@@ -4,11 +4,11 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 
 ## 快速检查清单
 
-**完整模式 (7步)**:
+**完整模式 (FULL, 7步)**:
 - 按顺序执行: analyze → collect-req → collect-dep → design → apply → merge → archive
 - 适用于: 复杂 UI 功能、多组件交互、需要详细设计审查
 
-**快速模式 (5步)**:
+**快速模式 (QUICK, 5步)**:
 - 启动: `incspec analyze <path> --quick`
 - 按顺序执行: 
   - 步骤1: analyze (代码分析)
@@ -20,23 +20,55 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
   - 步骤7: archive (归档)
 - 适用于: Bug 修复、简单功能、不涉及复杂 UI 依赖的变更
 
+**极简模式 (MINIMAL, 3步)**:
+- 启动: `incspec analyze <path> --minimal`
+- 按顺序执行:
+  - 步骤1: analyze (代码分析)
+  - [跳过步骤2: 需求收集]
+  - [跳过步骤3: UI依赖采集]
+  - [跳过步骤4: 增量设计]
+  - 步骤5: apply (直接应用代码变更)
+  - [跳过步骤6: 合并基线]
+  - 步骤7: archive (归档，用户自行决定是否先合并基线)
+- 适用于: 紧急 Bug 修复、单文件小改动、快速实验
+- 注意: 归档时会提醒用户是否需要先生成新基线快照（可选运行 `incspec merge`）
+
 **核心约定**:
 - 初始化: `incspec init`
 - 检查状态: `incspec status`
 - 编号引用: `[S1]` 时序步骤, `[D1]` 依赖, `[C1]` 变更
 - 增量标记: `[N1]` 新增, `[S1-Modified]` 修改, `[S1-Deleted]` 删除
-- 验证时机: 步骤 1/4/6 完成后、归档前执行 `incspec validate`，出错时加 `--strict` 用于 CI
+- 验证时机: 完整/快速模式在步骤 1/4/6 后、归档前执行 `incspec validate`；极简模式在步骤 1 和归档前执行，若先执行 merge 则在合并后验证
 
 ## 七步工作流
 
 ```
 完整模式:  [1分析] → [2需求] → [3UI依赖] → [4设计] → [5应用] → [6合并] → [7归档] → 循环
 快速模式:  [1分析] → [2需求] ─(跳过3,4)─→ [5应用] → [6合并] → [7归档] → 循环
+极简模式:  [1分析] ─(跳过2,3,4,6)─→ [5应用] → [7归档] → 循环
 ```
+
+### 模式对比表
+
+| 维度 | 完整模式 (FULL) | 快速模式 (QUICK) | 极简模式 (MINIMAL) |
+|------|----------------|-----------------|-------------------|
+| 步骤数 | 7 步 | 5 步 | 3 步 |
+| 跳过步骤 | 无 | 步骤 3, 4 | 步骤 2, 3, 4, 6 |
+| 需求收集 | ✓ 5 列结构化需求 | ✓ 5 列结构化需求 | ✗ 直接应用 |
+| 增量设计 | ✓ 完整设计蓝图 | ✗ 直接应用 | ✗ 直接应用 |
+| UI 依赖采集 | ✓ 6 维度分析 | ✗ 跳过 | ✗ 跳过 |
+| 合并基线 | ✓ merge 命令 | ✓ merge 命令 | ✗ 可选（归档时提醒） |
+| 适用场景 | 复杂功能、架构变更 | Bug 修复、简单功能 | 紧急修复、单文件改动 |
+| 审批门禁 | 设计阶段 + 应用前 | 应用前 | 应用前 |
 
 ### 步骤 1: 分析代码工作流
 
-**命令**: `incspec analyze <source-path> [--module=name] [--quick] [--baseline=file]`
+**命令**: `incspec analyze <source-path> [--module=name] [--quick|--minimal] [--baseline=file]`
+
+**选项**:
+- `--quick`: 启动快速模式（跳过步骤 3, 4）
+- `--minimal`: 启动极简模式（跳过步骤 2/3/4，步骤 6 可选）
+- `--baseline=file`: 使用现有基线（跳过分析，直接进入步骤 2；极简模式直接进入 apply）
 
 **目的**: 生成包含 API 调用时序图和依赖关系图的基线快照。
 
@@ -51,6 +83,7 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 **命令**: `incspec collect-req [--force]` (别名: `cr`)
 
 **目的**: 交互式需求收集,转换为 5 列格式。
+**极简模式**: 跳过此步骤。
 
 **输出**: `incspec/requirements/structured-requirements.md`
 
@@ -61,6 +94,7 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 **命令**: `incspec collect-dep [--force]` (别名: `cd`)
 
 **目的**: 映射新增/修改 UI 组件的所有上下文依赖。
+**极简模式**: 跳过此步骤。
 
 **输出**: `incspec/requirements/ui-dependencies.md`
 
@@ -71,6 +105,7 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 **命令**: `incspec design [--feature=name] [--force]` (别名: `d`)
 
 **目的**: 创建全面的增量设计蓝图。
+**极简模式**: 跳过此步骤。
 
 **输出**: `incspec/increments/{feature}-increment-v{n}.md`
 
@@ -93,13 +128,14 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 
 **执行顺序**: Types → Utils → APIs → Store → Components
 
-**审批门禁**: 增量设计必须经过审查批准后才能执行。
+**审批门禁**: 完整/快速模式需审批增量设计；极简模式在 apply 前确认改动范围。
 
 ### 步骤 6: 合并到基线
 
 **命令**: `incspec merge [increment-path] [--force]` (别名: `m`)
 
 **目的**: 将增量整合到新的基线快照中。
+**极简模式**: 可选执行（通常在归档前按需生成新基线）。
 
 **处理**: 移除增量标记 → 合并新节点 → 重新编号为干净序列 → 输出新基线 v{n+1}
 
@@ -143,14 +179,17 @@ incspec init [--force]              # 初始化项目
 incspec status / st                 # 查看工作流状态
 incspec list / ls [-l] [-a]         # 列出规格文件
 
-# 7步工作流
-incspec analyze <path> [--quick] [--module=name] [--baseline=file]  # 步骤1
-incspec collect-req / cr [--force]  # 步骤2 (--force 跳过前置检查)
-incspec collect-dep / cd [--force]  # 步骤3 (快速模式跳过)
-incspec design / d [--feature=name] [--force]  # 步骤4 (快速模式跳过)
+# 7步工作流 (支持三种模式)
+incspec analyze <path> [--quick|--minimal] [--module=name] [--baseline=file]  # 步骤1
+incspec collect-req / cr [--force]  # 步骤2 (--force 跳过前置检查，极简模式跳过)
+incspec collect-dep / cd [--force]  # 步骤3 (快速/极简模式跳过)
+incspec design / d [--feature=name] [--force]  # 步骤4 (快速/极简模式跳过)
 incspec apply / ap [path] [--force] # 步骤5
-incspec merge / m [path] [--force]  # 步骤6
+incspec merge / m [path] [--force]  # 步骤6 (极简模式可选)
 incspec archive [--yes] [--keep]    # 步骤7
+
+# 模式管理
+incspec upgrade <mode> / ug         # 升级工作流模式 (minimal → quick → full)
 
 # 验证与同步
 incspec validate / v [--strict]     # 验证完整性
@@ -158,6 +197,31 @@ incspec sync [--cursor|--claude|--all] [--global|--project]  # IDE集成
 incspec reset                       # 完全重置工作流（归档所有产出）
 incspec reset --to=<step>           # 部分回退到指定步骤（保留1-N，重置N+1至7）
 ```
+
+### 模式升级
+
+**命令**: `incspec upgrade <mode>`
+
+**升级路径**: minimal → quick → full (只能从宽松到严格)
+
+**用法示例**:
+```bash
+# 从极简模式升级到快速模式
+incspec upgrade quick
+
+# 从快速模式升级到完整模式
+incspec upgrade full
+```
+
+**升级效果**:
+- 极简 → 快速: 需补充步骤 2 (需求收集) 和步骤 6 (合并基线)
+- 快速 → 完整: 需补充步骤 3 (UI依赖) 和步骤 4 (增量设计)
+- 极简 → 完整: 需补充步骤 2 (需求收集)、步骤 3 (UI依赖)、步骤 4 (增量设计) 和步骤 6 (合并基线)
+
+**注意事项**:
+- 只有在活跃工作流中才能升级
+- 升级后需按提示补充缺失的步骤
+- 不支持降级（full → quick 或 quick → minimal）
 
 ## 文件格式示例
 
@@ -211,6 +275,9 @@ baseline: home-baseline-v1
 **快速模式流程**:
 1. 人类提供简单需求 → AI 执行步骤 1-2 → 人类审批 → AI 执行步骤 5-7 → 循环
 
+**极简模式流程**:
+1. 人类提供紧急修复需求 → AI 执行步骤 1 (分析) → AI 执行步骤 5 (直接应用) → AI 执行步骤 7 (归档，提醒是否合并基线) → 循环
+
 **核心原则**:
 - 增量优于大爆炸 - 小的、经过验证的变更
 - 规格驱动 - 需求先于代码
@@ -231,6 +298,9 @@ baseline: home-baseline-v1
 - 步骤 2-6 执行前会自动检查前置步骤是否完成
 - 若前置步骤未完成，命令会提示并阻止执行
 - 添加 `--force` 可跳过此检查，强制执行当前步骤
+**极简模式**:
+- 默认仅要求步骤 1 完成后才允许执行 apply
+- 若选择执行 merge，将在归档前补齐合并与验证
 
 **工作流重置**:
 - 完全重置: `incspec reset` - 归档所有产出，回到初始状态

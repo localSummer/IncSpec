@@ -19,6 +19,7 @@ import {
   isWorkflowIncomplete,
   getWorkflowProgress,
 } from '../lib/workflow.mjs';
+import { getModeLabel, formatModeInfo } from '../lib/mode-utils.mjs';
 import { getNextVersion } from '../lib/spec.mjs';
 import {
   colors,
@@ -141,11 +142,12 @@ export async function analyzeCommand(ctx) {
 
     // Handle workflow state
     let workflow = readWorkflow(projectRoot);
-    const isQuick = options.quick || options.q;
+    const mode = options.minimal ? MODE.MINIMAL : 
+                 options.quick || options.q ? MODE.QUICK : MODE.FULL;
     if (!workflow?.currentWorkflow) {
       const workflowName = typeof options.workflow === 'string' ? options.workflow : `analyze-${moduleName}`;
-      workflow = startWorkflow(projectRoot, workflowName, { mode: isQuick ? MODE.QUICK : MODE.FULL });
-      const modeLabel = isQuick ? '(快速模式: 5步)' : '';
+      workflow = startWorkflow(projectRoot, workflowName, { mode });
+      const modeLabel = getModeLabel(mode);
       printSuccess(`已创建新工作流: ${workflowName} ${modeLabel}`);
     }
 
@@ -171,17 +173,18 @@ export async function analyzeCommand(ctx) {
 
   // Get workflow state
   let workflow = readWorkflow(projectRoot);
-  const isQuick = options.quick || options.q;
+  const mode = options.minimal ? MODE.MINIMAL : 
+               options.quick || options.q ? MODE.QUICK : MODE.FULL;
 
   // Check if starting new workflow
   if (!workflow?.currentWorkflow) {
     let workflowName = typeof options.workflow === 'string' ? options.workflow : '';
     if (!workflowName) {
-      const modeHint = isQuick ? '(快速模式)' : '';
-      workflowName = await prompt(`请输入工作流名称 ${modeHint}`, `analyze-${moduleName}`);
+      const modeLabel = getModeLabel(mode);
+      workflowName = await prompt(`请输入工作流名称 ${modeLabel}`, `analyze-${moduleName}`);
     }
-    workflow = startWorkflow(projectRoot, workflowName, { mode: isQuick ? MODE.QUICK : MODE.FULL });
-    const modeLabel = isQuick ? '(快速模式: 5步)' : '';
+    workflow = startWorkflow(projectRoot, workflowName, { mode });
+    const modeLabel = getModeLabel(mode);
     printSuccess(`已创建新工作流: ${workflowName} ${modeLabel}`);
   } else if (isWorkflowIncomplete(workflow)) {
     // Current workflow is incomplete, ask for confirmation
@@ -199,11 +202,11 @@ export async function analyzeCommand(ctx) {
     } else {
       let workflowName = typeof options.workflow === 'string' ? options.workflow : '';
       if (!workflowName) {
-        const modeHint = isQuick ? '(快速模式)' : '';
-        workflowName = await prompt(`请输入新工作流名称 ${modeHint}`, `analyze-${moduleName}`);
+        const modeLabel = getModeLabel(mode);
+        workflowName = await prompt(`请输入新工作流名称 ${modeLabel}`, `analyze-${moduleName}`);
       }
-      workflow = startWorkflow(projectRoot, workflowName, { mode: isQuick ? MODE.QUICK : MODE.FULL });
-      const modeLabel = isQuick ? '(快速模式: 5步)' : '';
+      workflow = startWorkflow(projectRoot, workflowName, { mode });
+      const modeLabel = getModeLabel(mode);
       printSuccess(`已归档旧工作流，创建新工作流: ${workflowName} ${modeLabel}`);
     }
   }
@@ -218,10 +221,9 @@ export async function analyzeCommand(ctx) {
   print(colorize('─────────────────────', colors.dim));
   print('');
 
-  // Show quick mode info
-  if (isQuick) {
-    print(colorize('快速模式流程: 分析 -> 需求收集 -> 应用代码 -> 合并基线', colors.yellow));
-    print(colorize('(跳过 UI依赖采集 和 增量设计)', colors.dim));
+  // Show mode info
+  if (mode !== MODE.FULL) {
+    print(colorize(formatModeInfo(mode), colors.yellow));
     print('');
   }
 

@@ -9,6 +9,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { INCSPEC_DIR, FILES, getTemplatesDir } from './config.mjs';
 import { formatLocalDateTime } from './terminal.mjs';
+import {
+  getStepsForMode,
+  getSkippedStepsForMode,
+  isStepActiveInMode
+} from './mode-utils.mjs';
 
 /** Workflow steps definition */
 export const STEPS = [
@@ -33,13 +38,8 @@ export const STATUS = {
 export const MODE = {
   FULL: 'full',
   QUICK: 'quick',
+  MINIMAL: 'minimal',
 };
-
-/** Quick mode valid steps (1-based) */
-export const QUICK_MODE_STEPS = [1, 2, 5, 6, 7];
-
-/** Quick mode skipped steps (1-based) */
-export const QUICK_MODE_SKIPPED = [3, 4];
 
 function normalizeOutputName(outputFile) {
   if (!outputFile || typeof outputFile !== 'string') {
@@ -156,7 +156,13 @@ export function parseWorkflow(content) {
   const modeMatch = content.match(/\*\*工作流模式\*\*:\s*(.+)/);
   if (modeMatch) {
     const modeValue = modeMatch[1].trim().toLowerCase();
-    workflow.mode = modeValue === 'quick' ? MODE.QUICK : MODE.FULL;
+    if (modeValue === 'quick') {
+      workflow.mode = MODE.QUICK;
+    } else if (modeValue === 'minimal') {
+      workflow.mode = MODE.MINIMAL;
+    } else {
+      workflow.mode = MODE.FULL;
+    }
   }
 
   const startMatch = content.match(/\*\*开始时间\*\*:\s*(.+)/);
@@ -380,9 +386,10 @@ export function startWorkflow(projectRoot, workflowName, options = {}) {
   workflow.mode = mode;
   workflow.startTime = now;
 
-  // Initialize steps - mark skipped steps in quick mode
+  // Initialize steps - mark skipped steps based on mode
+  const skippedSteps = getSkippedStepsForMode(mode);
   workflow.steps = STEPS.map((step) => {
-    if (mode === MODE.QUICK && QUICK_MODE_SKIPPED.includes(step.id)) {
+    if (skippedSteps.includes(step.id)) {
       return {
         status: STATUS.SKIPPED,
         output: null,
@@ -529,10 +536,11 @@ export function resetToStep(projectRoot, targetStep) {
     throw new Error(`目标步骤 ${targetStep} 尚未完成，无法回退到此步骤`);
   }
 
-  // Handle quick mode: cannot reset to skipped steps
+  // Handle mode: cannot reset to skipped steps
   const mode = workflow.mode || MODE.FULL;
-  if (mode === MODE.QUICK && QUICK_MODE_SKIPPED.includes(targetStep)) {
-    throw new Error(`快速模式下步骤 ${targetStep} 被跳过，无法回退到此步骤`);
+  const skippedSteps = getSkippedStepsForMode(mode);
+  if (skippedSteps.includes(targetStep)) {
+    throw new Error(`当前模式下步骤 ${targetStep} 被跳过，无法回退到此步骤`);
   }
 
   // Collect outputs from steps that will be reset (targetStep+1 to 7)
@@ -552,8 +560,8 @@ export function resetToStep(projectRoot, targetStep) {
   const now = formatLocalDateTime(new Date());
   for (let i = targetStep; i < STEPS.length; i++) {
     const stepNumber = i + 1;
-    // In quick mode, keep skipped steps as skipped
-    if (mode === MODE.QUICK && QUICK_MODE_SKIPPED.includes(stepNumber)) {
+    // Keep skipped steps as skipped based on mode
+    if (skippedSteps.includes(stepNumber)) {
       workflow.steps[i] = {
         status: STATUS.SKIPPED,
         output: null,
@@ -608,14 +616,16 @@ export function getWorkflowProgress(workflow) {
   }
 
   const mode = workflow.mode || MODE.FULL;
+  const skippedSteps = getSkippedStepsForMode(mode);
+  const activeSteps = getStepsForMode(mode);
   let completed = 0;
   let lastCompletedStep = null;
 
   workflow.steps.forEach((step, index) => {
     const stepNumber = index + 1;
 
-    // Skip counting skipped steps in quick mode
-    if (mode === MODE.QUICK && QUICK_MODE_SKIPPED.includes(stepNumber)) {
+    // Skip counting skipped steps
+    if (skippedSteps.includes(stepNumber)) {
       return;
     }
 
@@ -625,8 +635,7 @@ export function getWorkflowProgress(workflow) {
     }
   });
 
-  // Quick mode has 5 steps (1,2,5,6,7), full mode has 7 steps
-  const total = mode === MODE.QUICK ? QUICK_MODE_STEPS.length : STEPS.length;
+  const total = activeSteps.length;
 
   return {
     completed,
@@ -707,15 +716,12 @@ export function isQuickMode(workflow) {
  * @returns {number|null} - Next step number or null if complete
  */
 export function getNextStep(currentStep, mode) {
-  if (mode === MODE.QUICK) {
-    const currentIndex = QUICK_MODE_STEPS.indexOf(currentStep);
-    if (currentIndex >= 0 && currentIndex < QUICK_MODE_STEPS.length - 1) {
-      return QUICK_MODE_STEPS[currentIndex + 1];
-    }
-    return null; // Workflow complete
+  const activeSteps = getStepsForMode(mode);
+  const currentIndex = activeSteps.indexOf(currentStep);
+  if (currentIndex >= 0 && currentIndex < activeSteps.length - 1) {
+    return activeSteps[currentIndex + 1];
   }
-  // Full mode
-  return currentStep < STEPS.length ? currentStep + 1 : null;
+  return null; // Workflow complete
 }
 
 /**
@@ -725,7 +731,8 @@ export function getNextStep(currentStep, mode) {
  * @returns {boolean}
  */
 export function shouldSkipStep(stepNumber, mode) {
-  return mode === MODE.QUICK && QUICK_MODE_SKIPPED.includes(stepNumber);
+  const skippedSteps = getSkippedStepsForMode(mode);
+  return skippedSteps.includes(stepNumber);
 }
 
 /**
@@ -749,14 +756,11 @@ export function getPrerequisiteSteps(stepNumber, mode = MODE.FULL) {
     return [];
   }
 
-  if (mode === MODE.QUICK) {
-    if (!QUICK_MODE_STEPS.includes(stepNumber)) {
-      return null;
-    }
-    return QUICK_MODE_STEPS.filter(step => step < stepNumber);
+  const activeSteps = getStepsForMode(mode);
+  if (!activeSteps.includes(stepNumber)) {
+    return null;
   }
-
-  return Array.from({ length: stepNumber - 1 }, (_, i) => i + 1);
+  return activeSteps.filter(step => step < stepNumber);
 }
 
 /**

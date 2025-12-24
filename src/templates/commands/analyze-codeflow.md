@@ -29,6 +29,21 @@ incspec analyze <source-path> --module=<module> --quick
 - 简单功能迭代
 - 不涉及复杂 UI 依赖变更的任务
 
+**启动极简模式工作流** (3步流程):
+
+```bash
+incspec analyze <source-path> --module=<module> --minimal
+```
+
+极简模式跳过步骤 2 (需求收集)、步骤 3 (UI依赖采集)、步骤 4 (增量设计) 和步骤 6 (合并基线)。适用于：
+- 紧急 Bug 修复
+- 单文件小改动
+- 快速实验和原型验证
+
+注意：
+- apply 时基于口头需求直接执行代码变更
+- archive 时会提醒用户是否需要先运行 `incspec merge` 生成新基线（可选）
+
 **使用现有基准报告** (跳过分析):
 
 若已有基准报告文件，可直接使用:

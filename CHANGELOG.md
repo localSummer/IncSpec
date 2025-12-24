@@ -5,6 +5,14 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [Unreleased]
+
+### Documentation
+
+- 更新极简模式说明与验证时机，覆盖模板 AGENTS.md 和 WORKFLOW.md
+  - 极简模式调整为 3 步流程，明确跳过步骤与可选 merge
+  - 同步 apply 审批门禁与 validate 时机的极简模式规则
+
 ## [0.2.5] - 2025-12-23
 
 ### Documentation

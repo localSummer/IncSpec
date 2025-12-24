@@ -10,7 +10,8 @@ import {
   DIRS,
 } from '../lib/config.mjs';
 import { archiveSpec, getSpecInfo } from '../lib/spec.mjs';
-import { archiveWorkflow, readWorkflow, updateStep, STATUS, isQuickMode, MODE } from '../lib/workflow.mjs';
+import { archiveWorkflow, readWorkflow, updateStep, STATUS, MODE } from '../lib/workflow.mjs';
+import { getArchivableStepsForMode } from '../lib/mode-utils.mjs';
 import {
   colors,
   colorize,
@@ -20,25 +21,6 @@ import {
   printError,
   confirm,
 } from '../lib/terminal.mjs';
-
-// Full mode: archivable steps are 1, 2, 3, 4, 6 (0-based: 0, 1, 2, 3, 5)
-// Note: Step 5 (apply) has no file output, Step 7 (archive) is this command itself
-const FULL_MODE_ARCHIVABLE_INDEXES = [0, 1, 2, 3, 5];
-// Quick mode: archivable steps are 1, 2, 6 (0-based: 0, 1, 5)
-// Note: Steps 3, 4 are skipped in quick mode
-const QUICK_MODE_ARCHIVABLE_INDEXES = [0, 1, 5];
-
-/**
- * Get archivable step indexes based on workflow mode
- * @param {Object} workflow
- * @returns {number[]}
- */
-function getArchivableStepIndexes(workflow) {
-  if (isQuickMode(workflow)) {
-    return QUICK_MODE_ARCHIVABLE_INDEXES;
-  }
-  return FULL_MODE_ARCHIVABLE_INDEXES;
-}
 
 function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -132,7 +114,8 @@ function getArchivableOutputs(workflow) {
     return null;
   }
 
-  const archivableIndexes = getArchivableStepIndexes(workflow);
+  const mode = workflow.mode || MODE.FULL;
+  const archivableIndexes = getArchivableStepsForMode(mode);
   const outputs = [];
 
   for (const index of archivableIndexes) {
@@ -252,6 +235,20 @@ export async function archiveCommand(ctx) {
     if (missing.length > 0) {
       printError(`以下产出文件未找到: ${missing.join(', ')}`);
       return;
+    }
+
+    // 极简模式提醒
+    if (workflow.mode === MODE.MINIMAL && !skipConfirm) {
+      print(colorize('⚠️  极简模式提醒:', colors.yellow, colors.bold));
+      print(colorize('   极简模式跳过了步骤6（合并基线），当前归档的是初始基线和应用后的代码。', colors.dim));
+      print(colorize('   如需生成新基线快照，请先运行: incspec merge', colors.dim));
+      print('');
+      const shouldContinue = await confirm('是否继续归档当前文件?');
+      if (!shouldContinue) {
+        print(colorize('已取消。', colors.dim));
+        return;
+      }
+      print('');
     }
 
     if (targets.length > 0) {

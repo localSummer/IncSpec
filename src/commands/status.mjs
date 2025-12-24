@@ -11,9 +11,12 @@ import {
   STEPS,
   STATUS,
   MODE,
-  QUICK_MODE_SKIPPED,
   isQuickMode,
 } from '../lib/workflow.mjs';
+import {
+  getModeLabel,
+  getSkippedStepsForMode,
+} from '../lib/mode-utils.mjs';
 import {
   colors,
   colorize,
@@ -52,8 +55,9 @@ export async function statusCommand(ctx) {
 
   // Current workflow
   if (workflow?.currentWorkflow) {
-    const quickMode = isQuickMode(workflow);
-    const modeLabel = quickMode ? '快速模式 (5步)' : '完整模式 (7步)';
+    const mode = workflow.mode || MODE.FULL;
+    const modeLabel = getModeLabel(mode);
+    const skippedSteps = getSkippedStepsForMode(mode);
 
     print(colorize(`当前工作流: `, colors.bold) + colorize(workflow.currentWorkflow, colors.cyan));
     print(colorize(`工作流模式: ${modeLabel}`, colors.dim));
@@ -69,9 +73,9 @@ export async function statusCommand(ctx) {
       const stepData = workflow.steps[index] || {};
       let status = stepData.status || STATUS.PENDING;
       const isCurrent = workflow.currentStep === step.id;
-      const isSkipped = quickMode && QUICK_MODE_SKIPPED.includes(step.id);
+      const isSkipped = skippedSteps.includes(step.id);
 
-      // Quick mode: mark skipped steps
+      // Mark skipped steps
       if (isSkipped && status !== STATUS.SKIPPED) {
         status = STATUS.SKIPPED;
       }
@@ -100,8 +104,8 @@ export async function statusCommand(ctx) {
     // Next step hint
     const nextStepIndex = workflow.steps.findIndex((step, index) => {
       const stepNumber = index + 1;
-      // Skip excluded steps in quick mode
-      if (quickMode && QUICK_MODE_SKIPPED.includes(stepNumber)) {
+      // Skip excluded steps based on mode
+      if (skippedSteps.includes(stepNumber)) {
         return false;
       }
       return (step?.status || STATUS.PENDING) !== STATUS.COMPLETED;

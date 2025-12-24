@@ -14,9 +14,15 @@ import {
   readWorkflow,
   updateStep,
   STATUS,
-  isQuickMode,
+  MODE,
   getMissingPrereqs,
 } from '../lib/workflow.mjs';
+import {
+  isMinimalMode,
+  isQuickMode,
+  isFullMode,
+  getApplyInputFile,
+} from '../lib/mode-utils.mjs';
 import { listSpecs } from '../lib/spec.mjs';
 import {
   colors,
@@ -73,7 +79,7 @@ export async function applyCommand(ctx) {
     return;
   }
 
-  const quickMode = isQuickMode(workflow);
+  const mode = workflow.mode || MODE.FULL;
   const missingSteps = getMissingPrereqs(workflow, STEP_NUMBER);
   if (missingSteps && missingSteps.length > 0 && !options.force) {
     printWarning(`请先完成步骤 ${missingSteps.join(', ')} 后再继续。`);
@@ -91,16 +97,7 @@ export async function applyCommand(ctx) {
   let inputPath;
   let inputType;
 
-  if (quickMode) {
-    // Quick mode: use requirements document
-    const reqFile = path.join(projectRoot, INCSPEC_DIR, DIRS.requirements, 'structured-requirements.md');
-    if (!fs.existsSync(reqFile)) {
-      printWarning('未找到需求文件。请先运行步骤 2 (collect-req)。');
-      return;
-    }
-    inputPath = path.join(INCSPEC_DIR, DIRS.requirements, 'structured-requirements.md');
-    inputType = 'requirements';
-  } else {
+  if (isFullMode(workflow)) {
     // Full mode: use increment design file
     let incrementPath = args[0];
     if (!incrementPath) {
@@ -128,12 +125,22 @@ export async function applyCommand(ctx) {
     }
     inputPath = incrementPath;
     inputType = 'increment';
+  } else {
+    // Quick/Minimal mode: use requirements document
+    const reqFile = path.join(projectRoot, INCSPEC_DIR, DIRS.requirements, 'structured-requirements.md');
+    if (!fs.existsSync(reqFile)) {
+      printWarning('未找到需求文件。请先运行步骤 2 (collect-req)。');
+      return;
+    }
+    inputPath = path.join(INCSPEC_DIR, DIRS.requirements, 'structured-requirements.md');
+    inputType = 'requirements';
   }
 
   print('');
   print(colorize('步骤 5: 应用代码变更', colors.bold, colors.cyan));
-  if (quickMode) {
-    print(colorize('(快速模式 - 基于需求文档)', colors.yellow));
+  if (mode !== MODE.FULL) {
+    const modeLabel = mode === MODE.MINIMAL ? '极简模式' : '快速模式';
+    print(colorize(`(${modeLabel} - 基于需求文档)`, colors.yellow));
   }
   print(colorize('────────────────────', colors.dim));
   print('');
@@ -149,9 +156,10 @@ export async function applyCommand(ctx) {
   print(colorize('使用说明:', colors.bold));
   print('');
 
-  if (quickMode) {
-    // Quick mode instructions
-    print(colorize('快速模式下，请直接根据需求文档实现代码变更:', colors.cyan));
+  if (mode !== MODE.FULL) {
+    // Quick/Minimal mode instructions
+    const modeLabel = mode === MODE.MINIMAL ? '极简模式' : '快速模式';
+    print(colorize(`${modeLabel}下，请直接根据需求文档实现代码变更:`, colors.cyan));
     print('');
     print(colorize('在 Cursor 中:', colors.dim));
     print(colorize(`  /incspec/inc-apply ${inputPath}`, colors.bold, colors.white));
