@@ -1,3 +1,42 @@
+<!-- OPENSPEC:START -->
+# OpenSpec Instructions
+
+These instructions are for AI assistants working in this project.
+
+Always open `@/openspec/AGENTS.md` when the request:
+- Mentions planning or proposals (words like proposal, spec, change, plan)
+- Introduces new capabilities, breaking changes, architecture shifts, or big performance/security work
+- Sounds ambiguous and you need the authoritative spec before coding
+
+Use `@/openspec/AGENTS.md` to learn:
+- How to create and apply change proposals
+- Spec format and conventions
+- Project structure and guidelines
+
+Keep this managed block so 'openspec update' can refresh the instructions.
+
+<!-- OPENSPEC:END -->
+
+<!-- INCSPEC:START -->
+# IncSpec 指令
+
+本指令适用于在此项目中工作的 AI 助手。
+
+当请求符合以下情况时，请始终打开 `@/incspec/AGENTS.md`：
+- 涉及增量开发或编码工作流
+- 引入需要分步实现的新功能
+- 需要基线分析、需求收集或代码生成
+- 请求含义模糊，需要先了解规范工作流再编码
+
+通过 `@/incspec/AGENTS.md` 可以了解：
+- 如何使用 7 步增量编码工作流
+- 规范格式与约定
+- 项目结构与指南
+
+请保留此托管块，以便 'incspec init' 可以刷新指令内容。
+
+<!-- INCSPEC:END -->
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
