@@ -7,11 +7,32 @@
 
 ## [Unreleased]
 
+## [0.3.0] - 2025-12-24
+
+### Added
+
+- 新增极简模式 (3步) 工作流，支持 `incspec analyze --minimal`
+- 新增 `upgrade` 命令用于模式升级（minimal → quick → full）
+- 新增模式管理工具 `mode-utils`，统一模式规则与升级逻辑
+
+### Changed
+
+- `apply`/`archive`/`status` 等命令按模式调整执行逻辑与提示
+- `sync` 交互式选择不再默认勾选目标，避免误同步
+
 ### Documentation
 
-- 更新极简模式说明与验证时机，覆盖模板 AGENTS.md 和 WORKFLOW.md
-  - 极简模式调整为 3 步流程，明确跳过步骤与可选 merge
-  - 同步 apply 审批门禁与 validate 时机的极简模式规则
+- 更新模板 AGENTS.md、WORKFLOW.md 与命令模板，补充极简模式与验证时机说明
+- 更新 README 的模式说明、命令示例与升级指引
+
+## [0.2.6] - 2025-12-23
+- **feat**: 重构 --complete 标志处理逻辑，作为独立模式运行
+  - 新增：--complete 标志跳过所有前置条件检查和交互式确认流程
+  - 改进：所有命令提供清晰的步骤完成标记指引
+  - 影响：优化 AI 助手与工作流的集成体验，支持非交互式批量操作
+- **feat**: 完善项目配置和工作流元数据
+  - 新增：.gitignore 忽略 incspec 目录
+  - 更新：工作流和项目元数据描述
 
 ## [0.2.5] - 2025-12-23
 
@@ -339,6 +360,7 @@
 - 命令别名支持（如 `a` 代替 `analyze`）
 - 归档按年月和模块自动组织
 
+[0.3.0]: https://github.com/localSummer/IncSpec/compare/v0.2.6...v0.3.0
 [0.2.5]: https://github.com/localSummer/IncSpec/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/localSummer/IncSpec/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/localSummer/IncSpec/compare/v0.2.2...v0.2.3
