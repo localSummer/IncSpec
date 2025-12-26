@@ -7,6 +7,16 @@
 
 ## [Unreleased]
 
+## [0.3.2] - 2025-12-26
+
+### Changed
+
+- 工作流状态存储从 WORKFLOW.md 迁移到 workflow.json
+  - 移除 WORKFLOW.md 模板，新增 workflow.json 结构化配置
+  - 重构 `workflow.mjs` 核心逻辑，使用 JSON 格式管理状态
+  - 优化 `collect-req` 和 `merge` 命令的文件处理
+  - 更新 IDE 命令模板（inc-archive、inc-upgrade）适配新格式
+
 ## [0.3.1] - 2025-12-24
 
 ### Fixed
