@@ -109,7 +109,7 @@ export async function initCommand(ctx) {
   print(colorize('创建的目录结构:', colors.bold));
   print(colorize(`  ${INCSPEC_DIR}/`, colors.cyan));
   print(colorize(`  ├── project.md`, colors.dim));
-  print(colorize(`  ├── WORKFLOW.md`, colors.dim));
+  print(colorize(`  ├── workflow.json`, colors.dim));
   print(colorize(`  ├── AGENTS.md`, colors.dim));
   print(colorize(`  ├── baselines/`, colors.dim));
   print(colorize(`  ├── requirements/`, colors.dim));

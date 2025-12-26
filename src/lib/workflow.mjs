@@ -1,6 +1,6 @@
 /**
  * Workflow state management for incspec
- * - Read/write WORKFLOW.md
+ * - Read/write workflow.json
  * - Track current step
  * - Manage workflow history
  */
@@ -54,67 +54,8 @@ function normalizeOutputName(outputFile) {
   return parts[parts.length - 1] || outputFile;
 }
 
-function ensureTableSeparator(content, sectionTitle, headerLine, separatorLine) {
-  const sectionIndex = content.indexOf(sectionTitle);
-  if (sectionIndex === -1) {
-    return { content, updated: false };
-  }
-
-  const headerIndex = content.indexOf(headerLine, sectionIndex);
-  if (headerIndex === -1) {
-    return { content, updated: false };
-  }
-
-  const headerLineEnd = content.indexOf('\n', headerIndex);
-  if (headerLineEnd === -1) {
-    return { content, updated: false };
-  }
-
-  const nextLineStart = headerLineEnd + 1;
-  const nextLineEnd = content.indexOf('\n', nextLineStart);
-  const nextLine = content
-    .slice(nextLineStart, nextLineEnd === -1 ? content.length : nextLineEnd)
-    .replace(/\r$/, '');
-
-  if (nextLine.trim() === separatorLine.trim()) {
-    return { content, updated: false };
-  }
-
-  const updatedContent =
-    content.slice(0, nextLineStart) +
-    `${separatorLine}\n` +
-    content.slice(nextLineStart);
-
-  return { content: updatedContent, updated: true };
-}
-
-function normalizeWorkflowContent(content) {
-  let updated = false;
-  let normalized = content;
-
-  const stepsResult = ensureTableSeparator(
-    normalized,
-    '## 步骤进度',
-    '| 步骤 | 状态 | 输出文件 | 完成时间 |',
-    '|------|------|---------|---------|'
-  );
-  normalized = stepsResult.content;
-  updated = updated || stepsResult.updated;
-
-  const historyResult = ensureTableSeparator(
-    normalized,
-    '## 工作流历史',
-    '| 工作流 | 状态 | 开始时间 | 完成时间 |',
-    '|--------|------|---------|---------|'
-  );
-  normalized = historyResult.content;
-  updated = updated || historyResult.updated;
-
-  return { content: normalized, updated };
-}
-
 /**
- * Get workflow file path
+ * Get workflow file path (JSON format)
  * @param {string} projectRoot
  * @returns {string}
  */
@@ -123,11 +64,20 @@ export function getWorkflowPath(projectRoot) {
 }
 
 /**
- * Parse WORKFLOW.md content
+ * Get legacy workflow file path (Markdown format)
+ * @param {string} projectRoot
+ * @returns {string}
+ */
+function getLegacyWorkflowPath(projectRoot) {
+  return path.join(projectRoot, INCSPEC_DIR, FILES.workflowLegacy);
+}
+
+/**
+ * Parse legacy WORKFLOW.md content (for migration)
  * @param {string} content
  * @returns {Object}
  */
-export function parseWorkflow(content) {
+function parseMarkdownWorkflow(content) {
   const workflow = {
     currentWorkflow: null,
     currentStep: null,
@@ -167,7 +117,8 @@ export function parseWorkflow(content) {
 
   const startMatch = content.match(/\*\*开始时间\*\*:\s*(.+)/);
   if (startMatch) {
-    workflow.startTime = startMatch[1].trim();
+    const value = startMatch[1].trim();
+    workflow.startTime = value === '-' ? null : value;
   }
 
   const updateMatch = content.match(/\*\*最后更新\*\*:\s*(.+)/);
@@ -179,11 +130,12 @@ export function parseWorkflow(content) {
   const stepsTableMatch = content.match(/## 步骤进度\n\n\|[^\n]+\n\|[^\n]+\n([\s\S]*?)(?=\n##|\n*$)/);
   if (stepsTableMatch) {
     const rows = stepsTableMatch[1].trim().split('\n').filter(r => r.trim());
-    workflow.steps = rows.map(row => {
+    workflow.steps = rows.map((row, index) => {
       const cells = row.split('|').map(c => c.trim()).filter(c => c);
       if (cells.length >= 4) {
         return {
-          step: cells[0],
+          id: index + 1,
+          name: STEPS[index]?.name || `step-${index + 1}`,
           status: cells[1],
           output: cells[2] === '-' ? null : cells[2],
           completedAt: cells[3] === '-' ? null : cells[3],
@@ -191,6 +143,18 @@ export function parseWorkflow(content) {
       }
       return null;
     }).filter(Boolean);
+  }
+
+  // Ensure we have all 7 steps
+  while (workflow.steps.length < STEPS.length) {
+    const index = workflow.steps.length;
+    workflow.steps.push({
+      id: index + 1,
+      name: STEPS[index].name,
+      status: STATUS.PENDING,
+      output: null,
+      completedAt: null,
+    });
   }
 
   // Parse history table
@@ -215,11 +179,79 @@ export function parseWorkflow(content) {
 }
 
 /**
+ * Migrate from WORKFLOW.md to workflow.json
+ * @param {string} projectRoot
+ * @returns {Object|null} Migrated workflow or null if no migration needed
+ */
+function migrateFromMarkdown(projectRoot) {
+  const legacyPath = getLegacyWorkflowPath(projectRoot);
+  const jsonPath = getWorkflowPath(projectRoot);
+
+  // Check if legacy file exists and JSON doesn't
+  if (!fs.existsSync(legacyPath)) {
+    return null;
+  }
+
+  if (fs.existsSync(jsonPath)) {
+    // JSON already exists, no migration needed
+    return null;
+  }
+
+  // Read and parse legacy file
+  const content = fs.readFileSync(legacyPath, 'utf-8');
+  const workflow = parseMarkdownWorkflow(content);
+
+  // Update lastUpdate
+  workflow.lastUpdate = formatLocalDateTime(new Date());
+
+  // Write new JSON file
+  const jsonContent = JSON.stringify(workflow, null, 2);
+  fs.writeFileSync(jsonPath, jsonContent, 'utf-8');
+
+  // Delete legacy file
+  fs.unlinkSync(legacyPath);
+
+  console.log(`已将 WORKFLOW.md 迁移到 workflow.json`);
+
+  return workflow;
+}
+
+/**
+ * Parse workflow.json content
+ * @param {string} content - JSON string
+ * @returns {Object}
+ */
+export function parseWorkflow(content) {
+  try {
+    const workflow = JSON.parse(content);
+
+    // Ensure all required fields exist with defaults
+    return {
+      currentWorkflow: workflow.currentWorkflow ?? null,
+      currentStep: workflow.currentStep ?? null,
+      mode: workflow.mode ?? MODE.FULL,
+      startTime: workflow.startTime ?? null,
+      lastUpdate: workflow.lastUpdate ?? null,
+      steps: workflow.steps ?? [],
+      history: workflow.history ?? [],
+    };
+  } catch (e) {
+    throw new Error(`解析 workflow.json 失败: ${e.message}`);
+  }
+}
+
+/**
  * Read workflow state
  * @param {string} projectRoot
  * @returns {Object|null}
  */
 export function readWorkflow(projectRoot) {
+  // Try migration first
+  const migrated = migrateFromMarkdown(projectRoot);
+  if (migrated) {
+    return migrated;
+  }
+
   const workflowPath = getWorkflowPath(projectRoot);
 
   if (!fs.existsSync(workflowPath)) {
@@ -227,12 +259,11 @@ export function readWorkflow(projectRoot) {
   }
 
   const content = fs.readFileSync(workflowPath, 'utf-8');
-  const normalized = normalizeWorkflowContent(content);
-  return parseWorkflow(normalized.content);
+  return parseWorkflow(content);
 }
 
 /**
- * Generate WORKFLOW.md content
+ * Generate workflow.json content
  * @param {Object} workflow
  * @returns {string}
  */
@@ -240,44 +271,29 @@ export function generateWorkflowContent(workflow) {
   const now = formatLocalDateTime(new Date());
   const mode = workflow.mode || MODE.FULL;
 
-  const lines = [
-    '# Workflow Status',
-    '',
-    `**当前工作流**: ${workflow.currentWorkflow || '-'}`,
-    `**当前步骤**: ${workflow.currentStep || '-'}`,
-    `**工作流模式**: ${mode}`,
-    `**开始时间**: ${workflow.startTime || '-'}`,
-    `**最后更新**: ${now}`,
-    '',
-    '## 步骤进度',
-    '',
-    '| 步骤 | 状态 | 输出文件 | 完成时间 |',
-    '|------|------|---------|---------|',
-  ];
-
-  // Generate steps
-  STEPS.forEach((step, index) => {
+  // Ensure steps have proper structure
+  const steps = STEPS.map((step, index) => {
     const stepData = workflow.steps[index] || {};
-    const status = stepData.status || STATUS.PENDING;
-    const output = stepData.output || '-';
-    const completedAt = stepData.completedAt || '-';
-    lines.push(`| ${step.id}. ${step.name} | ${status} | ${output} | ${completedAt} |`);
+    return {
+      id: step.id,
+      name: step.name,
+      status: stepData.status || STATUS.PENDING,
+      output: stepData.output || null,
+      completedAt: stepData.completedAt || null,
+    };
   });
 
-  lines.push('');
-  lines.push('## 工作流历史');
-  lines.push('');
-  lines.push('| 工作流 | 状态 | 开始时间 | 完成时间 |');
-  lines.push('|--------|------|---------|---------|');
+  const data = {
+    currentWorkflow: workflow.currentWorkflow || null,
+    currentStep: workflow.currentStep || null,
+    mode: mode,
+    startTime: workflow.startTime || null,
+    lastUpdate: now,
+    steps: steps,
+    history: workflow.history || [],
+  };
 
-  // Generate history
-  if (workflow.history && workflow.history.length > 0) {
-    workflow.history.forEach(item => {
-      lines.push(`| ${item.name} | ${item.status} | ${item.startTime || '-'} | ${item.endTime || '-'} |`);
-    });
-  }
-
-  return lines.join('\n');
+  return JSON.stringify(data, null, 2);
 }
 
 /**
@@ -297,45 +313,17 @@ export function writeWorkflow(projectRoot, workflow) {
  */
 export function initWorkflow(projectRoot) {
   const workflowPath = getWorkflowPath(projectRoot);
-  const content = generateInitialWorkflowContent();
-  fs.writeFileSync(workflowPath, content, 'utf-8');
+  const now = formatLocalDateTime(new Date());
 
-  return {
+  const workflow = {
     currentWorkflow: null,
     currentStep: null,
     mode: MODE.FULL,
     startTime: null,
-    lastUpdate: null,
-    steps: STEPS.map(() => ({
-      status: STATUS.PENDING,
-      output: null,
-      completedAt: null,
-    })),
-    history: [],
-  };
-}
-
-/**
- * Generate initial WORKFLOW.md content from template
- * @returns {string}
- */
-function generateInitialWorkflowContent() {
-  const templatePath = path.join(getTemplatesDir(), 'WORKFLOW.md');
-  const now = formatLocalDateTime(new Date());
-
-  if (fs.existsSync(templatePath)) {
-    let content = fs.readFileSync(templatePath, 'utf-8');
-    content = content.replace(/\{\{last_update\}\}/g, now);
-    return content;
-  }
-
-  // Fallback to generated content
-  const workflow = {
-    currentWorkflow: null,
-    currentStep: null,
-    startTime: null,
-    lastUpdate: null,
-    steps: STEPS.map(() => ({
+    lastUpdate: now,
+    steps: STEPS.map((step) => ({
+      id: step.id,
+      name: step.name,
       status: STATUS.PENDING,
       output: null,
       completedAt: null,
@@ -343,7 +331,10 @@ function generateInitialWorkflowContent() {
     history: [],
   };
 
-  return generateWorkflowContent(workflow);
+  const content = JSON.stringify(workflow, null, 2);
+  fs.writeFileSync(workflowPath, content, 'utf-8');
+
+  return workflow;
 }
 
 /**
@@ -391,12 +382,16 @@ export function startWorkflow(projectRoot, workflowName, options = {}) {
   workflow.steps = STEPS.map((step) => {
     if (skippedSteps.includes(step.id)) {
       return {
+        id: step.id,
+        name: step.name,
         status: STATUS.SKIPPED,
         output: null,
         completedAt: now,
       };
     }
     return {
+      id: step.id,
+      name: step.name,
       status: STATUS.PENDING,
       output: null,
       completedAt: null,
@@ -430,6 +425,8 @@ export function updateStep(projectRoot, stepNumber, status, outputFile = null) {
   const mode = workflow.mode || MODE.FULL;
 
   workflow.steps[index] = {
+    id: stepNumber,
+    name: STEPS[index].name,
     status,
     output: normalizedOutput,
     completedAt: status === STATUS.COMPLETED ? now : null,
@@ -494,14 +491,16 @@ export function archiveWorkflow(projectRoot) {
   workflow.history.unshift({
     name: workflow.currentWorkflow,
     status: 'archived',
-    startTime: workflow.startTime || '-',
+    startTime: workflow.startTime || null,
     endTime: now,
   });
 
   workflow.currentWorkflow = null;
   workflow.currentStep = null;
   workflow.startTime = null;
-  workflow.steps = STEPS.map(() => ({
+  workflow.steps = STEPS.map((step) => ({
+    id: step.id,
+    name: step.name,
     status: STATUS.PENDING,
     output: null,
     completedAt: null,
@@ -563,12 +562,16 @@ export function resetToStep(projectRoot, targetStep) {
     // Keep skipped steps as skipped based on mode
     if (skippedSteps.includes(stepNumber)) {
       workflow.steps[i] = {
+        id: stepNumber,
+        name: STEPS[i].name,
         status: STATUS.SKIPPED,
         output: null,
         completedAt: workflow.steps[i]?.completedAt || now,
       };
     } else {
       workflow.steps[i] = {
+        id: stepNumber,
+        name: STEPS[i].name,
         status: STATUS.PENDING,
         output: null,
         completedAt: null,
@@ -676,9 +679,12 @@ export function addToHistory(projectRoot, entry) {
     workflow = {
       currentWorkflow: null,
       currentStep: null,
+      mode: MODE.FULL,
       startTime: null,
       lastUpdate: null,
-      steps: STEPS.map(() => ({
+      steps: STEPS.map((step) => ({
+        id: step.id,
+        name: step.name,
         status: STATUS.PENDING,
         output: null,
         completedAt: null,
@@ -692,7 +698,7 @@ export function addToHistory(projectRoot, entry) {
   workflow.history.unshift({
     name: entry.name,
     status: entry.status,
-    startTime: entry.startTime || '-',
+    startTime: entry.startTime || null,
     endTime: entry.endTime || now,
   });
 

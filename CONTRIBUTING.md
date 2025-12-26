@@ -77,7 +77,7 @@
 - 参考业界最佳实践（如 OpenSpec）保持模板质量
 - validate 命令的执行时机：步骤 1/4/6 完成后、归档前执行
 - 模板更新后需同步测试 `incspec sync` 命令
-- **保持模板与代码一致**: `templates/WORKFLOW.md` 中的步骤表格必须与 `lib/workflow.mjs` 中的 `STEPS` 数组保持一致（包含完整的 7 个步骤）
+- **保持模板与代码一致**: `templates/workflow.json` 中的步骤必须与 `lib/workflow.mjs` 中的 `STEPS` 数组保持一致（包含完整的 7 个步骤）
 
 ### 提交信息规范
 

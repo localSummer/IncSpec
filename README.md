@@ -511,7 +511,7 @@ your-project/
 │   └── templates/               # Markdown 模板文件
 ├── incspec/
 │   ├── project.md               # 项目配置
-│   ├── WORKFLOW.md              # 当前工作流状态
+│   ├── workflow.json            # 当前工作流状态
 │   ├── AGENTS.md                # incspec 使用指南
 │   ├── baselines/               # 基线快照
 │   │   └── home-baseline-v1.md

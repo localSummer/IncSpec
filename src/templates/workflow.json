@@ -1,0 +1,59 @@
+{
+  "currentWorkflow": null,
+  "currentStep": null,
+  "mode": "full",
+  "startTime": null,
+  "lastUpdate": "{{last_update}}",
+  "steps": [
+    {
+      "id": 1,
+      "name": "analyze-codeflow",
+      "status": "pending",
+      "output": null,
+      "completedAt": null
+    },
+    {
+      "id": 2,
+      "name": "collect-requirements",
+      "status": "pending",
+      "output": null,
+      "completedAt": null
+    },
+    {
+      "id": 3,
+      "name": "collect-dependencies",
+      "status": "pending",
+      "output": null,
+      "completedAt": null
+    },
+    {
+      "id": 4,
+      "name": "design-increment",
+      "status": "pending",
+      "output": null,
+      "completedAt": null
+    },
+    {
+      "id": 5,
+      "name": "apply-code",
+      "status": "pending",
+      "output": null,
+      "completedAt": null
+    },
+    {
+      "id": 6,
+      "name": "merge-baseline",
+      "status": "pending",
+      "output": null,
+      "completedAt": null
+    },
+    {
+      "id": 7,
+      "name": "archive-workflow",
+      "status": "pending",
+      "output": null,
+      "completedAt": null
+    }
+  ],
+  "history": []
+}

@@ -156,7 +156,7 @@ AI 编码助手使用 IncSpec 进行增量规格驱动开发的操作指南。
 ```
 incspec/
 ├── project.md              # 项目配置
-├── WORKFLOW.md             # 工作流状态
+├── workflow.json           # 工作流状态
 ├── AGENTS.md               # 本指南
 ├── baselines/              # 基线快照 (版本控制)
 ├── requirements/           # 需求与依赖

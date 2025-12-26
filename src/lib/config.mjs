@@ -24,7 +24,8 @@ export const DIRS = {
 /** Core files */
 export const FILES = {
   project: 'project.md',
-  workflow: 'WORKFLOW.md',
+  workflow: 'workflow.json',
+  workflowLegacy: 'WORKFLOW.md',
   agents: 'AGENTS.md',
 };
 

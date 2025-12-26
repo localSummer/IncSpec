@@ -13,6 +13,7 @@ import {
   updateStep,
   STATUS,
   isQuickMode,
+  isStepAllowed,
   getMissingPrereqs,
 } from '../lib/workflow.mjs';
 import {
@@ -46,6 +47,10 @@ export async function collectReqCommand(ctx) {
       printWarning('没有活跃的工作流，无法标记完成。');
       return;
     }
+    if (!isStepAllowed(STEP_NUMBER, workflow.mode)) {
+      printWarning('当前工作流模式不包含此步骤，无需标记完成。');
+      return;
+    }
     updateStep(projectRoot, STEP_NUMBER, STATUS.COMPLETED, OUTPUT_FILE);
     printSuccess(`步骤 ${STEP_NUMBER} 已标记为完成: ${OUTPUT_FILE}`);
 
@@ -60,6 +65,11 @@ export async function collectReqCommand(ctx) {
 
   if (!workflow?.currentWorkflow) {
     printWarning('没有活跃的工作流。请先运行 incspec analyze 开始新工作流。');
+    return;
+  }
+
+  if (!isStepAllowed(STEP_NUMBER, workflow.mode)) {
+    printWarning('当前工作流模式不包含此步骤（极简模式跳过需求收集）。');
     return;
   }
 

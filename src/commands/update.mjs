@@ -1,6 +1,6 @@
 /**
  * update command - Update template files to latest version
- * Updates AGENTS.md, WORKFLOW.md in incspec/ and managed block in project AGENTS.md
+ * Updates AGENTS.md, workflow.json in incspec/ and managed block in project AGENTS.md
  */
 
 import * as fs from 'fs';
@@ -53,19 +53,19 @@ function updateIncspecAgents(projectRoot) {
 }
 
 /**
- * Update incspec/WORKFLOW.md template structure while preserving user data
+ * Update incspec/workflow.json template structure while preserving user data
  * @param {string} projectRoot
  * @returns {{updated: boolean, path: string}}
  */
 function updateIncspecWorkflow(projectRoot) {
   const targetPath = path.join(getIncspecDir(projectRoot), FILES.workflow);
-  const templatePath = path.join(getTemplatesDir(), 'WORKFLOW.md');
+  const templatePath = path.join(getTemplatesDir(), 'workflow.json');
 
   if (!fs.existsSync(templatePath)) {
     return { updated: false, path: targetPath, error: '模板文件不存在' };
   }
 
-  // For WORKFLOW.md, we only update if file doesn't exist
+  // For workflow.json, we only update if file doesn't exist
   // Because it contains dynamic user data that we don't want to overwrite
   // The template is only used for initial structure
   if (fs.existsSync(targetPath)) {
@@ -104,7 +104,7 @@ export async function updateCommand(ctx) {
   // List what will be updated
   print(colorize('将更新以下模板文件:', colors.bold));
   print(colorize('  - incspec/AGENTS.md (incspec 使用指南)', colors.dim));
-  print(colorize('  - incspec/WORKFLOW.md (工作流模板，保留用户数据)', colors.dim));
+  print(colorize('  - incspec/workflow.json (工作流状态，保留用户数据)', colors.dim));
   print(colorize('  - AGENTS.md (项目根目录 incspec 指令块)', colors.dim));
   print('');
 
@@ -128,10 +128,10 @@ export async function updateCommand(ctx) {
     ...agentsResult,
   });
 
-  // Update incspec/WORKFLOW.md
+  // Update incspec/workflow.json
   const workflowResult = updateIncspecWorkflow(projectRoot);
   results.push({
-    file: 'incspec/WORKFLOW.md',
+    file: 'incspec/workflow.json',
     ...workflowResult,
   });
 

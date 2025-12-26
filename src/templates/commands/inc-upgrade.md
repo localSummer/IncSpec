@@ -67,10 +67,10 @@ incspec upgrade <target-mode>
 incspec status
 ```
 
-或直接读取 WORKFLOW.md:
+或直接读取 workflow.json:
 
 ```bash
-cat incspec/WORKFLOW.md
+cat incspec/workflow.json
 ```
 
 检查:
@@ -112,10 +112,10 @@ cat incspec/WORKFLOW.md
 
 ### 3.1 检查当前工作流进度
 
-读取 WORKFLOW.md 检查哪些步骤已完成:
+读取 workflow.json 检查哪些步骤已完成:
 
 ```bash
-cat incspec/WORKFLOW.md | grep -A 20 "## 当前工作流"
+cat incspec/workflow.json
 ```
 
 ### 3.2 按顺序引导补充步骤
@@ -214,7 +214,7 @@ incspec upgrade <target-mode>
 
 CLI 会:
 1. 验证所有必需步骤已完成
-2. 更新 WORKFLOW.md 中的模式标记
+2. 更新 workflow.json 中的模式标记
 3. 输出升级成功确认
 
 ## 步骤 5: 验证结果

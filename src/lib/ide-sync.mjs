@@ -136,7 +136,7 @@ incspec status
 或直接读取状态文件:
 
 \`\`\`bash
-cat ${INCSPEC_DIR}/WORKFLOW.md
+cat ${INCSPEC_DIR}/workflow.json
 \`\`\`
 `,
     },
@@ -187,7 +187,7 @@ incspec help          # 显示帮助
 \`\`\`
 ${INCSPEC_DIR}/
 ├── project.md        # 项目配置
-├── WORKFLOW.md       # 工作流状态
+├── workflow.json     # 工作流状态
 ├── baselines/        # 基线快照
 ├── requirements/     # 需求文档
 ├── increments/       # 增量设计

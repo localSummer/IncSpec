@@ -14,6 +14,7 @@ import {
   updateStep,
   STATUS,
   isQuickMode,
+  isStepAllowed,
   getMissingPrereqs,
 } from '../lib/workflow.mjs';
 import { listSpecs, getNextVersion } from '../lib/spec.mjs';
@@ -61,6 +62,10 @@ export async function mergeCommand(ctx) {
       printWarning('没有活跃的工作流，无法标记完成。');
       return;
     }
+    if (!isStepAllowed(STEP_NUMBER, workflow.mode)) {
+      printWarning('当前工作流模式不包含此步骤，无需标记完成。');
+      return;
+    }
     const output = typeof options.output === 'string' ? options.output : null;
     if (!output) {
       printWarning('请通过 --output 指定输出文件名。');
@@ -73,6 +78,12 @@ export async function mergeCommand(ctx) {
 
   if (!workflow?.currentWorkflow) {
     printWarning('没有活跃的工作流。请先运行 incspec analyze 开始新工作流。');
+    return;
+  }
+
+  if (!isStepAllowed(STEP_NUMBER, workflow.mode)) {
+    printWarning('当前工作流模式不包含此步骤（极简模式跳过合并基线）。');
+    printInfo('极简模式下可在归档前使用 incspec upgrade quick 升级模式后执行合并。');
     return;
   }
 

@@ -93,14 +93,14 @@ src/
 │   └── ...
 ├── lib/                  # 核心库
 │   ├── config.mjs        # 配置管理，项目根查找，project.md 读写
-│   ├── workflow.mjs      # 工作流状态管理，WORKFLOW.md 读写
+│   ├── workflow.mjs      # 工作流状态管理，workflow.json 读写
 │   ├── spec.mjs          # 规范文件 CRUD，版本管理，归档
 │   ├── terminal.mjs      # 终端输出，颜色，交互式提示
 │   ├── agents.mjs        # AGENTS.md 文件管理
 │   └── ide-sync.mjs      # 统一 IDE 集成（Cursor/Claude Code）
 └── templates/            # Markdown 模板文件
     ├── AGENTS.md
-    ├── WORKFLOW.md
+    ├── workflow.json
     ├── project.md
     └── commands/         # IDE 命令模板（Cursor/Claude 通用）
 ```
