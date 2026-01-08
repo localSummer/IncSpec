@@ -9,6 +9,7 @@ import * as path from 'path';
 import * as os from 'os';
 import { fileURLToPath } from 'url';
 import { INCSPEC_DIR } from './config.mjs';
+import { MODE_CONFIG, MODE_UPGRADE_ORDER } from './mode-utils.mjs';
 
 /** Built-in templates directory */
 const TEMPLATES_DIR = fileURLToPath(new URL('../templates/commands', import.meta.url));
@@ -114,35 +115,59 @@ function getSourcePath(fileName, fallbackDirs = []) {
 }
 
 /**
+ * Generate mode sections for help content
+ * Shows all 7 workflow steps with their mode indicators
+ * @returns {string}
+ */
+function generateModeSections() {
+  const lines = [];
+
+  // Step info: command, description, and which modes support it
+  const steps = [
+    { cmd: 'inc-analyze', desc: '分析代码流程,生成基线快照', modes: ['full', 'quick', 'minimal'] },
+    { cmd: 'inc-collect-req', desc: '收集结构化需求', modes: ['full', 'quick'] },
+    { cmd: 'inc-collect-dep', desc: '采集UI依赖', modes: ['full'] },
+    { cmd: 'inc-design', desc: '生成增量设计蓝图', modes: ['full'] },
+    { cmd: 'inc-apply', desc: '应用代码变更', modes: ['full', 'quick', 'minimal'] },
+    { cmd: 'inc-merge', desc: '合并到新基线', modes: ['full', 'quick'] },
+    { cmd: 'inc-archive', desc: '归档工作流产出', modes: ['full', 'quick', 'minimal'] }
+  ];
+
+  // Generate all 7 steps with mode indicators
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i];
+    const stepNum = i + 1;
+
+    let cmdLine;
+    if (step.modes.length === 3) {
+      cmdLine = `\`/incspec/${step.cmd}\``;
+    } else if (step.modes.includes('full') && step.modes.includes('quick')) {
+      cmdLine = `\`/incspec/${step.cmd}\` (完整/快速)`;
+    } else {
+      cmdLine = `\`/incspec/${step.cmd}\` (完整)`;
+    }
+
+    lines.push(`${stepNum}. ${cmdLine} - ${step.desc}`);
+  }
+
+  return lines.join('\n');
+}
+
+/**
  * Generate utility commands content
  * @returns {Array<{name: string, content: string}>}
  */
 function generateUtilityCommands() {
-  return [
-    {
-      name: 'inc-status.md',
-      content: `---
-description: [incspec] 查看当前工作流状态
----
+  // Generate help content from template
+  const helpTemplatePath = path.join(TEMPLATES_DIR, 'inc-help.md');
+  let helpContent;
 
-# 查看工作流状态
-
-请运行以下命令查看当前工作流状态:
-
-\`\`\`bash
-incspec status
-\`\`\`
-
-或直接读取状态文件:
-
-\`\`\`bash
-cat ${INCSPEC_DIR}/workflow.json
-\`\`\`
-`,
-    },
-    {
-      name: 'inc-help.md',
-      content: `---
+  if (fs.existsSync(helpTemplatePath)) {
+    const template = fs.readFileSync(helpTemplatePath, 'utf-8');
+    helpContent = template.replace('<!-- MODE_SECTIONS -->', generateModeSections());
+  } else {
+    // Fallback: generate complete content inline
+    helpContent = `---
 description: [incspec] 显示帮助信息
 ---
 
@@ -150,22 +175,7 @@ description: [incspec] 显示帮助信息
 
 ## 工作流步骤
 
-**完整模式 (7步):**
-1. \`/incspec/inc-analyze\` - 分析代码流程,生成基线快照
-2. \`/incspec/inc-collect-req\` - 收集结构化需求
-3. \`/incspec/inc-collect-dep\` - 采集UI依赖
-4. \`/incspec/inc-design\` - 生成增量设计蓝图
-5. \`/incspec/inc-apply\` - 应用代码变更
-6. \`/incspec/inc-merge\` - 合并到新基线
-7. \`/incspec/inc-archive\` - 归档工作流产出
-
-**快速模式 (5步):**
-1. \`/incspec/inc-analyze --quick\` - 分析代码流程 (快速模式)
-2. \`/incspec/inc-collect-req\` - 收集结构化需求
-5. \`/incspec/inc-apply\` - 应用代码变更
-6. \`/incspec/inc-merge\` - 合并到新基线
-7. \`/incspec/inc-archive\` - 归档工作流产出
-
+${generateModeSections()}
 ## 辅助命令
 
 - \`/incspec/inc-status\` - 查看当前工作流状态
@@ -193,7 +203,34 @@ ${INCSPEC_DIR}/
 ├── increments/       # 增量设计
 └── archives/         # 历史归档 (YYYY-MM/{module}/)
 \`\`\`
+`;
+  }
+
+  return [
+    {
+      name: 'inc-status.md',
+      content: `---
+description: [incspec] 查看当前工作流状态
+---
+
+# 查看工作流状态
+
+请运行以下命令查看当前工作流状态:
+
+\`\`\`bash
+incspec status
+\`\`\`
+
+或直接读取状态文件:
+
+\`\`\`bash
+cat ${INCSPEC_DIR}/workflow.json
+\`\`\`
 `,
+    },
+    {
+      name: 'inc-help.md',
+      content: helpContent,
     },
   ];
 }

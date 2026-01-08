@@ -6,13 +6,7 @@ description: [incspec] 显示帮助信息
 
 ## 工作流步骤
 
-1. `/incspec/inc-analyze` - 分析代码流程,生成基线快照
-2. `/incspec/inc-collect-req` (完整/快速) - 收集结构化需求
-3. `/incspec/inc-collect-dep` (完整) - 采集UI依赖
-4. `/incspec/inc-design` (完整) - 生成增量设计蓝图
-5. `/incspec/inc-apply` - 应用代码变更
-6. `/incspec/inc-merge` (完整/快速) - 合并到新基线
-7. `/incspec/inc-archive` - 归档工作流产出
+<!-- MODE_SECTIONS -->
 
 ## 辅助命令
 

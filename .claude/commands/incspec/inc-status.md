@@ -13,5 +13,5 @@ incspec status
 或直接读取状态文件:
 
 ```bash
-cat incspec/WORKFLOW.md
+cat incspec/workflow.json
 ```
