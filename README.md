@@ -240,10 +240,11 @@ incspec init
 - 创建 `incspec/` 目录结构
 - 生成包含工作流指令的 `AGENTS.md`
 - 在 `incspec/project.md` 中设置项目配置
+- 询问是否立即同步 IDE 命令（可选择目标 IDE 和同步范围）
 
 #### 步骤 3：同步 IDE 集成（可选）
 
-同步到 Cursor 或 Claude Code：
+如果在初始化时跳过了 IDE 同步，或需要重新同步，可以单独运行：
 ```bash
 incspec sync              # 交互式选择（默认不预选）
 incspec sync --cursor     # 仅 Cursor
